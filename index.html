@@ -1,0 +1,3044 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本語N3文法 / Tata Bahasa Jepang N3</title>
+<style>
+  :root {
+    --red: #e63946;
+    --blue: #1d3557;
+    --light-blue: #457b9d;
+    --cream: #f1faee;
+    --light: #a8dadc;
+    --white: #ffffff;
+    --gray: #6c757d;
+    --light-gray: #f8f9fa;
+    --success: #2d6a4f;
+    --warning: #e9c46a;
+    --danger: #e76f51;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; background: var(--cream); color: var(--blue); min-height: 100vh; }
+
+  nav { background: var(--blue); color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  nav h1 { font-size: 1rem; font-weight: bold; line-height: 1.3; }
+  nav h1 span { display: block; font-size: 0.72rem; color: var(--light); font-weight: normal; }
+  .nav-btns { display: flex; gap: 8px; }
+  .nav-btn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: background .2s; }
+  .nav-btn:hover, .nav-btn.active { background: var(--light-blue); }
+
+  .screen { display: none; padding: 16px; max-width: 680px; margin: 0 auto; }
+  .screen.active { display: block; }
+
+  .home-hero { text-align: center; padding: 24px 0 16px; }
+  .home-hero h2 { font-size: 1.4rem; color: var(--blue); }
+  .home-hero p { color: var(--gray); font-size: 0.85rem; margin-top: 4px; }
+  .progress-bar-wrap { background: #ddd; border-radius: 8px; height: 10px; margin: 16px 0 4px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--light-blue), var(--red)); border-radius: 8px; transition: width .5s; }
+  .progress-label { font-size: 0.78rem; color: var(--gray); text-align: right; }
+
+  .week-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .week-card { background: white; border-radius: 12px; padding: 16px; cursor: pointer; border: 2px solid transparent; transition: all .2s; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+  .week-card:hover { border-color: var(--light-blue); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+  .week-card .week-num { font-size: 0.75rem; color: var(--light-blue); font-weight: bold; }
+  .week-card .week-title { font-size: 0.95rem; font-weight: bold; margin: 4px 0 2px; }
+  .week-card .week-title-id { font-size: 0.75rem; color: var(--gray); }
+  .week-card .mini-bar { background: #eee; border-radius: 4px; height: 6px; overflow: hidden; margin-top: 10px; }
+  .week-card .mini-fill { height: 100%; background: var(--light-blue); border-radius: 4px; }
+  .week-card .mini-label { font-size: 0.68rem; color: var(--gray); margin-top: 2px; }
+
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; color: var(--light-blue); cursor: pointer; font-size: 0.85rem; margin-bottom: 16px; }
+  .back-btn:hover { color: var(--blue); }
+  .week-header { background: var(--blue); color: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .week-header .wk { font-size: 0.75rem; color: var(--light); }
+  .week-header h2 { font-size: 1.3rem; margin: 4px 0 2px; }
+  .week-header p { font-size: 0.82rem; color: #a8dadc; }
+
+  .day-list { display: flex; flex-direction: column; gap: 10px; }
+  .day-card { background: white; border-radius: 10px; padding: 14px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,.08); transition: all .2s; border-left: 4px solid transparent; }
+  .day-card:hover { border-left-color: var(--light-blue); box-shadow: 0 3px 10px rgba(0,0,0,.12); }
+  .day-card.completed { border-left-color: var(--success); }
+  .day-card .day-num { font-size: 0.72rem; color: var(--gray); }
+  .day-card .day-title { font-size: 0.95rem; font-weight: bold; }
+  .day-card .day-grammar { font-size: 0.75rem; color: var(--light-blue); margin-top: 2px; }
+  .day-card .day-badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; background: #eee; color: var(--gray); flex-shrink: 0; }
+  .day-card.completed .day-badge { background: var(--success); color: white; }
+
+  .lesson-header { background: linear-gradient(135deg, var(--blue), var(--light-blue)); color: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+  .lesson-header .breadcrumb { font-size: 0.72rem; color: var(--light); margin-bottom: 6px; }
+  .lesson-header h2 { font-size: 1.25rem; font-weight: bold; }
+  .lesson-header .lesson-sub { font-size: 0.82rem; color: #a8dadc; margin-top: 4px; }
+
+  .grammar-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+  .grammar-pattern { font-size: 1.05rem; font-weight: bold; color: var(--red); border-bottom: 2px solid var(--cream); padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .pattern-badge { background: var(--cream); color: var(--blue); font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: normal; font-family: monospace; }
+  .meaning-ja { font-size: 0.85rem; color: var(--gray); margin-bottom: 6px; }
+  .meaning-id { font-size: 0.9rem; color: var(--blue); font-weight: bold; background: var(--cream); padding: 8px 12px; border-radius: 8px; margin-bottom: 14px; border-left: 3px solid var(--light-blue); }
+  .ex-label { font-size: 0.78rem; color: var(--gray); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .example { background: var(--light-gray); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .example .ja { font-size: 0.95rem; color: var(--blue); line-height: 1.6; }
+  .example .ja strong { color: var(--red); }
+  .example .id { font-size: 0.82rem; color: var(--gray); margin-top: 4px; font-style: italic; }
+  .extra-example { background: #eef6f0; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; border-left: 3px solid var(--success); }
+  .extra-example .ja { font-size: 0.95rem; color: var(--blue); line-height: 1.6; }
+  .extra-example .ja strong { color: var(--red); }
+  .extra-example .id { font-size: 0.82rem; color: var(--gray); margin-top: 4px; font-style: italic; }
+  .extra-toggle { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px dashed var(--success); color: var(--success); padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.78rem; margin-top: 4px; margin-bottom: 4px; transition: all .2s; }
+  .extra-toggle:hover { background: #eef6f0; }
+  .extra-section { display: none; margin-top: 6px; }
+  .extra-section.open { display: block; }
+  .extra-label { font-size: 0.72rem; color: var(--success); font-weight: bold; letter-spacing: .5px; margin-bottom: 6px; margin-top: 2px; }
+  .verbform-toggle { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px dashed var(--light-blue); color: var(--light-blue); padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.78rem; margin-top: 4px; margin-bottom: 4px; transition: all .2s; }
+  .verbform-toggle:hover { background: #eaf2f8; }
+  .verbform-section { display: none; margin-top: 8px; background: #eaf2f8; border-radius: 10px; padding: 12px 14px; }
+  .verbform-section.open { display: block; }
+  .verbform-section h5 { font-size: 0.75rem; color: var(--light-blue); font-weight: bold; letter-spacing: .5px; margin-bottom: 8px; text-transform: uppercase; }
+  .verbform-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 0.83rem; }
+  .verbform-row .vf-label { background: var(--light-blue); color: white; border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
+  .verbform-row .vf-body { color: var(--blue); line-height: 1.5; }
+  .verbform-row .vf-body .vf-id { color: var(--gray); font-size: 0.78rem; display: block; margin-top: 1px; }
+  .verbform-row .vf-body .vf-ex { color: var(--red); font-size: 0.78rem; display: block; margin-top: 2px; }
+
+  .lesson-nav { display: flex; gap: 10px; margin-top: 20px; margin-bottom: 10px; flex-wrap: wrap; }
+  .lesson-nav button { flex: 1; min-width: 100px; padding: 12px; border: none; border-radius: 10px; cursor: pointer; font-size: 0.88rem; font-weight: bold; transition: all .2s; }
+  .btn-complete { background: var(--success); color: white; }
+  .btn-complete:hover { background: #1b4332; }
+  .btn-uncomplete { background: #adb5bd; color: white; }
+  .btn-uncomplete:hover { background: #6c757d; }
+  .btn-quiz { background: var(--red); color: white; }
+  .btn-quiz:hover { background: #c1121f; }
+  .btn-secondary { background: #eee; color: var(--blue); }
+  .btn-secondary:hover { background: #ddd; }
+
+  .quiz-header { background: var(--blue); color: white; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
+  .quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .quiz-title { font-size: 1rem; font-weight: bold; }
+  .quiz-score-disp { font-size: 0.85rem; color: var(--light); }
+  .quiz-progress { background: rgba(255,255,255,.2); border-radius: 4px; height: 6px; overflow: hidden; }
+  .quiz-progress-fill { height: 100%; background: var(--warning); border-radius: 4px; transition: width .4s; }
+
+  .quiz-question { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .q-label { font-size: 0.75rem; color: var(--gray); margin-bottom: 8px; }
+  .q-text { font-size: 1rem; font-weight: bold; color: var(--blue); line-height: 1.6; margin-bottom: 6px; }
+  .q-hint { font-size: 0.8rem; color: var(--gray); font-style: italic; }
+
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .quiz-opt { background: white; border: 2px solid #ddd; border-radius: 10px; padding: 12px 8px; cursor: pointer; font-size: 0.82rem; text-align: center; transition: all .2s; box-shadow: 0 1px 4px rgba(0,0,0,.06); line-height: 1.4; }
+  .quiz-opt:hover:not(.disabled) { border-color: var(--light-blue); background: var(--cream); }
+  .quiz-opt.correct { border-color: var(--success); background: #d8f3dc; color: var(--success); }
+  .quiz-opt.wrong { border-color: var(--danger); background: #fde8df; color: var(--danger); }
+  .quiz-opt.disabled { cursor: default; }
+
+  .quiz-feedback { border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; font-size: 0.88rem; display: none; }
+  .quiz-feedback.show { display: block; }
+  .correct-fb { background: #d8f3dc; color: var(--success); border: 1px solid #52b788; }
+  .wrong-fb { background: #fde8df; color: var(--danger); border: 1px solid #e76f51; }
+  .fb-detail { margin-top: 6px; font-size: 0.82rem; }
+
+  .quiz-next-btn { width: 100%; padding: 14px; background: var(--blue); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background .2s; display: none; }
+  .quiz-next-btn.show { display: block; }
+  .quiz-next-btn:hover { background: var(--light-blue); }
+
+  .result-screen { text-align: center; padding: 30px 16px; }
+  .result-emoji { font-size: 4rem; margin-bottom: 16px; }
+  .result-score { font-size: 3rem; font-weight: bold; color: var(--blue); }
+  .result-score span { font-size: 1.2rem; color: var(--gray); }
+  .result-msg { font-size: 1rem; color: var(--gray); margin: 10px 0 24px; }
+  .result-msg em { font-size: 0.88rem; color: var(--light-blue); font-style: normal; display: block; margin-top: 4px; }
+  .result-btns { display: flex; flex-direction: column; gap: 10px; }
+  .result-btns button { padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; }
+
+  /* Ruby / Furigana */
+  ruby { ruby-align: center; }
+  rt { font-size: 0.55em; color: #888; line-height: 1.5; }
+  body.no-furigana rt { display: none; }
+  body.no-furigana ruby { display: inline; }
+
+  /* Quiz Indonesian box */
+  .q-id-box { background: rgba(69,123,157,.12); border-left: 3px solid var(--light-blue); border-radius: 8px; padding: 8px 12px; font-size: 0.88rem; color: var(--blue); margin-top: 8px; }
+  .q-id-flag { margin-right: 4px; }
+
+  /* Romaji */
+  .example .romaji, .extra-example .romaji { font-size: 0.76rem; color: #b0bec5; margin-top: 2px; letter-spacing: 0.04em; font-style: italic; }
+  body.no-romaji .romaji { display: none; }
+
+  /* ═══════════════════════════════════════
+     スマホ対応 (600px以下)
+     PCは今まで通り、スマホだけ変更
+  ════════════════════════════════════════ */
+  @media (max-width: 600px) {
+
+    /* ── ナビ ── */
+    nav { padding: 10px 12px; flex-wrap: wrap; gap: 6px; }
+    nav h1 { font-size: 0.92rem; }
+    nav h1 span { font-size: 0.68rem; }
+    .nav-btns { flex-wrap: wrap; gap: 4px; }
+    .nav-btn { font-size: 0.72rem; padding: 5px 9px; }
+
+    /* ── 画面全体 ── */
+    .screen { padding: 12px; }
+
+    /* ── ホーム ── */
+    .home-hero h2 { font-size: 1.2rem; }
+    .week-grid { grid-template-columns: 1fr; gap: 10px; }
+    .week-card { padding: 14px; }
+    .week-card .week-title { font-size: 0.9rem; }
+
+    /* ── 週・日一覧 ── */
+    .week-header { padding: 16px; }
+    .week-header h2 { font-size: 1.1rem; }
+    .day-card { padding: 12px 14px; }
+    .day-card .day-title { font-size: 0.9rem; }
+
+    /* ── レッスン ── */
+    .lesson-header { padding: 16px; }
+    .lesson-header h2 { font-size: 1.1rem; }
+    .grammar-card { padding: 16px; }
+    .grammar-pattern { font-size: 0.95rem; }
+    .example .ja, .extra-example .ja { font-size: 0.92rem; line-height: 1.8; }
+    .example .romaji, .extra-example .romaji { font-size: 0.72rem; word-break: break-all; }
+    .example .id, .extra-example .id { font-size: 0.8rem; }
+    .meaning-id { font-size: 0.85rem; }
+
+    /* ── 接続の説明（verbform） ── */
+    .verbform-section { padding: 10px 12px; }
+    .verbform-row { font-size: 0.8rem; }
+    .verbform-row .vf-body .vf-id { font-size: 0.74rem; }
+
+    /* ── レッスン下部ボタン ── */
+    .lesson-nav { gap: 8px; }
+    .lesson-nav button { font-size: 0.82rem; padding: 10px 6px; }
+
+    /* ── クイズ ── */
+    .quiz-question { padding: 16px; }
+    .q-text { font-size: 0.95rem; line-height: 1.7; }
+    .q-id-box { font-size: 0.82rem; }
+    .quiz-options { grid-template-columns: 1fr; gap: 8px; }
+    .quiz-opt { font-size: 0.85rem; padding: 13px 10px; text-align: left; }
+    .quiz-next-btn { font-size: 0.9rem; padding: 13px; }
+
+    /* ── 結果画面 ── */
+    .result-score { font-size: 2.4rem; }
+    .result-btns button { font-size: 0.9rem; padding: 13px; }
+
+    /* ── ルビ（フリガナ）スマホ用に少し大きく ── */
+    rt { font-size: 0.6em; }
+  }
+
+  /* ── アクセスコード画面 ── */
+  #access-screen {
+    position: fixed; inset: 0; background: var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+  }
+  #access-screen.hidden { display: none; }
+  .access-box {
+    background: white; border-radius: 16px; padding: 36px 32px;
+    max-width: 360px; width: 90%; text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  }
+  .access-box h2 { font-size: 1.1rem; color: var(--blue); margin-bottom: 6px; }
+  .access-box p  { font-size: 0.82rem; color: var(--gray); margin-bottom: 20px; line-height: 1.6; }
+  .access-box input {
+    width: 100%; padding: 12px 14px; border: 2px solid #ddd;
+    border-radius: 8px; font-size: 1rem; text-align: center;
+    letter-spacing: 0.1em; outline: none; margin-bottom: 12px;
+  }
+  .access-box input:focus { border-color: var(--light-blue); }
+  .access-box button {
+    width: 100%; padding: 12px; background: var(--blue); color: white;
+    border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;
+  }
+  .access-box button:hover { background: var(--light-blue); }
+  .access-error { color: var(--red); font-size: 0.82rem; margin-top: 8px; min-height: 20px; }
+</style>
+</head>
+<body>
+
+<div id="access-screen">
+  <div class="access-box">
+    <h2>日本語N3 文法アプリ</h2>
+    <p>アクセスコードを入力してください。<br>Masukkan kode akses untuk melanjutkan.</p>
+    <input type="password" id="access-input" placeholder="アクセスコード"
+      onkeydown="if(event.key==='Enter')checkAccess()">
+    <button onclick="checkAccess()">入る / Masuk</button>
+    <div class="access-error" id="access-error"></div>
+  </div>
+</div>
+
+<nav>
+  <h1>日本語N3 文法<span>Tata Bahasa Jepang N3</span></h1>
+  <div class="nav-btns">
+    <button class="nav-btn" onclick="showHome()">ホーム</button>
+    <button class="nav-btn" onclick="showAllQuiz()">クイズ</button>
+    <button class="nav-btn" id="furi-btn" onclick="toggleFurigana()">ルビあり</button>
+    <button class="nav-btn" id="romaji-btn" onclick="toggleRomaji()">ローマ字あり</button>
+  </div>
+</nav>
+
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <h2>日本語総まとめ N3 文法</h2>
+    <p>Belajar tata bahasa Jepang N3 — 6 minggu, 36 pelajaran</p>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="total-bar" style="width:0%"></div></div>
+  <div class="progress-label" id="total-label">0 / 36 pelajaran selesai</div>
+  <div class="week-grid" id="week-grid"></div>
+</div>
+
+<div class="screen" id="screen-week">
+  <div class="back-btn" onclick="showHome()">← Kembali / 戻る</div>
+  <div class="week-header" id="week-header"></div>
+  <div class="day-list" id="day-list"></div>
+</div>
+
+<div class="screen" id="screen-lesson">
+  <div class="back-btn" id="lesson-back"></div>
+  <div id="lesson-content"></div>
+</div>
+
+<div class="screen" id="screen-quiz">
+  <div class="back-btn" id="quiz-back">← Kembali / 戻る</div>
+  <div id="quiz-content"></div>
+</div>
+
+<script>
+const WEEKS = [
+  {
+    num:1, title:"がんばらなくちゃ！", titleId:"Harus semangat!",
+    days:[
+      { day:1, title:"ぼくにもやらせて", titleId:"Biarkan aku juga melakukannya",
+        grammar:[
+          { pattern:"〜られている / 〜れている", badge:"V受身形",
+            meaning:"（誰かが）〜する", meaningId:"Bentuk pasif — sesuatu dilakukan/dikatakan (tanpa subjek jelas)",
+            examples:[
+              { ja:"この本には、くわしい説明が<strong>書かれていません</strong>。", id:"Dalam buku ini tidak ada penjelasan yang detail." },
+              { ja:"入学式は、このホールで<strong>行われます</strong>。", id:"Upacara penerimaan mahasiswa baru akan diadakan di aula ini." },
+              { ja:"これは世界でいちばん大きいダイヤモンドだと<strong>言われています</strong>。", id:"Ini dipercaya sebagai berlian terbesar di dunia." }
+            ]
+          },
+          { pattern:"〜に〜られた（迷惑の受身）", badge:"N に V受身",
+            meaning:"（誰か）に（迷惑なことを）される", meaningId:"Pasif tidak langsung — kerugian akibat tindakan orang lain",
+            examples:[
+              { ja:"友達の赤ちゃんを抱っこしたら、<strong>泣かれて</strong>しまった。", id:"Ketika menggendong bayi teman, bayi itu menangis (dan aku kewalahan)." },
+              { ja:"雨に<strong>降られて</strong>、服がぬれてしまった。", id:"Hujan turun (merepotkanku) dan pakaianku basah." }
+            ]
+          },
+          { pattern:"〜させてください", badge:"V使役形＋ください",
+            meaning:"〜することを許してください", meaningId:"Tolong izinkan saya melakukan... (meminta izin dengan sopan)",
+            examples:[
+              { ja:"気分が悪いので、早く<strong>帰らせてください</strong>。", id:"Karena saya tidak enak badan, tolong izinkan saya pulang lebih awal." },
+              { ja:"あなたの会社のお話を<strong>聞かせてください</strong>。", id:"Tolong ceritakan tentang perusahaan Anda." }
+            ]
+          }
+        ]
+      },
+      { day:2, title:"そこに置いといて", titleId:"Taruh saja di sana",
+        grammar:[
+          { pattern:"〜ないと / 〜なくちゃ", badge:"Vない形＋と",
+            meaning:"〜しなければならない", meaningId:"Harus... (kewajiban, dipakai dalam percakapan sehari-hari)",
+            examples:[
+              { ja:"明日は早く出かけるから、もう<strong>寝ないと</strong>。", id:"Karena besok harus berangkat pagi, aku harus tidur sekarang." },
+              { ja:"田中さんにメールの返信を<strong>しなくちゃ</strong>。", id:"Aku harus membalas email Tanaka-san." }
+            ]
+          },
+          { pattern:"〜ちゃった / 〜じゃった", badge:"Vてしまう→口語",
+            meaning:"〜してしまった（後悔・意外）", meaningId:"Sudah terlanjur... / Tidak sengaja... (menyesal atau kaget)",
+            examples:[
+              { ja:"「あれ？ここにあったチョコレートは？」「あ、<strong>食べちゃった</strong>。」", id:"'Eh, cokelat yang ada di sini mana?' 'Ah, sudah aku makan.'" },
+              { ja:"試験が終わった！今日は<strong>飲んじゃおう</strong>！", id:"Ujian sudah selesai! Hari ini ayo minum-minum!" }
+            ]
+          },
+          { pattern:"〜とく / 〜ておく（口語）", badge:"Vておく→口語",
+            meaning:"あらかじめ〜する／〜したままにする", meaningId:"Melakukan sesuatu terlebih dahulu untuk persiapan",
+            examples:[
+              { ja:"明日、<strong>出しとく</strong>から。（＝出しておく）", id:"Besok akan aku keluarkan terlebih dahulu." },
+              { ja:"手帳に<strong>書いとこう</strong>。", id:"Aku catat dulu di agenda." }
+            ]
+          }
+        ]
+      },
+      { day:3, title:"女らしい", titleId:"Seperti wanita",
+        grammar:[
+          { pattern:"〜みたいだ", badge:"N/V/A みたいだ",
+            meaning:"〜のようだ（比喩・推測）", meaningId:"Seperti... / Kelihatannya... (perbandingan atau dugaan, gaya percakapan)",
+            examples:[
+              { ja:"彼の話し方は、<strong>女みたいだ</strong>。", id:"Cara berbicara dia seperti perempuan." },
+              { ja:"明日は雨<strong>みたいね</strong>。", id:"Sepertinya besok hujan ya." }
+            ]
+          },
+          { pattern:"〜らしい", badge:"N/V/A らしい",
+            meaning:"①いかにも〜だ　②〜そうだ（伝聞）", meaningId:"① Benar-benar khas... ② Katanya... (informasi dari orang lain)",
+            examples:[
+              { ja:"今日は、春<strong>らしい</strong>暖かい日でした。", id:"Hari ini hangat, benar-benar seperti musim semi." },
+              { ja:"田中さんは来ない<strong>らしい</strong>。", id:"Katanya Tanaka-san tidak datang." }
+            ]
+          },
+          { pattern:"〜っぽい", badge:"N/V っぽい",
+            meaning:"〜のような感じがする", meaningId:"Terasa seperti... / berkesan... (nuansa informal)",
+            examples:[
+              { ja:"彼女、<strong>大人っぽい</strong>ね。", id:"Dia terlihat dewasa ya." },
+              { ja:"この料理、<strong>水っぽい</strong>な。", id:"Masakan ini terasa encer ya." }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"できるようになった！", titleId:"Sudah bisa!",
+        grammar:[
+          { pattern:"〜ないようにする", badge:"Vない＋ようにする",
+            meaning:"〜しないように努力する", meaningId:"Berusaha agar tidak... (menunjukkan usaha atau niat)",
+            examples:[
+              { ja:"忘れ物を<strong>しないようにしましょう</strong>。", id:"Mari berusaha agar tidak lupa membawa barang." },
+              { ja:"毎食後、歯をみがく<strong>ようにしています</strong>。", id:"Saya berusaha menyikat gigi setiap setelah makan." }
+            ]
+          },
+          { pattern:"〜ように〔目的〕", badge:"V る/ない＋ように",
+            meaning:"〜という状態になるために", meaningId:"Agar bisa... / Supaya... (menyatakan tujuan dari suatu tindakan)",
+            examples:[
+              { ja:"みんなに<strong>聞こえるように</strong>もっと大きな声で話してください。", id:"Tolong bicara lebih keras agar semua orang bisa mendengar." },
+              { ja:"忘れないように、手帳に書いておこう。", id:"Agar tidak lupa, aku tulis di agenda." }
+            ]
+          },
+          { pattern:"〜ようになる", badge:"V る/ない＋ようになる",
+            meaning:"（以前はできなかったが）〜できる状態になる", meaningId:"Menjadi bisa... / Akhirnya bisa... (perubahan kemampuan)",
+            examples:[
+              { ja:"日本語が<strong>使えるようになった</strong>。", id:"Aku sudah bisa menggunakan bahasa Jepang." },
+              { ja:"練習して、自転車に乗れる<strong>ようになりました</strong>。", id:"Setelah berlatih, saya jadi bisa naik sepeda." }
+            ]
+          }
+        ]
+      },
+      { day:5, title:"言ったように", titleId:"Seperti yang sudah kubilang",
+        grammar:[
+          { pattern:"〜のように〔引用〕", badge:"N の/V＋ように",
+            meaning:"〜と同じように（例示・引用）", meaningId:"Seperti yang... / Sebagaimana... (mengutip atau memberi contoh)",
+            examples:[
+              { ja:"皆さん<strong>ご存じのように</strong>、試験の内容が変わります。", id:"Seperti yang Anda semua ketahui, isi ujian akan berubah." },
+              { ja:"前にお話した<strong>ように</strong>、来年から授業料が値上がりします。", id:"Seperti yang telah saya sampaikan, uang kuliah akan naik mulai tahun depan." }
+            ]
+          },
+          { pattern:"〜ように〔指示〕", badge:"V る/ない＋ように",
+            meaning:"〜してください（間接的な指示）", meaningId:"Tolong... (perintah tidak langsung)",
+            examples:[
+              { ja:"「明日はもっと早く来る<strong>ように</strong>。」「わかりました。」", id:"'Besok tolong datang lebih awal.' 'Baik.'" },
+              { ja:"ここで、たばこを吸わない<strong>ように</strong>。", id:"Tolong jangan merokok di sini." }
+            ]
+          },
+          { pattern:"〜ように。〔願望〕", badge:"V＋ように。",
+            meaning:"〜してほしいと願う", meaningId:"Semoga... / Mudah-mudahan... (harapan atau doa)",
+            examples:[
+              { ja:"試験に<strong>合格しますように</strong>。", id:"Semoga lulus ujian." },
+              { ja:"早く元気になります<strong>ように</strong>。", id:"Semoga cepat sembuh." }
+            ]
+          }
+        ]
+      },
+      { day:6, title:"話を聞こうとしない", titleId:"Tidak mau mendengarkan",
+        grammar:[
+          { pattern:"〜ようと思う", badge:"V意向形＋と思う",
+            meaning:"〜するつもりだ（意志）", meaningId:"Berniat untuk... / Berencana untuk...",
+            examples:[
+              { ja:"会社を<strong>やめようと思っている</strong>。", id:"Aku berniat untuk berhenti dari perusahaan." },
+              { ja:"来年、国に帰ろうと<strong>思っています</strong>。", id:"Saya berencana pulang ke negara asal tahun depan." }
+            ]
+          },
+          { pattern:"〜ようとする", badge:"V意向形＋とする",
+            meaning:"〜しようとする動作を始める", meaningId:"Mencoba untuk... / Hendak... (tepat sebelum melakukan sesuatu)",
+            examples:[
+              { ja:"電車に<strong>乗ろうとしたときに</strong>、ドアが閉まって乗れなかった。", id:"Tepat saat hendak naik kereta, pintunya tertutup." },
+              { ja:"ポチは、ぼくが出かけ<strong>ようとすると</strong>、ほえる。", id:"Pochi selalu menggonggong setiap kali aku hendak pergi." }
+            ]
+          },
+          { pattern:"〜ようとしない", badge:"V意向形＋としない",
+            meaning:"〜しようとする気持ちがない", meaningId:"Tidak mau mencoba... / Tidak berusaha untuk...",
+            examples:[
+              { ja:"留学しようと思っているが、父は私の話を聞こう<strong>としない</strong>。", id:"Aku ingin belajar ke luar negeri, tapi ayah tidak mau mendengarkan." },
+              { ja:"彼は全然<strong>食べようとしない</strong>。", id:"Dia sama sekali tidak mau mencoba makan." }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    num:2, title:"がんばってごらん！", titleId:"Coba saja!",
+    days:[
+      { day:1, title:"明日こそ", titleId:"Pasti besok!",
+        grammar:[
+          { pattern:"〜ばかり / 〜てばかりいる", badge:"N/Vて＋ばかり",
+            meaning:"〜だけ・〜しすぎる", meaningId:"Hanya... saja / Terus-terusan...",
+            examples:[
+              { ja:"このクラスは<strong>女性ばかり</strong>です。", id:"Di kelas ini hanya ada perempuan saja." },
+              { ja:"彼はゲームを<strong>してばかりいる</strong>。", id:"Dia terus-terusan main game saja." }
+            ]
+          },
+          { pattern:"〜さえ / 〜さえ〜ば", badge:"N さえ",
+            meaning:"〜でも・〜だけで十分", meaningId:"Bahkan... / Asal... saja sudah cukup",
+            examples:[
+              { ja:"彼は<strong>ひらがなさえ</strong>読めない。", id:"Bahkan hiragana pun dia tidak bisa baca." },
+              { ja:"お金<strong>さえあれば</strong>、何でもできる。", id:"Asal ada uang, apapun bisa dilakukan." }
+            ]
+          },
+          { pattern:"〜こそ", badge:"N こそ",
+            meaning:"強調「まさに〜」", meaningId:"Justru... / Pasti... (penekanan kuat)",
+            examples:[
+              { ja:"<strong>明日こそ</strong>勉強するぞ！", id:"Besok aku pasti belajar!" },
+              { ja:"今年<strong>こそ</strong>、ダイエットに成功する。", id:"Tahun ini pasti berhasil diet." }
+            ]
+          }
+        ]
+      },
+      { day:2, title:"努力によって", titleId:"Berkat usaha keras",
+        grammar:[
+          { pattern:"〜に関して / 〜に関する", badge:"N に関して",
+            meaning:"〜について（硬い表現）", meaningId:"Mengenai... / Berkaitan dengan... (lebih formal dari について)",
+            examples:[
+              { ja:"この問題<strong>に関して</strong>、話し合いをしたい。", id:"Saya ingin berdiskusi mengenai masalah ini." },
+              { ja:"日本文化<strong>に関する</strong>本を読んでいる。", id:"Saya sedang membaca buku tentang budaya Jepang." }
+            ]
+          },
+          { pattern:"〜によれば / 〜によると", badge:"N によれば",
+            meaning:"〜という情報では", meaningId:"Menurut... (menyampaikan informasi dari sumber tertentu)",
+            examples:[
+              { ja:"<strong>天気予報によれば</strong>、明日は雪が降るそうだ。", id:"Menurut prakiraan cuaca, besok katanya akan turun salju." },
+              { ja:"ニュース<strong>によると</strong>、大きな地震があったらしい。", id:"Menurut berita, sepertinya ada gempa besar." }
+            ]
+          },
+          { pattern:"〜によって / 〜により", badge:"N によって",
+            meaning:"〜を手段・原因・行為者として", meaningId:"Melalui... / Karena... / Oleh... (cara, sebab, atau pelaku pasif)",
+            examples:[
+              { ja:"彼は<strong>努力によって</strong>病気を克服した。", id:"Dia berhasil mengatasi penyakitnya berkat kerja keras." },
+              { ja:"この小説はシェークスピア<strong>によって</strong>書かれた。", id:"Novel ini ditulis oleh Shakespeare." },
+              { ja:"人<strong>によって</strong>考え方が違います。", id:"Cara berpikir berbeda-beda tergantung orangnya." }
+            ]
+          }
+        ]
+      },
+      { day:3, title:"電話するのを忘れた", titleId:"Lupa menelepon",
+        grammar:[
+          { pattern:"〜のを / 〜のが / 〜のは（名詞化）", badge:"V/A の＋助詞",
+            meaning:"動詞や文を名詞化する", meaningId:"Nominalisasi kata kerja — menjadikan kata kerja sebagai subjek/objek kalimat",
+            examples:[
+              { ja:"田中さんに電話する<strong>のを</strong>すっかり忘れていました。", id:"Saya benar-benar lupa menelepon Tanaka-san." },
+              { ja:"日曜日に混んだところへ行く<strong>のは</strong>、あまり好きじゃない。", id:"Aku tidak terlalu suka pergi ke tempat ramai pada hari Minggu." },
+              { ja:"ピアノを弾く<strong>のが</strong>好きです。", id:"Saya suka bermain piano." }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"帰国するというのは本当ですか", titleId:"Benarkah kamu akan pulang?",
+        grammar:[
+          { pattern:"〜という〜", badge:"N という N",
+            meaning:"〜と呼ばれる〜（名前・定義）", meaningId:"... yang disebut... / yang bernama... (mendefinisikan atau memperkenalkan nama)",
+            examples:[
+              { ja:"<strong>木村さんという人</strong>から電話がありました。", id:"Ada telepon dari seseorang yang bernama Kimura-san." },
+              { ja:"<strong>デジカメというのは</strong>、デジタルカメラのことです。", id:"Yang dimaksud 'digikame' adalah kamera digital." }
+            ]
+          },
+          { pattern:"〜ということ / 〜というのは", badge:"S というのは",
+            meaning:"〜ということは（内容の確認・説明）", meaningId:"Apakah benar bahwa...? / Yang dimaksud dengan... (mengkonfirmasi atau menjelaskan informasi)",
+            examples:[
+              { ja:"リンさんが<strong>帰国するというのは本当ですか</strong>。", id:"Apakah benar bahwa Lin-san akan pulang ke negaranya?" },
+              { ja:"田中さんが医者だ<strong>というのを</strong>知らなかった。", id:"Saya tidak tahu bahwa Tanaka-san adalah dokter." }
+            ]
+          }
+        ]
+      },
+      { day:5, title:"旅行といっても", titleId:"Meski dibilang wisata",
+        grammar:[
+          { pattern:"〜というより", badge:"S というより",
+            meaning:"〜と言うのは正確ではなく、むしろ〜", meaningId:"Lebih tepat dikatakan... daripada... (koreksi atau klarifikasi)",
+            examples:[
+              { ja:"彼女は歌が上手い<strong>というより</strong>、プロ級だ。", id:"Dia bukan sekadar pandai menyanyi, lebih tepatnya sudah sekelas profesional." },
+              { ja:"走る<strong>というより</strong>飛んでいるようだ。", id:"Lebih seperti terbang daripada berlari." }
+            ]
+          },
+          { pattern:"〜というと / 〜といえば", badge:"N というと",
+            meaning:"〜の話題が出たら思い浮かぶのは", meaningId:"Kalau bicara soal... / Ngomong-ngomong tentang...",
+            examples:[
+              { ja:"日本の食べ物<strong>というと</strong>、すしが有名ですね。", id:"Kalau bicara soal makanan Jepang, sushi paling terkenal ya." },
+              { ja:"京都<strong>といえば</strong>、お寺や神社ですね。", id:"Ngomong-ngomong soal Kyoto, kuil dan kuil Shinto ya." }
+            ]
+          },
+          { pattern:"〜といっても", badge:"N/S といっても",
+            meaning:"〜と言っているが、実際は〜", meaningId:"Meski dikatakan... tapi sebenarnya... (membatasi atau mengoreksi pernyataan)",
+            examples:[
+              { ja:"旅行<strong>といっても</strong>、近くの温泉に行くだけです。", id:"Meski dibilang wisata, hanya pergi ke pemandian air panas di dekat sini." },
+              { ja:"料理ができる<strong>といっても</strong>、カレーくらいしか作れない。", id:"Meski katanya bisa masak, paling cuma bisa buat kari saja." }
+            ]
+          }
+        ]
+      },
+      { day:6, title:"教えてくれと頼まれた", titleId:"Diminta untuk mengajari",
+        grammar:[
+          { pattern:"〜てごらん", badge:"Vて＋ごらん",
+            meaning:"試しに〜してみてください", meaningId:"Coba saja... (saran lembut agar mencoba sesuatu)",
+            examples:[
+              { ja:"難しくないから、<strong>やってごらん</strong>。", id:"Tidak susah kok, coba saja." },
+              { ja:"この歌、<strong>聞いてごらん</strong>。いい歌だよ。", id:"Coba dengarkan lagu ini. Lagunya bagus." }
+            ]
+          },
+          { pattern:"〜ように言う / 〜ように頼む", badge:"V＋ように言う",
+            meaning:"〜してほしいと伝える（間接話法）", meaningId:"Menyuruh / meminta seseorang agar... (perintah tidak langsung)",
+            examples:[
+              { ja:"先生は早く<strong>来るように言いました</strong>。", id:"Guru menyuruh agar datang lebih awal." },
+              { ja:"母に野菜を食べる<strong>ように言われた</strong>。", id:"Ibu menyuruhku agar makan sayuran." }
+            ]
+          },
+          { pattern:"〜てくれと頼まれた", badge:"Vて＋くれと",
+            meaning:"「〜てくれ」と言われた（依頼の引用）", meaningId:"Diminta untuk... (mengutip permintaan orang lain)",
+            examples:[
+              { ja:"友達に、田中さんの電話番号を<strong>教えてくれと頼まれた</strong>。", id:"Teman memintaku untuk memberitahu nomor telepon Tanaka-san." },
+              { ja:"大家に、玄関の前に自転車を置かない<strong>でくれと言われた</strong>。", id:"Pemilik kos memintaku agar tidak meletakkan sepeda di depan pintu masuk." }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    num:3, title:"もっとがんばってほしい！", titleId:"Ingin kamu lebih semangat!",
+    days:[
+      { day:1, title:"辞書を使わずに", titleId:"Tanpa menggunakan kamus",
+        grammar:[
+          { pattern:"〜ても / どんなに〜ても", badge:"V/A て＋も",
+            meaning:"〜という条件でも、結果は変わらない", meaningId:"Meski... / Seberapa pun... tetap... (kontras atau kondisi yang tidak mengubah hasil)",
+            examples:[
+              { ja:"いくら<strong>調べても</strong>わからなかった。", id:"Meski sudah mencari, tetap tidak tahu." },
+              { ja:"<strong>どんなに練習しても</strong>、うまくならない。", id:"Seberapa pun berlatih, tetap tidak mahir." }
+            ]
+          },
+          { pattern:"〜ずに / 〜ないで", badge:"Vない形＋ずに",
+            meaning:"〜しないで（状態・方法）", meaningId:"Tanpa melakukan... (keadaan atau cara tanpa melakukan sesuatu)",
+            examples:[
+              { ja:"辞書を<strong>使わずに</strong>書いたので、自信がありません。", id:"Karena ditulis tanpa menggunakan kamus, saya tidak yakin." },
+              { ja:"昨日、歯を<strong>みがかずに</strong>寝てしまった。", id:"Kemarin aku tidur tanpa menyikat gigi." }
+            ]
+          }
+        ]
+      },
+      { day:2, title:"100円にしても", titleId:"Bahkan untuk 100 yen",
+        grammar:[
+          { pattern:"〜として / 〜としては", badge:"N として",
+            meaning:"〜という立場・役割で", meaningId:"Sebagai... / Dalam kapasitas sebagai... (menyatakan peran atau kedudukan)",
+            examples:[
+              { ja:"<strong>日本代表として</strong>、試合に出ます。", id:"Saya akan bertanding sebagai wakil Jepang." },
+              { ja:"先生<strong>として</strong>は、学生に頑張ってほしい。", id:"Sebagai guru, saya ingin para siswa bersemangat." }
+            ]
+          },
+          { pattern:"〜にしては", badge:"N/V にしては",
+            meaning:"〜を考えると、予想外だ", meaningId:"Untuk seorang... / Mengingat..., ternyata... (hasil di luar ekspektasi)",
+            examples:[
+              { ja:"<strong>外国人にしては</strong>、日本語が上手ですね。", id:"Untuk orang asing, bahasa Jepangnya bagus ya." },
+              { ja:"値段<strong>にしては</strong>、品質がいい。", id:"Mengingat harganya, kualitasnya bagus." }
+            ]
+          },
+          { pattern:"〜にしても", badge:"N/S にしても",
+            meaning:"〜であっても（譲歩）", meaningId:"Bahkan kalau... / Sekalipun... (mengakui suatu kondisi tapi ada kelanjutan)",
+            examples:[
+              { ja:"<strong>100円にしても</strong>、無駄遣いはよくない。", id:"Bahkan untuk 100 yen pun, memboroskan uang itu tidak baik." },
+              { ja:"冗談<strong>にしても</strong>、言っていいことと悪いことがある。", id:"Sekalipun bercanda, ada hal yang boleh dan tidak boleh dikatakan." }
+            ]
+          },
+          { pattern:"〜としたら / 〜とすれば", badge:"S としたら",
+            meaning:"もし〜という状況なら", meaningId:"Kalau memang... / Jika seandainya... (kondisi hipotetis)",
+            examples:[
+              { ja:"それが<strong>本当だとしたら</strong>、大変なことだ。", id:"Kalau itu memang benar, itu masalah besar." },
+              { ja:"あなたが私の立場<strong>だとしたら</strong>、どうしますか？", id:"Jika kamu berada di posisi saya, apa yang akan kamu lakukan?" }
+            ]
+          }
+        ]
+      },
+      { day:3, title:"勉強するつもりでしたが…", titleId:"Tadinya berniat belajar, tapi…",
+        grammar:[
+          { pattern:"〜つもりだ / 〜つもりだった", badge:"V る/ない＋つもり",
+            meaning:"〜する意図（意図・計画）", meaningId:"Berniat untuk... / Tadinya berencana untuk...",
+            examples:[
+              { ja:"昨日は買い物に行く<strong>つもりでしたが</strong>、頭が痛かったので家にいました。", id:"Kemarin tadinya berniat pergi belanja, tapi karena kepala sakit, akhirnya di rumah." },
+              { ja:"お菓子を食べない<strong>つもりでいましたが</strong>、つい食べてしまいました。", id:"Tadinya berniat tidak makan kue, tapi tanpa sadar sudah termakan juga." }
+            ]
+          },
+          { pattern:"〜はずだ / 〜はずがない", badge:"V/A/N はずだ",
+            meaning:"当然〜だと思う（根拠のある推測）", meaningId:"Seharusnya... / Pasti... (dugaan berdasarkan alasan logis)",
+            examples:[
+              { ja:"田中さんは今、旅行中だから、<strong>家にいないはずだ</strong>。", id:"Karena Tanaka-san sedang dalam perjalanan, seharusnya tidak ada di rumah." },
+              { ja:"まじめな田中さんが、無断で休む<strong>はずがない</strong>。", id:"Tidak mungkin Tanaka-san yang serius absen tanpa memberi tahu." }
+            ]
+          },
+          { pattern:"〜べきだ / 〜べきではない", badge:"V る＋べきだ",
+            meaning:"〜する義務・責任がある", meaningId:"Seharusnya... / Wajib... (kewajiban moral atau saran kuat)",
+            examples:[
+              { ja:"約束は<strong>守るべきだ</strong>。", id:"Janji harus ditepati." },
+              { ja:"おもちゃは、まず安全<strong>であるべきだ</strong>。", id:"Mainan seharusnya pertama-tama aman." }
+            ]
+          },
+          { pattern:"〜たものだ", badge:"Vた＋ものだ",
+            meaning:"昔よく〜した（懐かしい思い出）", meaningId:"Dulu sering... (mengenang kebiasaan masa lalu)",
+            examples:[
+              { ja:"子どものころ、よくこの公園で<strong>遊んだものだ</strong>。", id:"Waktu kecil, dulu sering bermain di taman ini." },
+              { ja:"昔はここによく<strong>来たものだ</strong>。", id:"Dulu sering datang ke sini." }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"会うたびに", titleId:"Setiap kali bertemu",
+        grammar:[
+          { pattern:"〜ついでに", badge:"V る/た・N の＋ついでに",
+            meaning:"〜するとき、ついでに〜もする", meaningId:"Sambil... / Sekalian... (melakukan sesuatu lain saat kesempatan ada)",
+            examples:[
+              { ja:"<strong>散歩のついでに</strong>、この手紙を出しておいてくれませんか。", id:"Kalau memang mau jalan-jalan, sekalian tolong kirimin surat ini." },
+              { ja:"郵便局へ行った<strong>ついでに</strong>、はがきを買ってきた。", id:"Karena kebetulan pergi ke kantor pos, sekalian beli kartu pos." }
+            ]
+          },
+          { pattern:"〜たびに / 〜のたびに", badge:"V る・N の＋たびに",
+            meaning:"〜するときはいつも", meaningId:"Setiap kali... selalu... (berulang setiap kali terjadi)",
+            examples:[
+              { ja:"買い物の<strong>たびに</strong>、袋をたくさんもらう。", id:"Setiap kali belanja, selalu dapat banyak kantong." },
+              { ja:"この曲を聞く<strong>たびに</strong>、故郷を思い出す。", id:"Setiap kali mendengar lagu ini, selalu teringat kampung halaman." }
+            ]
+          },
+          { pattern:"〜たとたん（に）", badge:"Vた＋とたんに",
+            meaning:"〜した瞬間に、すぐに〜", meaningId:"Tepat saat... / Begitu... langsung... (sesuatu terjadi tepat setelah tindakan)",
+            examples:[
+              { ja:"窓を<strong>開けたとたん</strong>、強い風が入ってきた。", id:"Tepat saat membuka jendela, angin kencang masuk." },
+              { ja:"お酒を飲んだ<strong>とたんに</strong>、顔が赤くなった。", id:"Begitu minum sake, wajahnya langsung memerah." }
+            ]
+          }
+        ]
+      },
+      { day:5, title:"テレビをつけたまま", titleId:"Dengan TV yang dibiarkan menyala",
+        grammar:[
+          { pattern:"〜とおりに / 〜のとおりに", badge:"V る/た・N の＋とおりに",
+            meaning:"〜と同じように・〜に従って", meaningId:"Sesuai dengan... / Seperti yang... (mengikuti petunjuk atau keadaan)",
+            examples:[
+              { ja:"地図の<strong>とおりに</strong>来たら、ここに着いた。", id:"Mengikuti peta, akhirnya sampai di sini." },
+              { ja:"先生に言われた<strong>とおりに</strong>練習しました。", id:"Saya berlatih sesuai yang diajarkan guru." }
+            ]
+          },
+          { pattern:"〜たまま / 〜ないまま", badge:"Vた/ない＋まま",
+            meaning:"〜した状態が続いている", meaningId:"Dibiarkan... / Tetap dalam keadaan... (keadaan tidak berubah)",
+            examples:[
+              { ja:"テレビを<strong>つけたまま</strong>、寝てしまった。", id:"Tertidur dengan TV yang dibiarkan menyala." },
+              { ja:"宿題を<strong>しないまま</strong>、学校へ行った。", id:"Pergi ke sekolah dengan PR yang belum dikerjakan." }
+            ]
+          },
+          { pattern:"〜っぱなし", badge:"Vます形＋っぱなし",
+            meaning:"〜した状態のままにしている（否定的）", meaningId:"Terus dibiarkan... / Ditinggal begitu saja... (keadaan yang seharusnya diubah tapi tidak)",
+            examples:[
+              { ja:"電気を<strong>つけっぱなし</strong>にしないでください。", id:"Tolong jangan biarkan lampu terus menyala." },
+              { ja:"ドアを<strong>開けっぱなし</strong>にしないで。", id:"Jangan biarkan pintu terus terbuka." }
+            ]
+          }
+        ]
+      },
+      { day:6, title:"知っているふりをする", titleId:"Berpura-pura tahu",
+        grammar:[
+          { pattern:"〜てほしい / 〜てもらいたい", badge:"Vて＋ほしい",
+            meaning:"〜してくれることを望む", meaningId:"Ingin agar (kamu)... / Minta tolong... (keinginan atas tindakan orang lain)",
+            examples:[
+              { ja:"その資料を<strong>見せてほしい</strong>。", id:"Aku ingin kamu perlihatkan dokumen itu." },
+              { ja:"もっとゆっくり<strong>話してほしい</strong>んですが。", id:"Saya minta tolong bicaranya lebih pelan." }
+            ]
+          },
+          { pattern:"〜がる / 〜たがる", badge:"A/V＋がる",
+            meaning:"第三者が〜という感情を持っているようだ", meaningId:"Kelihatannya (orang lain) merasa... / ingin... (perasaan orang ketiga yang terlihat dari luar)",
+            examples:[
+              { ja:"子どもは暗いところを<strong>こわがる</strong>。", id:"Anak-anak takut tempat gelap." },
+              { ja:"弟は新しいゲームを<strong>ほしがっている</strong>。", id:"Adik laki-lakiku kelihatannya ingin game baru." }
+            ]
+          },
+          { pattern:"〜ふりをする", badge:"V/N の＋ふりをする",
+            meaning:"〜であるように見せかける", meaningId:"Berpura-pura... (seolah-olah melakukan atau mengetahui sesuatu padahal tidak)",
+            examples:[
+              { ja:"知っている<strong>ふりをする</strong>。", id:"Berpura-pura tahu." },
+              { ja:"寝ている<strong>ふりをして</strong>、話を聞いていた。", id:"Sambil berpura-pura tidur, aku mendengarkan pembicaraan mereka." }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    num:4, title:"がんばるしかない！", titleId:"Tidak ada pilihan selain semangat!",
+    days:[
+      { day:1, title:"何だっけ？", titleId:"Apa ya tadi?",
+        grammar:[
+          { pattern:"〜だっけ？ / 〜っけ？", badge:"S＋っけ",
+            meaning:"忘れたことを思い出そうとする", meaningId:"... ya? / ... tadi? (mencoba mengingat sesuatu yang terlupakan)",
+            examples:[
+              { ja:"国へ帰るのは、来週<strong>だっけ</strong>？", id:"Pulang ke negaranya minggu depan ya?" },
+              { ja:"明日のパーティーのこと、話し<strong>たっけ</strong>？", id:"Soal pesta besok, sudah aku ceritakan belum ya?" }
+            ]
+          },
+          { pattern:"〜しかない / 〜するしかない", badge:"V る＋しかない",
+            meaning:"それ以外の方法がない", meaningId:"Tidak ada pilihan selain... / Terpaksa harus... (tidak ada cara lain)",
+            examples:[
+              { ja:"できるまで、<strong>やるしかない</strong>。", id:"Tidak ada pilihan selain terus mencoba sampai bisa." },
+              { ja:"直せないから、新しいのを<strong>買うしかなかった</strong>。", id:"Karena tidak bisa diperbaiki, terpaksa harus beli yang baru." }
+            ]
+          },
+          { pattern:"〜んだって / 〜だって", badge:"S＋んだって",
+            meaning:"〜そうだ（人から聞いた情報・口語）", meaningId:"Katanya... / Dengar-dengar... (informasi dari orang lain, informal)",
+            examples:[
+              { ja:"「田中さん、<strong>結婚してるんだって</strong>。」「へえ、知らなかった。」", id:"'Katanya Tanaka-san sudah menikah.' 'Wah, aku tidak tahu.'" },
+              { ja:"明日、休み<strong>なんだって</strong>。", id:"Katanya besok libur." }
+            ]
+          }
+        ]
+      },
+      { day:2, title:"ずいぶん待たされた", titleId:"Disuruh menunggu cukup lama",
+        grammar:[
+          { pattern:"〜させられる（使役受身）", badge:"V使役受身形",
+            meaning:"〜することを強制される", meaningId:"Dipaksa untuk... / Terpaksa harus... (dipaksa orang lain melakukan sesuatu)",
+            examples:[
+              { ja:"ずいぶん<strong>待たされた</strong>。", id:"Aku disuruh menunggu cukup lama." },
+              { ja:"子どものころ、毎日ピアノを<strong>練習させられた</strong>。", id:"Waktu kecil, setiap hari dipaksa berlatih piano." },
+              { ja:"上司に残業を<strong>させられた</strong>。", id:"Dipaksa lembur oleh atasan." }
+            ]
+          }
+        ]
+      },
+      { day:3, title:"最近慣れてきた", titleId:"Belakangan ini mulai terbiasa",
+        grammar:[
+          { pattern:"〜てくる / 〜ていく", badge:"Vて＋くる/いく",
+            meaning:"①移動の方向　②変化の方向", meaningId:"① Arah gerakan (datang/pergi sambil melakukan) ② Perubahan yang terus berlanjut",
+            examples:[
+              { ja:"コンビニに行って、お弁当を<strong>買ってきた</strong>。", id:"Pergi ke konbini dan kembali setelah membeli bento." },
+              { ja:"これからも日本語を<strong>勉強していく</strong>つもりです。", id:"Saya berencana untuk terus belajar bahasa Jepang ke depannya." },
+              { ja:"最近、物価が上がって<strong>きた</strong>。", id:"Belakangan ini harga-harga mulai naik." }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"うれしくてたまらない", titleId:"Tidak tertahankan senangnya",
+        grammar:[
+          { pattern:"〜てたまらない / 〜でたまらない", badge:"Vて/A くて＋たまらない",
+            meaning:"非常に〜で、我慢できない", meaningId:"Tidak tertahankan... / Sangat... sampai tidak bisa ditahan (perasaan yang sangat kuat)",
+            examples:[
+              { ja:"合格の知らせを聞いて、<strong>うれしくてたまらない</strong>。", id:"Setelah mendengar kabar kelulusan, senangnya tidak tertahankan." },
+              { ja:"昨日から歯が<strong>痛くてたまらない</strong>。", id:"Dari kemarin gigi sakit sekali, tidak tertahankan." }
+            ]
+          },
+          { pattern:"〜てならない", badge:"Vて/A くて＋ならない",
+            meaning:"自然に〜という気持ちになる", meaningId:"Tidak bisa tidak merasa... (perasaan yang muncul secara alami)",
+            examples:[
+              { ja:"故郷のことが<strong>思い出されてならない</strong>。", id:"Kampung halaman terus-terusan terbayang, tidak bisa tidak." },
+              { ja:"彼が心配で<strong>ならない</strong>。", id:"Aku tidak bisa tidak khawatir soal dia." }
+            ]
+          }
+        ]
+      },
+      { day:5, title:"お金さえあれば", titleId:"Asal ada uang",
+        grammar:[
+          { pattern:"〜さえ〜ば / 〜さえ〜たら", badge:"N さえ＋V ば",
+            meaning:"〜という条件だけで十分", meaningId:"Asal... saja sudah cukup / Kalau hanya... (kondisi minimal yang cukup)",
+            examples:[
+              { ja:"お金<strong>さえあれば</strong>、大丈夫です。", id:"Asal ada uang, tidak masalah." },
+              { ja:"あなた<strong>さえいれば</strong>、他には何もいらない。", id:"Asal ada kamu, tidak perlu yang lain." }
+            ]
+          }
+        ]
+      },
+      { day:6, title:"どうせ無理だと思っていた", titleId:"Toh memang kupikir mustahil",
+        grammar:[
+          { pattern:"どうせ〜", badge:"どうせ＋S",
+            meaning:"結果がわかっていて、あきらめている", meaningId:"Toh... / Memang sudah... (pasrah atau pesimis karena sudah tahu hasilnya)",
+            examples:[
+              { ja:"<strong>どうせ</strong>、うまくいかないよ。", id:"Toh pasti tidak berhasil kok." },
+              { ja:"<strong>どうせ</strong>なら、もっといいものを買おう。", id:"Kalau memang begitu, lebih baik beli yang lebih bagus sekalian." }
+            ]
+          },
+          { pattern:"〜わけだ / 〜わけがない", badge:"S わけだ",
+            meaning:"〜という理由・結論になる", meaningId:"Pantas saja... / Berarti... / Tidak mungkin... (menyimpulkan alasan atau menyangkal kemungkinan)",
+            examples:[
+              { ja:"10年日本に住んでいるから、日本語が上手な<strong>わけだ</strong>。", id:"Pantas saja bahasa Jepangnya bagus, karena sudah tinggal di Jepang 10 tahun." },
+              { ja:"そんなことが信じられる<strong>わけがない</strong>。", id:"Tidak mungkin percaya hal seperti itu." }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    num:5, title:"もっとがんばればよかった！", titleId:"Seharusnya lebih semangat!",
+    days:[
+      { day:1, title:"どうりでおかしいと思った", titleId:"Pantas saja aku merasa aneh",
+        grammar:[
+          { pattern:"〜ばよかった", badge:"V ば＋よかった",
+            meaning:"〜すればよかった（後悔）", meaningId:"Seharusnya dulu... (menyesal tidak melakukan sesuatu di masa lalu)",
+            examples:[
+              { ja:"もっと<strong>勉強すればよかった</strong>。", id:"Seharusnya dulu lebih giat belajar." },
+              { ja:"あのとき、正直に<strong>言えばよかった</strong>。", id:"Seharusnya waktu itu jujur saja." }
+            ]
+          },
+          { pattern:"どうりで〜", badge:"どうりで＋S",
+            meaning:"なるほど〜のはずだ（納得）", meaningId:"Pantas saja... / Makanya... (menyadari alasan mengapa sesuatu terjadi)",
+            examples:[
+              { ja:"<strong>どうりで</strong>おかしいと思った。彼、昨日から熱があったんだ。", id:"Pantas saja aku merasa aneh. Ternyata dia sudah demam dari kemarin." },
+              { ja:"<strong>どうりで</strong>静かだと思ったら、みんな出かけていたんだ。", id:"Pantas saja terasa sepi, ternyata semua sudah pergi." }
+            ]
+          }
+        ]
+      },
+      { day:2, title:"やっと慣れてきた", titleId:"Akhirnya mulai terbiasa",
+        grammar:[
+          { pattern:"やっと〜 / ようやく〜", badge:"副詞",
+            meaning:"長い時間や努力の後に、ついに〜", meaningId:"Akhirnya... / Dengan susah payah akhirnya... (setelah usaha atau waktu yang lama)",
+            examples:[
+              { ja:"<strong>やっと</strong>日本語に慣れてきました。", id:"Akhirnya mulai terbiasa dengan bahasa Jepang." },
+              { ja:"<strong>ようやく</strong>合格できた。", id:"Dengan susah payah akhirnya berhasil lulus." }
+            ]
+          },
+          { pattern:"なかなか〜ない", badge:"なかなか＋Vない",
+            meaning:"期待しているのに、なかなか〜しない", meaningId:"Tidak kunjung... / Susah sekali untuk... (sesuatu yang diharapkan belum terjadi juga)",
+            examples:[
+              { ja:"日本語が<strong>なかなか</strong>上手に<strong>なれない</strong>。", id:"Bahasa Jepang tidak kunjung bisa bagus juga." },
+              { ja:"バスが<strong>なかなか来ない</strong>。", id:"Bus tidak kunjung datang." }
+            ]
+          }
+        ]
+      },
+      { day:3, title:"映画が始まるまで", titleId:"Sampai film mulai",
+        grammar:[
+          { pattern:"〜まで / 〜までに", badge:"N/V る＋まで(に)",
+            meaning:"まで：〜が続く時点　までに：〜する期限", meaningId:"まで: sampai (titik berakhir) ／ までに: paling lambat sampai (batas waktu)",
+            examples:[
+              { ja:"映画が<strong>始まるまで</strong>、30分あります。", id:"Masih ada 30 menit sampai film mulai." },
+              { ja:"3時<strong>までに</strong>来てください。", id:"Tolong datang paling lambat jam 3." }
+            ]
+          },
+          { pattern:"〜にかけて / 〜から〜にかけて", badge:"N から N にかけて",
+            meaning:"〜の期間・範囲にわたって", meaningId:"Dari... hingga... (rentang waktu atau tempat yang bertahap)",
+            examples:[
+              { ja:"今晩から<strong>明日の朝にかけて</strong>、雪が降るんだって。", id:"Katanya akan turun salju dari malam ini hingga besok pagi." },
+              { ja:"九州から本州<strong>にかけて</strong>梅雨に入りました。", id:"Musim hujan telah tiba dari Kyushu hingga Honshu." }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"あまりにも高すぎる", titleId:"Terlalu mahal",
+        grammar:[
+          { pattern:"〜すぎる", badge:"V/A＋すぎる",
+            meaning:"程度が必要以上に大きい", meaningId:"Terlalu... (melampaui batas yang wajar atau diinginkan)",
+            examples:[
+              { ja:"食べ<strong>すぎて</strong>、おなかが痛い。", id:"Terlalu banyak makan sampai sakit perut." },
+              { ja:"この問題は難し<strong>すぎる</strong>。", id:"Soal ini terlalu sulit." }
+            ]
+          },
+          { pattern:"あまりにも〜", badge:"あまりにも",
+            meaning:"程度が非常に大きい（否定的）", meaningId:"Terlalu... / Sangat berlebihan... (derajat yang melampaui batas normal)",
+            examples:[
+              { ja:"この服は<strong>あまりにも</strong>高すぎる。", id:"Baju ini terlalu mahal." },
+              { ja:"<strong>あまりにも</strong>暑くて、外に出られない。", id:"Terlalu panas sehingga tidak bisa keluar." }
+            ]
+          }
+        ]
+      },
+      { day:5, title:"読めば読むほど面白い", titleId:"Semakin dibaca semakin menarik",
+        grammar:[
+          { pattern:"〜ば〜ほど", badge:"V ば＋V ほど",
+            meaning:"〜すればするほど、さらに〜", meaningId:"Semakin... semakin... (peningkatan berbanding lurus)",
+            examples:[
+              { ja:"<strong>読めば読むほど</strong>、面白くなる。", id:"Semakin banyak dibaca, semakin menarik." },
+              { ja:"練習すれ<strong>ばするほど</strong>、上手になります。", id:"Semakin banyak berlatih, semakin mahir." }
+            ]
+          },
+          { pattern:"〜まで（も）〔強調〕", badge:"N まで(も)",
+            meaning:"意外なものも含めて〜だ", meaningId:"Bahkan... pun... (penekanan — sesuatu yang tidak terduga juga termasuk)",
+            examples:[
+              { ja:"ネコ<strong>まで</strong>喜んでいる。", id:"Bahkan kucingnya pun ikut senang." },
+              { ja:"あなた<strong>まで</strong>そんなことを言うの？", id:"Bahkan kamu pun bilang hal seperti itu?" }
+            ]
+          }
+        ]
+      },
+      { day:6, title:"ネコまで喜んでいる", titleId:"Bahkan kucingnya pun ikut senang",
+        grammar:[
+          { pattern:"〜ことにする / 〜ことにした", badge:"V る/ない＋ことにする",
+            meaning:"自分の意志で〜と決める", meaningId:"Memutuskan untuk... (keputusan atas kemauan sendiri)",
+            examples:[
+              { ja:"引っ越す<strong>ことにした</strong>。", id:"Aku memutuskan untuk pindah." },
+              { ja:"お酒を飲まない<strong>ことにしている</strong>。", id:"Saya memutuskan untuk tidak minum alkohol." }
+            ]
+          },
+          { pattern:"〜ことになる / 〜ことになった", badge:"V る/ない＋ことになる",
+            meaning:"（状況・決定により）〜という結果になる", meaningId:"Menjadi keputusan bahwa... / Ternyata harus... (hasil dari situasi atau keputusan eksternal)",
+            examples:[
+              { ja:"来月から大阪に転勤する<strong>ことになった</strong>。", id:"Ternyata mulai bulan depan harus pindah ke Osaka." },
+              { ja:"会議の日が変わる<strong>ことになりました</strong>。", id:"Hari pertemuan menjadi berubah." }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    num:6, title:"もっとがんばることにした", titleId:"Memutuskan untuk lebih semangat!",
+    days:[
+      { day:1, title:"引っ越すことにした", titleId:"Memutuskan untuk pindah",
+        grammar:[
+          { pattern:"〜てからでないと / 〜てからでなければ", badge:"Vて＋からでないと",
+            meaning:"〜してからでなければ〜できない", meaningId:"Harus setelah... dulu baru bisa... (sesuatu tidak bisa dilakukan sebelum hal lain selesai)",
+            examples:[
+              { ja:"実物を<strong>見てからでないと</strong>、決められない。", id:"Tidak bisa memutuskan sebelum melihat barang aslinya dulu." },
+              { ja:"内容を確認し<strong>てからでなければ</strong>、サインできません。", id:"Tidak bisa tanda tangan sebelum mengecek isinya dulu." }
+            ]
+          }
+        ]
+      },
+      { day:2, title:"見てからでないといけない", titleId:"Harus setelah melihat dulu",
+        grammar:[
+          { pattern:"〜たところ（だ）", badge:"Vた＋ところ",
+            meaning:"①〜した直後　②〜してみたら", meaningId:"① Baru saja selesai... ② Setelah mencoba..., ternyata...",
+            examples:[
+              { ja:"先生に今度のテストの範囲を<strong>聞いたところ</strong>、10課までだと言われた。", id:"Setelah menanyakan cakupan ujian kepada guru, ternyata sampai pelajaran ke-10." },
+              { ja:"今、帰ってきた<strong>ところです</strong>。", id:"Saya baru saja pulang." }
+            ]
+          },
+          { pattern:"もう少しで〜ところだった", badge:"もう少しで＋V るところだった",
+            meaning:"あと少しで〜しそうだった（危ない状況）", meaningId:"Hampir saja... / Nyaris... (situasi berbahaya yang hampir terjadi)",
+            examples:[
+              { ja:"もう少しで<strong>遅刻するところだった</strong>。", id:"Hampir saja terlambat." },
+              { ja:"もう少しで電車に<strong>乗り遅れるところだった</strong>。", id:"Hampir saja ketinggalan kereta." }
+            ]
+          }
+        ]
+      },
+      { day:3, title:"もう少しで乗り遅れるところだった", titleId:"Hampir saja ketinggalan",
+        grammar:[
+          { pattern:"〜てはじめて", badge:"Vて＋はじめて",
+            meaning:"〜して初めて、それが可能・わかる", meaningId:"Baru setelah... bisa... / Tidak sampai... belum... (sesuatu baru terwujud setelah kondisi terpenuhi)",
+            examples:[
+              { ja:"先生に<strong>注意されてはじめて</strong>、漢字の間違いに気が付いた。", id:"Baru setelah diingatkan guru, aku menyadari kesalahan kanjinya." },
+              { ja:"歌舞伎を<strong>見てはじめて</strong>、日本文化に興味を持った。", id:"Baru setelah menonton kabuki, aku mulai tertarik dengan budaya Jepang." }
+            ]
+          },
+          { pattern:"〜としても / 〜だとしても", badge:"S としても",
+            meaning:"〜という条件でも（譲歩）", meaningId:"Sekalipun... / Meskipun... (mengakui kondisi tapi ada konsekuensi berbeda)",
+            examples:[
+              { ja:"合格した<strong>としても</strong>、入学金が払えない。", id:"Sekalipun lulus, tidak bisa membayar uang masuk." },
+              { ja:"たとえ失敗した<strong>としても</strong>、後悔しない。", id:"Sekalipun gagal, aku tidak akan menyesal." }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"さんざん迷ったあげく", titleId:"Ujung-ujungnya setelah lama bingung",
+        grammar:[
+          { pattern:"〜あげく（に）", badge:"V た/N の＋あげく",
+            meaning:"長い過程の末、（否定的な）結果になった", meaningId:"Ujung-ujungnya... (hasil negatif setelah proses panjang)",
+            examples:[
+              { ja:"さんざん迷った<strong>あげく</strong>、やめることにした。", id:"Setelah berlama-lama bingung, ujung-ujungnya memutuskan untuk berhenti." },
+              { ja:"長い議論の<strong>あげく</strong>、結論が出なかった。", id:"Setelah perdebatan panjang, ujung-ujungnya tidak ada kesimpulan." }
+            ]
+          },
+          { pattern:"〜にしろ / 〜にせよ / 〜にしても", badge:"S にしろ",
+            meaning:"どんな場合でも〜", meaningId:"Apapun... / Bagaimanapun... (apapun kondisinya, kesimpulan tetap sama)",
+            examples:[
+              { ja:"行く<strong>にしろ</strong>行かない<strong>にしろ</strong>、早く決めてください。", id:"Apakah mau pergi atau tidak, tolong segera putuskan." },
+              { ja:"冗談<strong>にしろ</strong>、言っていいことと悪いことがある。", id:"Sekalipun bercanda, ada hal yang boleh dan tidak boleh dikatakan." }
+            ]
+          }
+        ]
+      },
+      { day:5, title:"やめるどころか、もっとがんばる", titleId:"Bukannya berhenti, malah makin semangat",
+        grammar:[
+          { pattern:"〜どころか", badge:"V/A/N どころか",
+            meaning:"〜は全然なくて、むしろその反対", meaningId:"Bukannya... malah... / Jangankan... bahkan... (keadaan jauh berbeda dari perkiraan)",
+            examples:[
+              { ja:"やめる<strong>どころか</strong>、もっとがんばるつもりだ。", id:"Bukannya berhenti, malah semakin berniat semangat." },
+              { ja:"上手になる<strong>どころか</strong>、もっと下手になった。", id:"Bukannya mahir, malah semakin tidak bisa." }
+            ]
+          },
+          { pattern:"〜どころではない / 〜どころじゃない", badge:"V/N どころではない",
+            meaning:"〜する状況ではまったくない", meaningId:"Bukan saatnya... / Tidak sempat untuk... (situasi tidak memungkinkan sama sekali)",
+            examples:[
+              { ja:"忙しくて、旅行<strong>どころではない</strong>。", id:"Sangat sibuk, bukan saatnya untuk jalan-jalan." },
+              { ja:"体調が悪くて、食事<strong>どころじゃない</strong>。", id:"Kondisi badan sedang buruk, tidak sempat untuk makan." }
+            ]
+          }
+        ]
+      },
+      { day:6, title:"もっとがんばることにした！", titleId:"Sudah memutuskan untuk lebih semangat!",
+        grammar:[
+          { pattern:"〜ばよかった", badge:"V ば＋よかった",
+            meaning:"〜すればよかった（後悔）", meaningId:"Seharusnya dulu... (menyesal tidak melakukan sesuatu di masa lalu)",
+            examples:[
+              { ja:"もっと<strong>勉強すればよかった</strong>。", id:"Seharusnya dulu lebih giat belajar." },
+              { ja:"もっと早く<strong>始めればよかった</strong>。", id:"Seharusnya dulu mulai lebih awal." }
+            ]
+          },
+          { pattern:"〜ば〜ほど（復習）", badge:"V ば＋V ほど",
+            meaning:"〜すればするほど、さらに〜", meaningId:"Semakin... semakin... (peningkatan berbanding lurus)",
+            examples:[
+              { ja:"勉強すれ<strong>ばするほど</strong>、日本語が楽しくなる。", id:"Semakin banyak belajar, bahasa Jepang semakin menyenangkan." }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+// ── アクセスコード ──
+const ACCESS_CODE = "N3study2024"; // ← ここを変えるだけでコード変更できます
+
+function checkAccess() {
+  const input = document.getElementById('access-input').value.trim();
+  if (input === ACCESS_CODE) {
+    localStorage.setItem('n3-access', ACCESS_CODE);
+    document.getElementById('access-screen').classList.add('hidden');
+  } else {
+    document.getElementById('access-error').textContent = 'コードが違います。/ Kode salah.';
+    document.getElementById('access-input').value = '';
+    document.getElementById('access-input').focus();
+  }
+}
+
+(function() {
+  const saved = localStorage.getItem('n3-access');
+  if (saved === ACCESS_CODE) {
+    document.getElementById('access-screen').classList.add('hidden');
+  }
+})();
+
+// ── STATE ──
+const progress = JSON.parse(localStorage.getItem('n3-progress') || '{}');
+let curWeek = null, curDay = null;
+let quizItems = [], qIdx = 0, qScore = 0, qAnswered = false, quizTitle = '';
+
+function saveProgress() { localStorage.setItem('n3-progress', JSON.stringify(progress)); }
+function isDone(w, d) { return !!progress[`${w}-${d}`]; }
+function markDone(w, d) { progress[`${w}-${d}`] = true; saveProgress(); }
+function totalDone() { return Object.keys(progress).length; }
+
+// ── SCREENS ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showHome() { renderHome(); showScreen('screen-home'); }
+function showWeek(w) { curWeek = w; renderWeek(w); showScreen('screen-week'); }
+function showLesson(w, d) { curWeek = w; curDay = d; renderLesson(w, d); showScreen('screen-lesson'); }
+
+// ── HOME ──
+function renderHome() {
+  const done = totalDone(), total = 36;
+  document.getElementById('total-bar').style.width = `${(done/total)*100}%`;
+  document.getElementById('total-label').textContent = `${done} / ${total} pelajaran selesai`;
+  const grid = document.getElementById('week-grid');
+  grid.innerHTML = '';
+  WEEKS.forEach(wk => {
+    const daysDone = wk.days.filter((_, i) => isDone(wk.num, i+1)).length;
+    const pct = Math.round((daysDone / wk.days.length) * 100);
+    const c = document.createElement('div');
+    c.className = 'week-card';
+    c.onclick = () => showWeek(wk.num);
+    c.innerHTML = `<div class="week-num">第${wk.num}週</div>
+      <div class="week-title">${wk.title}</div>
+      <div class="week-title-id">${wk.titleId}</div>
+      <div class="mini-bar"><div class="mini-fill" style="width:${pct}%"></div></div>
+      <div class="mini-label">${daysDone}/${wk.days.length} selesai</div>`;
+    grid.appendChild(c);
+  });
+}
+
+// ── WEEK ──
+function renderWeek(wNum) {
+  const wk = WEEKS[wNum-1];
+  document.getElementById('week-header').innerHTML =
+    `<div class="wk">第${wk.num}週</div><h2>${wk.title}</h2><p>${wk.titleId}</p>`;
+  const list = document.getElementById('day-list');
+  list.innerHTML = '';
+  wk.days.forEach(d => {
+    const done = isDone(wNum, d.day);
+    const patterns = d.grammar.map(g => g.pattern).join('・');
+    const c = document.createElement('div');
+    c.className = `day-card ${done ? 'completed' : ''}`;
+    c.onclick = () => showLesson(wNum, d.day);
+    c.innerHTML = `<div>
+      <div class="day-num">${d.day}日目</div>
+      <div class="day-title">${d.title}</div>
+      <div class="day-grammar">${patterns}</div>
+    </div>
+    <div class="day-badge">${done ? '✓' : d.day}</div>`;
+    list.appendChild(c);
+  });
+}
+
+// ── LESSON ──
+function renderLesson(wNum, dNum) {
+  const wk = WEEKS[wNum-1], d = wk.days[dNum-1], done = isDone(wNum, dNum);
+  let html = `<div class="lesson-header">
+    <div class="breadcrumb">第${wNum}週 › ${dNum}日目</div>
+    <h2>${d.title}</h2>
+    <div class="lesson-sub">${d.titleId}</div>
+  </div>`;
+  d.grammar.forEach((g, gi) => {
+    const extraKey = g.pattern;
+    const extras = EXTRA_EXAMPLES[extraKey] || [];
+    const cardId = `gc-${wNum}-${dNum}-${gi}`;
+    const vfKey = g.badge;
+    const vfData = VERBFORMS[vfKey] || null;
+    const vfId = `vf-${wNum}-${dNum}-${gi}`;
+    html += `<div class="grammar-card">
+      <div class="grammar-pattern">${g.pattern}<span class="pattern-badge">${g.badge}</span></div>
+      <div class="meaning-ja">${g.meaning}</div>
+      <div class="meaning-id">${g.meaningId}</div>`;
+    if (vfData) {
+      html += `<button class="verbform-toggle" onclick="toggleVerbForm('${vfId}', this)">▼ 接続の仕方・動詞の形 / Cara pembentukan</button>
+      <div class="verbform-section" id="${vfId}">
+        <h5>${vfData.title}</h5>`;
+      vfData.rows.forEach(r => {
+        html += `<div class="verbform-row">
+          <span class="vf-label">${r.label}</span>
+          <span class="vf-body">${r.body}
+            <span class="vf-id">${r.id}</span>
+            ${r.ex ? `<span class="vf-ex">例: ${r.ex}</span>` : ''}
+          </span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `<div class="ex-label">Contoh Kalimat / 例文</div>`;
+    g.examples.forEach(ex => {
+      html += `<div class="example">
+        <div class="ja">${addFurigana(ex.ja)}</div>
+        <div class="romaji">${getRomaji(ex.ja)}</div>
+        <div class="id">${ex.id}</div>
+      </div>`;
+    });
+    if (extras.length > 0) {
+      html += `<button class="extra-toggle" onclick="toggleExtra('${cardId}', this)">＋ 追加例文を見る / Lihat contoh tambahan (${extras.length})</button>
+      <div class="extra-section" id="${cardId}">
+        <div class="extra-label">追加例文 / Contoh Tambahan</div>`;
+      extras.forEach(ex => {
+        html += `<div class="extra-example">
+          <div class="ja">${addFurigana(ex.ja)}</div>
+          <div class="romaji">${getRomaji(ex.ja)}</div>
+          <div class="id">${ex.id}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  const prev = dNum > 1 ? dNum-1 : null, next = dNum < wk.days.length ? dNum+1 : null;
+  html += `<div class="lesson-nav">`;
+  if (prev) html += `<button class="btn-secondary" onclick="showLesson(${wNum},${prev})">← ${prev}日目</button>`;
+  html += `<button class="${done ? 'btn-uncomplete' : 'btn-complete'}" onclick="toggleComplete(${wNum},${dNum})">${done ? '✓ 完了済み（取消）' : '完了 ✓'}</button>`;
+  html += `<button class="btn-quiz" onclick="startDayQuiz(${wNum},${dNum})">クイズ 🎯</button>`;
+  if (next) html += `<button class="btn-secondary" onclick="showLesson(${wNum},${next})">${next}日目 →</button>`;
+  html += `</div>`;
+  document.getElementById('lesson-content').innerHTML = html;
+  document.getElementById('lesson-back').textContent = `← 第${wNum}週 / Minggu ${wNum}`;
+  document.getElementById('lesson-back').onclick = () => showWeek(wNum);
+}
+
+function toggleComplete(w, d) {
+  if (isDone(w, d)) {
+    delete progress[`${w}-${d}`];
+    saveProgress();
+  } else {
+    markDone(w, d);
+  }
+  renderLesson(w, d);
+}
+
+// ── QUIZ ──
+function allGrammarList() {
+  const a = [];
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => a.push(g))));
+  return a;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function buildQuizItems(dayObjs) {
+  const all = allGrammarList();
+  const items = [];
+  dayObjs.forEach(({g, wk}) => {
+    g.examples.forEach(ex => {
+      const distractors = shuffle(all.filter(x => x.pattern !== g.pattern)).slice(0, 3).map(x => x.pattern);
+      items.push({
+        question: ex.ja.replace(/<strong>/g,'').replace(/<\/strong>/g,''),
+        questionHtml: ex.ja,
+        questionId: ex.id,
+        correct: g.pattern,
+        options: shuffle([g.pattern, ...distractors]),
+        meaningId: g.meaningId
+      });
+    });
+  });
+  return shuffle(items);
+}
+
+function showAllQuiz() {
+  const all = [];
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => all.push({g, wk}))));
+  quizItems = buildQuizItems(shuffle(all).slice(0, 15));
+  quizTitle = 'クイズ全体 / Kuis Semua Materi';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = showHome;
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function startDayQuiz(wNum, dNum) {
+  const wk = WEEKS[wNum-1], d = wk.days[dNum-1];
+  const pairs = d.grammar.map(g => ({g, wk}));
+  quizItems = buildQuizItems(pairs);
+  quizTitle = `第${wNum}週 ${dNum}日目 クイズ`;
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => showLesson(wNum, dNum);
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function renderQuizQ() {
+  if (qIdx >= quizItems.length) { renderResult(); return; }
+  const q = quizItems[qIdx];
+  const pct = (qIdx / quizItems.length) * 100;
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-header">
+      <div class="quiz-meta">
+        <div class="quiz-title">${quizTitle}</div>
+        <div class="quiz-score-disp">${qScore}/${qIdx} 正解</div>
+      </div>
+      <div class="quiz-progress"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="quiz-question">
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — この文に使われている文法はどれですか？</div>
+      <div class="q-text">${addFurigana(q.questionHtml)}</div>
+      <div class="q-id-box"><span class="q-id-flag">🇮🇩</span>${q.questionId}</div>
+    </div>
+    <div class="quiz-options">
+      ${q.options.map((opt,i) => `<div class="quiz-opt" id="qo${i}" onclick="pickOpt(${i})">${opt}</div>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="qfb"></div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextQ()">
+      ${qIdx+1 < quizItems.length ? '次の問題 →' : '結果を見る 🎉'}
+    </button>`;
+}
+
+function pickOpt(i) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const q = quizItems[qIdx];
+  const sel = q.options[i];
+  const ok = sel === q.correct;
+  if (ok) qScore++;
+  document.querySelectorAll('.quiz-opt').forEach((el, idx) => {
+    el.classList.add('disabled');
+    if (q.options[idx] === q.correct) el.classList.add('correct');
+    else if (idx === i && !ok) el.classList.add('wrong');
+  });
+  const fb = document.getElementById('qfb');
+  fb.className = `quiz-feedback show ${ok ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = ok
+    ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${q.meaningId}</div>`
+    : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong><br>${q.meaningId}</div>`;
+  document.getElementById('qnext').classList.add('show');
+}
+
+function nextQ() { qIdx++; qAnswered = false; renderQuizQ(); }
+
+function renderResult() {
+  const pct = Math.round((qScore / quizItems.length) * 100);
+  const [emoji, msg, msgId] = pct >= 80 ? ['🎉','Luar biasa! Hebat sekali!','素晴らしい！'] :
+    pct >= 60 ? ['😊','Bagus! Terus semangat!','よくできました！'] :
+    pct >= 40 ? ['🙂','Lumayan! Masih bisa lebih baik.','もう少し頑張りましょう！'] :
+    ['😢','Terus berlatih ya!','もっと練習しましょう！'];
+  const barColor = pct>=80 ? '#2d6a4f' : pct>=60 ? '#457b9d' : '#e76f51';
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="result-screen">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${qScore}<span>/${quizItems.length}</span></div>
+      <div class="result-msg">${msg}<em>${msgId}</em></div>
+      <div style="background:#eee;border-radius:8px;height:12px;overflow:hidden;margin-bottom:24px">
+        <div style="width:${pct}%;height:100%;background:${barColor};border-radius:8px;transition:width .6s"></div>
+      </div>
+      <div class="result-btns">
+        <button style="background:var(--red);color:white" onclick="replayQuiz()">もう一度 / Ulangi 🔄</button>
+        <button style="background:var(--blue);color:white" onclick="showHome()">ホームへ / Beranda 🏠</button>
+      </div>
+    </div>`;
+}
+
+function replayQuiz() { qIdx = 0; qScore = 0; qAnswered = false; quizItems = shuffle(quizItems); renderQuizQ(); }
+
+// ── VERB FORM EXPLANATIONS ──
+const VERBFORMS = {
+  "V受身形": {
+    title: "受身形の作り方 / Cara Membuat Bentuk Pasif",
+    rows: [
+      { label: "グループ1", body: "語尾をあ段に変えて＋れる", id: "Ubah akhiran ke baris -a lalu tambah れる", ex: "書く → 書かれる　飲む → 飲まれる　話す → 話される" },
+      { label: "グループ2", body: "語尾のる を取って＋られる", id: "Hapus る lalu tambah られる", ex: "食べる → 食べられる　見る → 見られる" },
+      { label: "不規則", body: "する → される　くる → こられる", id: "Tidak beraturan", ex: "する → される　くる → こられる" },
+    ]
+  },
+  "N に V受身": {
+    title: "迷惑の受身 / Pasif Tidak Langsung",
+    rows: [
+      { label: "形", body: "N（人）に＋受身形", id: "N（orang）に＋bentuk pasif", ex: "友達に笑われた　泥棒に財布を盗まれた" },
+      { label: "意味", body: "その行為によって迷惑・被害を受けた", id: "Menerima kerugian/dampak dari tindakan orang tersebut", ex: "" },
+    ]
+  },
+  "V使役形＋ください": {
+    title: "使役形の作り方 / Cara Membuat Bentuk Kausatif",
+    rows: [
+      { label: "グループ1", body: "語尾をあ段に変えて＋せる", id: "Ubah akhiran ke baris -a lalu tambah せる", ex: "行く → 行かせる　飲む → 飲ませる" },
+      { label: "グループ2", body: "語尾のる を取って＋させる", id: "Hapus る lalu tambah させる", ex: "食べる → 食べさせる　見る → 見させる" },
+      { label: "不規則", body: "する → させる　くる → こさせる", id: "Tidak beraturan", ex: "する → させる" },
+      { label: "使い方", body: "使役形（〜せ／させ）＋てください", id: "Bentuk kausatif + てください = minta izin dengan sopan", ex: "帰らせてください　休ませてください" },
+    ]
+  },
+  "Vない形＋と": {
+    title: "ない形の作り方 / Cara Membuat Bentuk ない",
+    rows: [
+      { label: "グループ1", body: "語尾をあ段に変えて＋ない", id: "Ubah akhiran ke baris -a lalu tambah ない", ex: "書く → 書かない　飲む → 飲まない" },
+      { label: "グループ2", body: "語尾のる を取って＋ない", id: "Hapus る lalu tambah ない", ex: "食べる → 食べない　起きる → 起きない" },
+      { label: "不規則", body: "する → しない　くる → こない", id: "Tidak beraturan", ex: "する → しない　くる → こない" },
+      { label: "口語形", body: "〜ないと / 〜なくちゃ（= 〜なければならない）", id: "Bentuk percakapan sehari-hari", ex: "行かないと！　早くしなくちゃ！" },
+    ]
+  },
+  "Vてしまう→口語": {
+    title: "て形の作り方 / Cara Membuat Bentuk て",
+    rows: [
+      { label: "く→いて", body: "書く → 書いて　聞く → 聞いて", id: "Contoh: く → いて", ex: "※ 行く → 行って（例外）" },
+      { label: "ぐ→いで", body: "泳ぐ → 泳いで", id: "Contoh: ぐ → いで", ex: "" },
+      { label: "す→して", body: "話す → 話して", id: "Contoh: す → して", ex: "" },
+      { label: "む・ぬ・ぶ→んで", body: "飲む → 飲んで　死ぬ → 死んで　飛ぶ → 飛んで", id: "む・ぬ・ぶ → んで", ex: "" },
+      { label: "る・う・つ→って", body: "乗る → 乗って　買う → 買って　待つ → 待って", id: "る・う・つ → って", ex: "" },
+      { label: "グループ2", body: "語尾のる を取って＋て", id: "Hapus る lalu tambah て", ex: "食べる → 食べて　起きる → 起きて" },
+      { label: "口語変化", body: "〜てしまった → 〜ちゃった　〜でしまった → 〜じゃった", id: "Perubahan dalam percakapan sehari-hari", ex: "食べちゃった　飲んじゃった" },
+    ]
+  },
+  "Vておく→口語": {
+    title: "〜ておく / 〜とく / 〜とおく",
+    rows: [
+      { label: "形", body: "V て形＋おく", id: "Bentuk て + おく", ex: "書いておく　買っておく" },
+      { label: "口語", body: "〜ておく → 〜とく　〜ておこう → 〜とこう", id: "Dalam percakapan, ておく dipersingkat menjadi とく", ex: "書いとく　買っとく　調べとこう" },
+    ]
+  },
+  "N/V/A みたいだ": {
+    title: "みたいだ の接続 / Cara Menyambungkan みたいだ",
+    rows: [
+      { label: "動詞", body: "V 普通形＋みたいだ", id: "Bentuk biasa kata kerja + みたいだ", ex: "行くみたいだ　食べたみたいだ" },
+      { label: "い形容詞", body: "A い＋みたいだ", id: "Kata sifat -i + みたいだ", ex: "暑いみたいだ" },
+      { label: "な形容詞", body: "A な（だ→）みたいだ", id: "Kata sifat -na (tanpa だ) + みたいだ", ex: "元気みたいだ" },
+      { label: "名詞", body: "N（だ→）みたいだ", id: "Kata benda (tanpa だ) + みたいだ", ex: "子どもみたいだ　雨みたいだ" },
+    ]
+  },
+  "N/V/A らしい": {
+    title: "らしい の接続 / Cara Menyambungkan らしい",
+    rows: [
+      { label: "動詞", body: "V 普通形＋らしい", id: "Bentuk biasa kata kerja + らしい", ex: "来るらしい　行ったらしい" },
+      { label: "い形容詞", body: "A い＋らしい", id: "Kata sifat -i + らしい", ex: "寒いらしい" },
+      { label: "な形容詞", body: "A な だ＋らしい", id: "Kata sifat -na + だ + らしい", ex: "元気だらしい" },
+      { label: "名詞", body: "N だ＋らしい", id: "Kata benda + だ + らしい", ex: "休みだらしい" },
+      { label: "①②の違い", body: "①〜らしい（いかにも）= 本当に〜の特徴がある\n②〜らしい（伝聞）= 誰かから聞いた情報", id: "① Benar-benar khas ② Informasi dari orang lain", ex: "" },
+    ]
+  },
+  "N/V っぽい": {
+    title: "っぽい の接続",
+    rows: [
+      { label: "形", body: "N・動詞ます形＋っぽい（い形容詞として活用）", id: "N atau bentuk ます kata kerja + っぽい (berperilaku seperti kata sifat -i)", ex: "子どもっぽい　怒りっぽい　水っぽい" },
+      { label: "ニュアンス", body: "やや否定的・非公式な表現", id: "Nuansa agak negatif atau informal", ex: "大人っぽい（ほめ言葉にもなる）" },
+    ]
+  },
+  "Vない＋ようにする": {
+    title: "〜ようにする / 〜ようになる の接続",
+    rows: [
+      { label: "ようにする", body: "V る形／V ない形＋ようにする", id: "Bentuk kamus / bentuk ない + ようにする (usaha/niat)", ex: "早く起きるようにする　食べすぎないようにする" },
+      { label: "ようになる", body: "V る形／V ない形＋ようになる", id: "Bentuk kamus / bentuk ない + ようになる (perubahan kemampuan)", ex: "泳げるようになった　食べられるようになった" },
+      { label: "違い", body: "ようにする＝努力・意志\nようになる＝変化・結果", id: "ようにする = usaha/niat　ようになる = perubahan yang terjadi", ex: "" },
+    ]
+  },
+  "V る/ない＋ようになる": {
+    title: "〜ようになる の接続",
+    rows: [
+      { label: "形", body: "V る形／V ない形＋ようになる", id: "Bentuk kamus / bentuk ない + ようになる", ex: "話せるようになった　起きられるようになった" },
+      { label: "意味", body: "以前は〜できなかったが、今は〜できる（変化）", id: "Sebelumnya tidak bisa, sekarang sudah bisa (perubahan kemampuan atau kebiasaan)", ex: "" },
+    ]
+  },
+  "N の/V＋ように": {
+    title: "〜ように〔引用・例示〕の接続",
+    rows: [
+      { label: "動詞", body: "V 普通形＋ように", id: "Bentuk biasa kata kerja + ように", ex: "言ったように　書いてあるように" },
+      { label: "名詞", body: "N の＋ように", id: "Kata benda の + ように", ex: "ご存じのように　前述のように" },
+    ]
+  },
+  "V る/ない＋ように": {
+    title: "〜ように〔目的・指示〕の接続",
+    rows: [
+      { label: "目的", body: "V る形／V ない形＋ように＋（行為）", id: "Bentuk kamus / bentuk ない + ように + (tindakan) = agar...", ex: "聞こえるように大きな声で話す" },
+      { label: "指示", body: "V る形／V ない形＋ように（文末）", id: "Di akhir kalimat = perintah/instruksi tidak langsung", ex: "静かにするように　遅刻しないように" },
+    ]
+  },
+  "V＋ように。": {
+    title: "〜ように〔願望〕の接続",
+    rows: [
+      { label: "形", body: "V る形＋ように。（文末）", id: "Bentuk kamus + ように di akhir kalimat = doa/harapan", ex: "合格しますように　元気になりますように" },
+      { label: "場面", body: "神社や願い事をするときに使う", id: "Digunakan saat berdoa atau mengungkapkan harapan", ex: "" },
+    ]
+  },
+  "V意向形＋と思う": {
+    title: "意向形の作り方 / Cara Membuat Bentuk Niat (意向形)",
+    rows: [
+      { label: "グループ1", body: "語尾をお段に変えて＋う", id: "Ubah akhiran ke baris -o lalu tambah う", ex: "書く → 書こう　飲む → 飲もう　行く → 行こう" },
+      { label: "グループ2", body: "語尾のる を取って＋よう", id: "Hapus る lalu tambah よう", ex: "食べる → 食べよう　起きる → 起きよう" },
+      { label: "不規則", body: "する → しよう　くる → こよう", id: "Tidak beraturan", ex: "勉強しよう　一緒に来よう" },
+      { label: "使い方", body: "意向形＋と思う／と思っている＝意志・計画", id: "Bentuk niat + と思う/と思っている = niat atau rencana", ex: "やめようと思っている　行こうと思う" },
+    ]
+  },
+  "V意向形＋とする": {
+    title: "〜ようとする の接続",
+    rows: [
+      { label: "形", body: "動詞の意向形＋とする", id: "Bentuk niat kata kerja + とする", ex: "食べようとする　帰ろうとする" },
+      { label: "意味", body: "〜しようとする動作を始める瞬間", id: "Momen tepat sebelum / hendak melakukan sesuatu", ex: "出かけようとしたとき　乗ろうとしたら" },
+    ]
+  },
+  "V意向形＋としない": {
+    title: "〜ようとしない の接続",
+    rows: [
+      { label: "形", body: "動詞の意向形＋としない", id: "Bentuk niat kata kerja + としない", ex: "食べようとしない　聞こうとしない" },
+      { label: "意味", body: "〜する気持ちが全くない（強い否定）", id: "Sama sekali tidak mau / tidak ada niat untuk... (penegasan kuat)", ex: "" },
+    ]
+  },
+  "N/Vて＋ばかり": {
+    title: "〜ばかり の接続",
+    rows: [
+      { label: "名詞＋ばかり", body: "N＋ばかり＝〜だけ", id: "N + ばかり = hanya... saja", ex: "女性ばかり　野菜ばかり" },
+      { label: "〜てばかりいる", body: "V て形＋ばかりいる＝ずっと〜している", id: "Bentuk て + ばかりいる = terus-terusan melakukan...", ex: "食べてばかりいる　寝てばかりいる" },
+    ]
+  },
+  "N さえ": {
+    title: "〜さえ / 〜さえ〜ば の接続",
+    rows: [
+      { label: "さえ（強調）", body: "N＋さえ＝〜でさえも（意外性）", id: "N + さえ = bahkan... pun (hal yang tidak terduga)", ex: "ひらがなさえ読めない" },
+      { label: "さえ〜ば", body: "N さえ＋V ば形＝〜だけで十分", id: "N さえ + bentuk -ば = asal... saja sudah cukup", ex: "お金さえあれば　健康さえあれば" },
+    ]
+  },
+  "N こそ": {
+    title: "〜こそ の使い方",
+    rows: [
+      { label: "形", body: "N・文節＋こそ＝まさに〜（強調）", id: "N atau frasa + こそ = justru / pasti (penekanan kuat)", ex: "明日こそ！　あなたこそ　今年こそ" },
+      { label: "からこそ", body: "〜からこそ＝〜だからこそ（理由の強調）", id: "〜からこそ = justru karena... (penekanan alasan)", ex: "失敗したからこそ成長できる" },
+    ]
+  },
+  "N に関して": {
+    title: "〜に関して / に関する の接続",
+    rows: [
+      { label: "形", body: "N＋に関して（副詞的）／N＋に関する＋N（形容詞的）", id: "N + に関して (sebagai keterangan) / N + に関する + N (sebagai kata sifat)", ex: "環境問題に関して話す / 環境問題に関する話" },
+      { label: "フォーマル度", body: "について よりも硬い・書き言葉・公式な場面向け", id: "Lebih formal dari について, cocok untuk tulisan atau situasi resmi", ex: "" },
+    ]
+  },
+  "N によれば": {
+    title: "〜によれば / によると の接続",
+    rows: [
+      { label: "形", body: "N（情報源）＋によれば／によると＋S（〜そうだ・〜らしい）", id: "N (sumber informasi) + によれば/によると + kalimat (biasanya diikuti 〜そうだ atau 〜らしい)", ex: "天気予報によれば、明日は雨らしい" },
+      { label: "違い", body: "によれば＝書き言葉寄り　によると＝話し言葉でも使う", id: "によれば = lebih cocok tulisan　によると = bisa percakapan juga", ex: "" },
+    ]
+  },
+  "N によって": {
+    title: "〜によって の3つの意味",
+    rows: [
+      { label: "①手段・方法", body: "〜を使って・〜で", id: "Dengan cara... / Melalui...", ex: "努力によって成功した" },
+      { label: "②受身の行為者", body: "（受身文で）〜が行った", id: "Dalam kalimat pasif: dilakukan oleh...", ex: "シェークスピアによって書かれた" },
+      { label: "③原因・違い", body: "〜のせいで・〜に依存して", id: "Tergantung... / Karena perbedaan...", ex: "人によって意見が違う" },
+    ]
+  },
+  "V/A の＋助詞": {
+    title: "〜の（名詞化）の接続",
+    rows: [
+      { label: "動詞", body: "V 普通形＋の＋が／を／は", id: "Bentuk biasa kata kerja + の + が/を/は", ex: "泳ぐのが好き　電話するのを忘れた" },
+      { label: "こと との違い", body: "の＝より具体的・感覚的\nこと＝より抽象的・形式的", id: "の = lebih konkret/indrawi　こと = lebih abstrak/formal", ex: "音楽を聴くのが好き / 読書することが大切だ" },
+    ]
+  },
+  "N という N": {
+    title: "〜という〜 の接続",
+    rows: [
+      { label: "名前", body: "N（名前）という＋N", id: "N (nama) + という + N", ex: "田中という人　さくらという花" },
+      { label: "内容", body: "S（文）という＋N", id: "S (kalimat) + という + N", ex: "合格したという知らせ　変わるという話" },
+    ]
+  },
+  "S というのは": {
+    title: "〜というのは / ということ の接続",
+    rows: [
+      { label: "定義", body: "N／S＋というのは＝〜とはどういうことか", id: "N/S + というのは = apa yang dimaksud dengan...", ex: "「根性」というのは、強い意志のことだ" },
+      { label: "確認", body: "S＋というのは本当ですか＝〜という情報は正しいか", id: "S + というのは本当ですか = apakah benar bahwa...", ex: "帰国するというのは本当ですか" },
+    ]
+  },
+  "S というより": {
+    title: "〜というより の接続",
+    rows: [
+      { label: "形", body: "S1／N1＋というより（も）＋S2／N2", id: "S1/N1 + というより(も) + S2/N2 = lebih tepat S2 daripada S1", ex: "上手というよりプロ級だ" },
+    ]
+  },
+  "N というと": {
+    title: "〜というと / といえば の接続",
+    rows: [
+      { label: "形", body: "N／話題＋というと／といえば", id: "N / topik + というと/といえば = kalau bicara soal...", ex: "日本食というと、すしですね" },
+      { label: "反応", body: "話題を聞いてすぐ連想するものを言う表現", id: "Mengungkapkan asosiasi pertama yang muncul saat mendengar topik tersebut", ex: "" },
+    ]
+  },
+  "N/S といっても": {
+    title: "〜といっても の接続",
+    rows: [
+      { label: "形", body: "N／S＋といっても＋（実際は〜）", id: "N/S + といっても + (kenyataannya...) = meski disebut... tapi sebenarnya...", ex: "料理ができるといっても、簡単なものだけ" },
+    ]
+  },
+  "Vて＋ごらん": {
+    title: "〜てごらん の接続",
+    rows: [
+      { label: "形", body: "V て形＋ごらん（なさい）", id: "Bentuk て kata kerja + ごらん(なさい)", ex: "食べてごらん　やってごらん" },
+      { label: "敬語レベル", body: "目上→目下 または 親しい相手への優しい勧め", id: "Digunakan dari yang lebih tua ke yang lebih muda, atau saran lembut kepada orang yang akrab", ex: "" },
+    ]
+  },
+  "V＋ように言う": {
+    title: "〜ように言う / 頼む の接続",
+    rows: [
+      { label: "形", body: "V る形／V ない形＋ように＋言う／頼む／命令する", id: "Bentuk kamus/ない + ように + 言う/頼む = menyuruh/meminta agar...", ex: "早く来るように言った　静かにするように頼んだ" },
+      { label: "間接話法", body: "「〜してください」という内容を他の人に伝える", id: "Bentuk tidak langsung untuk meneruskan perintah atau permintaan", ex: "先生は「静かに」と言った → 先生は静かにするように言った" },
+    ]
+  },
+  "Vて＋くれと": {
+    title: "〜てくれと頼まれた の接続",
+    rows: [
+      { label: "形", body: "V て形＋くれと頼まれた／V ないで＋くれと言われた", id: "Bentuk て + くれと頼まれた / ないで + くれと言われた", ex: "教えてくれと頼まれた　来ないでくれと言われた" },
+      { label: "意味", body: "「〜てくれ」という依頼を引用する", id: "Mengutip permintaan orang lain secara langsung", ex: "" },
+    ]
+  },
+  "V/A て＋も": {
+    title: "〜ても / 〜でも の接続",
+    rows: [
+      { label: "動詞", body: "V て形＋も", id: "Bentuk て kata kerja + も", ex: "食べても　行っても　飲んでも" },
+      { label: "い形容詞", body: "A く＋ても", id: "Bentuk く kata sifat -i + ても", ex: "高くても　難しくても" },
+      { label: "な形容詞・名詞", body: "A な / N＋でも", id: "Kata sifat -na / kata benda + でも", ex: "元気でも　学生でも" },
+      { label: "意味", body: "〜という条件でも、結果は変わらない（逆接）", id: "Meski dalam kondisi..., hasilnya tetap sama (kontras)", ex: "" },
+    ]
+  },
+  "Vない形＋ずに": {
+    title: "〜ずに / 〜ないで の接続",
+    rows: [
+      { label: "ずに（書き言葉）", body: "V ない形（ない→ず）＋に", id: "Bentuk ない (ganti ない dengan ず) + に = lebih formal/tulisan", ex: "食べずに　行かずに　見ずに" },
+      { label: "ないで（話し言葉）", body: "V ない形＋で", id: "Bentuk ない + で = lebih umum, percakapan", ex: "食べないで　行かないで" },
+      { label: "※特殊", body: "する → せずに　くる → こずに", id: "Tidak beraturan: する → せずに　くる → こずに", ex: "" },
+    ]
+  },
+  "N として": {
+    title: "〜として / としては の接続",
+    rows: [
+      { label: "形", body: "N＋として（＋動詞）", id: "N + として + kata kerja", ex: "代表として参加する　ボランティアとして働く" },
+      { label: "としては", body: "N＋としては＝〜の立場・観点から見ると", id: "N + としては = dari sudut pandang sebagai...", ex: "先生としては、もっと頑張ってほしい" },
+    ]
+  },
+  "N/V にしては": {
+    title: "〜にしては の接続",
+    rows: [
+      { label: "形", body: "N／V 普通形＋にしては", id: "N / Bentuk biasa kata kerja + にしては", ex: "子どもにしては　初めてにしては" },
+      { label: "意味", body: "〜を基準として考えたとき、予想と違う結果", id: "Mengingat standar/kondisi..., hasilnya di luar ekspektasi (biasanya positif)", ex: "" },
+    ]
+  },
+  "N/S にしても": {
+    title: "〜にしても の接続",
+    rows: [
+      { label: "形", body: "N／S＋にしても＝〜であっても（譲歩）", id: "N/S + にしても = sekalipun... / bahkan kalau...", ex: "冗談にしても　100円にしても" },
+      { label: "〜にしても〜にしても", body: "A にしても B にしても＝AでもBでもどちらでも", id: "A にしても B にしても = apakah A atau B, keduanya...", ex: "行くにしても行かないにしても" },
+    ]
+  },
+  "S としたら": {
+    title: "〜としたら / とすれば の接続",
+    rows: [
+      { label: "形", body: "S（普通形）＋としたら／とすれば／とすると", id: "S (bentuk biasa) + としたら/とすれば = kalau seandainya...", ex: "本当だとしたら　行くとすれば" },
+      { label: "意味", body: "仮定・仮想の状況を設定して話す", id: "Menetapkan kondisi hipotetis untuk membicarakan sesuatu", ex: "" },
+    ]
+  },
+  "V る/ない＋つもり": {
+    title: "〜つもりだ の接続",
+    rows: [
+      { label: "形", body: "V る形／V ない形＋つもりだ", id: "Bentuk kamus / bentuk ない + つもりだ", ex: "行くつもりだ　行かないつもりだ" },
+      { label: "つもりだった", body: "V る形／V ない形＋つもりだった＝（実際はしなかった）計画", id: "+ つもりだった = tadinya berniat... (tapi kenyataannya tidak terlaksana)", ex: "勉強するつもりだったが、寝てしまった" },
+    ]
+  },
+  "V/A/N はずだ": {
+    title: "〜はずだ の接続",
+    rows: [
+      { label: "動詞", body: "V 普通形＋はずだ", id: "Bentuk biasa kata kerja + はずだ", ex: "来るはずだ　行ったはずだ" },
+      { label: "い形容詞", body: "A い＋はずだ", id: "Kata sifat -i + はずだ", ex: "寒いはずだ" },
+      { label: "な形容詞・名詞", body: "A な／N の＋はずだ", id: "Kata sifat -na / N + の + はずだ", ex: "元気なはずだ　学生のはずだ" },
+      { label: "はずがない", body: "〜はずがない＝絶対〜ではない（強い否定）", id: "+ はずがない = tidak mungkin... (penyangkalan kuat)", ex: "そんなはずがない　来るはずがない" },
+    ]
+  },
+  "V る＋べきだ": {
+    title: "〜べきだ の接続",
+    rows: [
+      { label: "形", body: "V る形＋べきだ（する→すべきだ）", id: "Bentuk kamus kata kerja + べきだ (する → すべきだ)", ex: "守るべきだ　努力すべきだ" },
+      { label: "否定", body: "V る形＋べきではない", id: "Bentuk kamus + べきではない = seharusnya tidak...", ex: "嘘をつくべきではない" },
+      { label: "ニュアンス", body: "道徳・義務・強い勧め。目上の人には使いにくい", id: "Kewajiban moral atau saran kuat. Hindari kepada orang yang lebih tua/berpangkat", ex: "" },
+    ]
+  },
+  "Vた＋ものだ": {
+    title: "〜たものだ の接続",
+    rows: [
+      { label: "形", body: "V た形＋ものだ", id: "Bentuk -た kata kerja + ものだ", ex: "よく遊んだものだ　泣いたものだ" },
+      { label: "意味", body: "昔よくしたことへの懐かしさ・感慨", id: "Nostalgia atas kebiasaan atau pengalaman masa lalu", ex: "" },
+    ]
+  },
+  "V る・N の＋ついでに": {
+    title: "〜ついでに の接続",
+    rows: [
+      { label: "形", body: "V る形／V た形＋ついでに　N の＋ついでに", id: "Bentuk kamus/た kata kerja + ついでに / N の + ついでに", ex: "行くついでに　行ったついでに　散歩のついでに" },
+      { label: "意味", body: "主な行動のついでに、別の行動もする", id: "Melakukan tindakan lain sambil/setelah melakukan tindakan utama", ex: "" },
+    ]
+  },
+  "V る・N の＋たびに": {
+    title: "〜たびに の接続",
+    rows: [
+      { label: "形", body: "V る形＋たびに　N の＋たびに", id: "Bentuk kamus kata kerja + たびに / N の + たびに", ex: "会うたびに　試験のたびに" },
+      { label: "意味", body: "〜するたびに必ず〜する（反復）", id: "Setiap kali... selalu... (berulang setiap terjadi)", ex: "" },
+    ]
+  },
+  "Vた＋とたんに": {
+    title: "〜たとたん（に）の接続",
+    rows: [
+      { label: "形", body: "V た形＋とたん（に）", id: "Bentuk -た kata kerja + とたん(に)", ex: "開けたとたん　乗ったとたんに" },
+      { label: "意味", body: "〜した瞬間に、すぐ次のことが起きた", id: "Tepat saat... langsung terjadi... (kejadian yang sangat cepat beruntun)", ex: "" },
+    ]
+  },
+  "V る/た・N の＋とおりに": {
+    title: "〜とおりに の接続",
+    rows: [
+      { label: "形", body: "V る形／V た形＋とおりに　N の＋とおりに", id: "Bentuk kamus/た + とおりに / N の + とおりに", ex: "言ったとおりに　地図のとおりに" },
+      { label: "意味", body: "〜と完全に同じように・〜に従って", id: "Persis sesuai dengan... / Mengikuti... apa adanya", ex: "" },
+    ]
+  },
+  "Vた/ない＋まま": {
+    title: "〜たまま / 〜ないまま の接続",
+    rows: [
+      { label: "〜たまま", body: "V た形＋まま＝〜した状態が変わらず続く", id: "Bentuk -た + まま = tetap dalam keadaan setelah melakukan...", ex: "テレビをつけたまま寝た　靴をはいたまま入った" },
+      { label: "〜ないまま", body: "V ない形＋まま＝〜しない状態が続く", id: "Bentuk ない + まま = tetap dalam keadaan tidak melakukan...", ex: "宿題をしないまま学校へ行った" },
+    ]
+  },
+  "Vます形＋っぱなし": {
+    title: "〜っぱなし の接続",
+    rows: [
+      { label: "形", body: "V ます形（ます を取る）＋っぱなし", id: "Bentuk ます kata kerja (hapus ます) + っぱなし", ex: "つける→つけっぱなし　開ける→開けっぱなし　出す→出しっぱなし" },
+      { label: "ニュアンス", body: "本来やめるべき状態が続いている（否定的）", id: "Keadaan yang seharusnya diubah/dihentikan tapi terus dibiarkan (nuansa negatif)", ex: "" },
+    ]
+  },
+  "Vて＋ほしい": {
+    title: "〜てほしい の接続",
+    rows: [
+      { label: "形", body: "V て形＋ほしい", id: "Bentuk て kata kerja + ほしい", ex: "来てほしい　助けてほしい" },
+      { label: "否定", body: "V て形＋ほしくない / V ないで＋ほしい", id: "Bentuk て + ほしくない / bentuk ないで + ほしい = tidak ingin orang lain melakukan...", ex: "来てほしくない　怒らないでほしい" },
+      { label: "てもらいたい", body: "〜てほしい の丁寧な言い方", id: "Bentuk yang lebih sopan dari 〜てほしい", ex: "もう少し待ってもらいたいのですが" },
+    ]
+  },
+  "A/V＋がる": {
+    title: "〜がる / たがる の接続",
+    rows: [
+      { label: "がる", body: "A い（い→）＋がる　例：怖い→怖がる", id: "Kata sifat -i (hapus い) + がる", ex: "怖がる　痛がる　珍しがる" },
+      { label: "たがる", body: "V たい（たい→）＋がる", id: "Kata kerja + たい (hapus たい) + がる", ex: "食べたがる　行きたがる　欲しがる" },
+      { label: "意味", body: "第三者が〜という感情を外から見て表す", id: "Menunjukkan perasaan atau keinginan orang ketiga yang terlihat dari luar (bukan diri sendiri)", ex: "" },
+    ]
+  },
+  "V/N の＋ふりをする": {
+    title: "〜ふりをする の接続",
+    rows: [
+      { label: "動詞", body: "V 普通形＋ふりをする", id: "Bentuk biasa kata kerja + ふりをする", ex: "知っているふりをする　寝ているふりをする" },
+      { label: "名詞", body: "N の＋ふりをする", id: "N の + ふりをする", ex: "学生のふりをする　病気のふりをする" },
+    ]
+  },
+  "S＋っけ": {
+    title: "〜だっけ / っけ の接続",
+    rows: [
+      { label: "動詞・形容詞", body: "普通形＋っけ", id: "Bentuk biasa + っけ", ex: "来るんだっけ？　行ったっけ？" },
+      { label: "名詞・な形容詞", body: "N／A な＋だっけ", id: "N / Kata sifat -na + だっけ", ex: "来週だっけ？　元気だっけ？" },
+      { label: "場面", body: "忘れたことを確認・思い出そうとする（インフォーマル）", id: "Digunakan untuk mengkonfirmasi atau mencoba mengingat sesuatu (informal)", ex: "" },
+    ]
+  },
+  "V る＋しかない": {
+    title: "〜しかない の接続",
+    rows: [
+      { label: "形", body: "V る形＋しかない", id: "Bentuk kamus kata kerja + しかない", ex: "行くしかない　待つしかない" },
+      { label: "名詞", body: "N＋しかない＝〜だけしかない（量が少ない）", id: "N + しかない = hanya ada... (jumlah yang sedikit)", ex: "100円しかない" },
+      { label: "意味", body: "他に選択肢がない（諦め・決意）", id: "Tidak ada pilihan lain (pasrah atau tekad)", ex: "" },
+    ]
+  },
+  "S＋んだって": {
+    title: "〜んだって / だって の接続",
+    rows: [
+      { label: "形", body: "S 普通形＋んだって（＝〜んだそうだ）", id: "S bentuk biasa + んだって = katanya... (dari orang lain, informal)", ex: "行くんだって　結婚したんだって" },
+      { label: "名詞・な形容詞", body: "N／A な＋なんだって", id: "N / Kata sifat -na + なんだって", ex: "休みなんだって　元気なんだって" },
+    ]
+  },
+  "V使役受身形": {
+    title: "使役受身形の作り方 / Cara Membuat Bentuk Kausatif-Pasif",
+    rows: [
+      { label: "グループ1", body: "語尾をあ段に変えて＋される", id: "Ubah akhiran ke baris -a lalu tambah される", ex: "飲む → 飲まされる　書く → 書かされる" },
+      { label: "グループ1（短縮形）", body: "〜させられる → 〜される（す動詞を除く）", id: "Bentuk pendek (kecuali kata kerja berakhiran す)", ex: "待たされる（待たせられる）　飲まされる" },
+      { label: "グループ2", body: "語尾のる を取って＋させられる", id: "Hapus る lalu tambah させられる", ex: "食べる → 食べさせられる" },
+      { label: "不規則", body: "する → させられる　くる → こさせられる", id: "Tidak beraturan", ex: "練習させられる　来させられる" },
+      { label: "意味", body: "他の人に〜することを強制された（迷惑感）", id: "Dipaksa oleh orang lain untuk melakukan... (nuansa terpaksa/tidak enak)", ex: "" },
+    ]
+  },
+  "Vて＋くる/いく": {
+    title: "〜てくる / 〜ていく の意味",
+    rows: [
+      { label: "移動①てくる", body: "〜してから戻ってくる", id: "Pergi melakukan... lalu kembali", ex: "コンビニに行って買ってきた" },
+      { label: "移動②ていく", body: "〜してからその場を離れる", id: "Pergi melakukan... tanpa kembali ke sini", ex: "弁当を持っていく" },
+      { label: "変化①てくる", body: "変化が今に向かって進んでいる", id: "Perubahan yang menuju ke sekarang (semakin...)", ex: "寒くなってきた　わかってきた" },
+      { label: "変化②ていく", body: "変化がこれから先に向かって進む", id: "Perubahan yang akan terus berlanjut ke depan", ex: "暖かくなっていく　増えていく" },
+    ]
+  },
+  "Vて/A くて＋たまらない": {
+    title: "〜てたまらない の接続",
+    rows: [
+      { label: "動詞", body: "V て形＋たまらない", id: "Bentuk て kata kerja + たまらない", ex: "心配でたまらない" },
+      { label: "い形容詞", body: "A く＋てたまらない", id: "Bentuk く kata sifat -i + てたまらない", ex: "眠くてたまらない　嬉しくてたまらない" },
+      { label: "な形容詞", body: "A な で＋たまらない", id: "Kata sifat -na + でたまらない", ex: "不安でたまらない" },
+      { label: "意味", body: "感情や感覚が非常に強くて我慢できない", id: "Perasaan atau sensasi yang sangat kuat dan tidak tertahankan", ex: "" },
+    ]
+  },
+  "Vて/A くて＋ならない": {
+    title: "〜てならない の接続",
+    rows: [
+      { label: "形", body: "V て形／A く＋てならない（たまらない と同形）", id: "Bentuk て kata kerja / bentuk く kata sifat + てならない", ex: "悲しくてならない　気になってならない" },
+      { label: "違い（たまらないとの）", body: "ならない＝自然に湧いてくる感情\nたまらない＝意識的に強く感じる感情", id: "ならない = perasaan yang muncul secara alami\nたまらない = perasaan yang sangat kuat dan disadari", ex: "" },
+    ]
+  },
+  "N さえ＋V ば": {
+    title: "〜さえ〜ば の接続",
+    rows: [
+      { label: "形", body: "N さえ＋V ば形", id: "N さえ + bentuk -ば kata kerja", ex: "お金さえあれば　あなたさえいれば" },
+      { label: "ば形の作り方", body: "V る形の語尾を え段に変えて＋ば", id: "Ubah akhiran kata kerja ke baris -e lalu tambah ば", ex: "ある→あれば　いる→いれば　できる→できれば" },
+    ]
+  },
+  "どうせ＋S": {
+    title: "どうせ の使い方",
+    rows: [
+      { label: "形", body: "どうせ＋（否定的な結論）", id: "どうせ + (kesimpulan negatif)", ex: "どうせ無理だ　どうせ失敗する" },
+      { label: "どうせなら", body: "どうせなら＝〜するなら、せめて〜", id: "どうせなら = kalau memang begitu, sekalian saja...", ex: "どうせなら最初からやり直そう" },
+    ]
+  },
+  "S わけだ": {
+    title: "〜わけだ / わけがない の接続",
+    rows: [
+      { label: "形", body: "S 普通形＋わけだ", id: "S bentuk biasa + わけだ = pantas saja / berarti...", ex: "毎日練習しているわけだ" },
+      { label: "わけがない", body: "S 普通形＋わけがない＝絶対〜ない", id: "S bentuk biasa + わけがない = tidak mungkin...", ex: "そんなことがあるわけがない" },
+      { label: "わけではない", body: "S 普通形＋わけではない＝必ずしも〜ではない", id: "S + わけではない = bukan berarti...", ex: "嫌いなわけではない" },
+    ]
+  },
+  "V ば＋よかった": {
+    title: "〜ばよかった の接続",
+    rows: [
+      { label: "形", body: "V ば形＋よかった", id: "Bentuk -ば kata kerja + よかった", ex: "勉強すればよかった　言えばよかった" },
+      { label: "ば形の作り方", body: "グループ1：語尾を え段＋ば　グループ2：る→れば", id: "Grup 1: ubah akhiran ke え段 + ば / Grup 2: る → れば", ex: "行く→行けば　食べる→食べれば　する→すれば" },
+    ]
+  },
+  "どうりで＋S": {
+    title: "どうりで の使い方",
+    rows: [
+      { label: "形", body: "どうりで＋（驚き・納得の内容）＋はずだ／わけだ", id: "どうりで + isi yang mengejutkan/menyadarkan + はずだ/わけだ", ex: "どうりで上手なわけだ　どうりで静かだと思ったら" },
+      { label: "意味", body: "原因・理由を知って納得する（「なるほど！」）", id: "Menyadari alasan sesuatu dan merasa 'oh pantas saja!'", ex: "" },
+    ]
+  },
+  "副詞": {
+    title: "やっと / ようやく / なかなか〜ない",
+    rows: [
+      { label: "やっと", body: "長い時間や努力の後、ついに実現（日常会話）", id: "Setelah waktu lama atau usaha keras, akhirnya terwujud (percakapan)", ex: "やっと合格した　やっと終わった" },
+      { label: "ようやく", body: "やっと と同義だが、やや書き言葉・丁寧", id: "Sama dengan やっと, tapi lebih formal/tulisan", ex: "ようやく完成した" },
+      { label: "なかなか〜ない", body: "期待しているのに、なかなか〜しない（歯がゆさ）", id: "Diharapkan terjadi tapi tidak kunjung terjadi (rasa tidak sabar)", ex: "なかなか来ない　なかなか覚えられない" },
+    ]
+  },
+  "N/V る＋まで(に)": {
+    title: "〜まで / 〜までに の違い",
+    rows: [
+      { label: "〜まで", body: "V る形／N＋まで＝〜が終わるまで（継続）", id: "Bentuk kamus/N + まで = sampai (titik berakhir, tindakan berlanjut)", ex: "雨が止むまで待つ　12時まで働く" },
+      { label: "〜までに", body: "V る形／N＋までに＝〜の前に（期限）", id: "Bentuk kamus/N + までに = paling lambat sebelum... (batas waktu)", ex: "3時までに来てください　明日までに出す" },
+    ]
+  },
+  "N から N にかけて": {
+    title: "〜から〜にかけて の接続",
+    rows: [
+      { label: "形", body: "N（開始）から＋N（終了）にかけて", id: "N (awal) から + N (akhir) にかけて = dari... hingga...", ex: "朝から昼にかけて　北海道から東北にかけて" },
+      { label: "〜から〜までとの違い", body: "にかけて＝幅・範囲のイメージ（境界が曖昧）\nまで＝明確な終点", id: "にかけて = rentang/gradasi (batas tidak jelas)\nまで = titik akhir yang jelas", ex: "" },
+    ]
+  },
+  "V/A＋すぎる": {
+    title: "〜すぎる の接続",
+    rows: [
+      { label: "動詞", body: "V ます形（ます を取る）＋すぎる", id: "Bentuk ます kata kerja (hapus ます) + すぎる", ex: "食べすぎる　飲みすぎる　働きすぎる" },
+      { label: "い形容詞", body: "A い（い を取る）＋すぎる", id: "Kata sifat -i (hapus い) + すぎる", ex: "高すぎる　難しすぎる" },
+      { label: "な形容詞", body: "A な（な を取る）＋すぎる", id: "Kata sifat -na (hapus な) + すぎる", ex: "元気すぎる　静かすぎる" },
+    ]
+  },
+  "あまりにも": {
+    title: "あまりにも〜 の使い方",
+    rows: [
+      { label: "形", body: "あまりにも＋形容詞／副詞（強調）", id: "あまりにも + kata sifat/keterangan = terlalu... (penekanan kuat)", ex: "あまりにも高すぎる　あまりにもひどい" },
+      { label: "あまり〜ない", body: "あまり＋否定＝それほど〜ない（部分否定）", id: "あまり + negatif = tidak terlalu... (negasi sebagian)", ex: "あまり好きじゃない　あまり来ない" },
+    ]
+  },
+  "V ば＋V ほど": {
+    title: "〜ば〜ほど の接続",
+    rows: [
+      { label: "形", body: "V ば形＋同じV 辞書形＋ほど", id: "Bentuk -ば kata kerja + kata kerja bentuk kamus yang sama + ほど", ex: "読めば読むほど　練習すればするほど" },
+      { label: "形容詞", body: "A ければ＋同じA ＋ほど", id: "Bentuk -ければ kata sifat + kata sifat yang sama + ほど", ex: "早ければ早いほど　多ければ多いほど" },
+      { label: "意味", body: "〜するにつれて、さらに〜になる（比例関係）", id: "Semakin... semakin... (hubungan berbanding lurus)", ex: "" },
+    ]
+  },
+  "N まで(も)": {
+    title: "〜まで（も）〔強調〕の使い方",
+    rows: [
+      { label: "形", body: "N＋まで（も）＝意外なものも含む（強調）", id: "N + まで(も) = bahkan... pun (penekanan, sesuatu yang tidak terduga juga termasuk)", ex: "ネコまで喜んでいる　子どもまで知っている" },
+    ]
+  },
+  "V る/ない＋ことにする": {
+    title: "〜ことにする / ことになる の違い",
+    rows: [
+      { label: "ことにする", body: "V る形／ない形＋ことにする＝自分の意志で決める", id: "Bentuk kamus/ない + ことにする = memutuskan sendiri atas kemauan sendiri", ex: "毎朝走ることにした　お酒を飲まないことにした" },
+      { label: "ことになる", body: "V る形／ない形＋ことになる＝外の力で決まった", id: "Bentuk kamus/ない + ことになる = diputuskan oleh situasi atau pihak luar", ex: "転勤することになった　会議が変わることになった" },
+    ]
+  },
+  "V る/ない＋ことになる": {
+    title: "〜ことになる の接続",
+    rows: [
+      { label: "形", body: "V る形／ない形＋ことになる（なった）", id: "Bentuk kamus/ない + ことになる(なった)", ex: "参加することになった　使わないことになった" },
+      { label: "意味", body: "自分の意志でなく、状況・規則・他者の決定により", id: "Bukan atas kemauan sendiri, tapi karena situasi, aturan, atau keputusan pihak lain", ex: "" },
+    ]
+  },
+  "Vて＋からでないと": {
+    title: "〜てからでないと の接続",
+    rows: [
+      { label: "形", body: "V て形＋からでないと／でなければ＋〜できない", id: "Bentuk て kata kerja + からでないと/でなければ + tidak bisa...", ex: "見てからでないと決められない" },
+      { label: "意味", body: "前の行動が完了しないと、次の行動ができない", id: "Tindakan berikutnya tidak bisa dilakukan sebelum tindakan sebelumnya selesai", ex: "" },
+    ]
+  },
+  "Vた＋ところ": {
+    title: "〜たところ の接続",
+    rows: [
+      { label: "形", body: "V た形＋ところ（だ）", id: "Bentuk -た kata kerja + ところ(だ)", ex: "聞いたところ〜だった　今着いたところです" },
+      { label: "①〜した直後", body: "今まさに〜が終わった（現在完了的）", id: "Baru saja selesai melakukan... (tepat selesai)", ex: "今、帰ってきたところです" },
+      { label: "②〜してみたら", body: "試みた結果、〜とわかった", id: "Setelah mencoba, ternyata...", ex: "電話したところ、留守だった" },
+    ]
+  },
+  "もう少しで＋V るところだった": {
+    title: "〜ところだった の接続",
+    rows: [
+      { label: "形", body: "もう少しで／あと少しで＋V 辞書形＋ところだった", id: "もう少しで/あと少しで + bentuk kamus kata kerja + ところだった", ex: "もう少しで遅刻するところだった" },
+      { label: "意味", body: "危険・問題な状況が起きそうだったが、実際は起きなかった", id: "Situasi berbahaya atau bermasalah hampir terjadi, tapi akhirnya tidak terjadi", ex: "" },
+    ]
+  },
+  "Vて＋はじめて": {
+    title: "〜てはじめて の接続",
+    rows: [
+      { label: "形", body: "V て形＋はじめて＋（結果・気づき）", id: "Bentuk て kata kerja + はじめて + (hasil/kesadaran)", ex: "失って初めてわかる　病気になって初めて気づいた" },
+      { label: "意味", body: "〜するまでは不可能・不明だったが、〜してようやく可能・明確になった", id: "Sebelum melakukan tidak bisa/tidak tahu, baru setelah melakukan menjadi bisa/tahu", ex: "" },
+    ]
+  },
+  "S としても": {
+    title: "〜としても の接続",
+    rows: [
+      { label: "形", body: "S 普通形＋としても（＝たとえ〜でも）", id: "S bentuk biasa + としても = sekalipun... / meskipun...", ex: "合格したとしても　失敗したとしても" },
+      { label: "にしても との違い", body: "としても＝仮定条件（仮に〜だとしても）\nにしても＝実際の状況（〜の場合でも）", id: "としても = kondisi hipotetis　にしても = situasi nyata", ex: "" },
+    ]
+  },
+  "V た/N の＋あげく": {
+    title: "〜あげく（に）の接続",
+    rows: [
+      { label: "形", body: "V た形＋あげく（に）　N の＋あげく（に）", id: "Bentuk -た kata kerja + あげく(に) / N の + あげく(に)", ex: "迷ったあげく　長い議論のあげく" },
+      { label: "意味・ニュアンス", body: "長い過程の末、（望まない・否定的な）結果になった", id: "Setelah proses panjang, ujung-ujungnya... (biasanya hasil yang tidak diinginkan/negatif)", ex: "" },
+    ]
+  },
+  "S にしろ": {
+    title: "〜にしろ / にせよ / にしても の接続",
+    rows: [
+      { label: "形", body: "S 普通形＋にしろ／にせよ／にしても", id: "S bentuk biasa + にしろ/にせよ/にしても = apapun kondisinya...", ex: "行くにしろ行かないにしろ" },
+      { label: "使い分け", body: "にしろ＝口語寄り　にせよ＝書き言葉寄り　にしても＝両方OK", id: "にしろ = lebih lisan　にせよ = lebih tulisan　にしても = keduanya OK", ex: "" },
+    ]
+  },
+  "V/A/N どころか": {
+    title: "〜どころか の接続",
+    rows: [
+      { label: "形", body: "V 普通形／A い／A な／N＋どころか", id: "Bentuk biasa kata kerja / kata sifat / kata benda + どころか", ex: "やめるどころか　上手どころか　冗談どころか" },
+      { label: "意味", body: "〜は全然なくて、むしろ正反対・それ以上", id: "Bukannya... malah sebaliknya / jauh melampaui perkiraan (positif atau negatif)", ex: "" },
+    ]
+  },
+  "V/N どころではない": {
+    title: "〜どころではない の接続",
+    rows: [
+      { label: "形", body: "V 辞書形／N＋どころではない（じゃない）", id: "Bentuk kamus kata kerja / N + どころではない(じゃない)", ex: "旅行どころではない　食事どころじゃない" },
+      { label: "意味", body: "今の状況では〜する余裕・可能性が全くない", id: "Dalam situasi sekarang, tidak ada kesempatan / tidak memungkinkan sama sekali untuk...", ex: "" },
+    ]
+  },
+};
+
+function toggleVerbForm(id, btn) {
+  const sec = document.getElementById(id);
+  const open = sec.classList.toggle('open');
+  btn.textContent = open ? '▲ 接続の説明を閉じる / Tutup' : '▼ 接続の仕方・動詞の形 / Cara pembentukan';
+}
+
+// ── EXTRA EXAMPLES TOGGLE ──
+function toggleExtra(id, btn) {
+  const sec = document.getElementById(id);
+  const open = sec.classList.toggle('open');
+  btn.textContent = open
+    ? `－ 追加例文を隠す / Sembunyikan (${sec.querySelectorAll('.extra-example').length})`
+    : `＋ 追加例文を見る / Lihat contoh tambahan (${sec.querySelectorAll('.extra-example').length})`;
+}
+
+// ── EXTRA EXAMPLES DATA ──
+const EXTRA_EXAMPLES = {
+  "〜られている / 〜れている": [
+    { ja:"この歌は世界中で<strong>歌われています</strong>。", id:"Lagu ini dinyanyikan di seluruh dunia." },
+    { ja:"その橋は100年前に<strong>建てられました</strong>。", id:"Jembatan itu dibangun 100 tahun yang lalu." },
+    { ja:"この映画は若者に<strong>愛されている</strong>。", id:"Film ini dicintai oleh anak-anak muda." }
+  ],
+  "〜に〜られた（迷惑の受身）": [
+    { ja:"電車の中で知らない人に足を<strong>踏まれた</strong>。", id:"Di dalam kereta, kakiku diinjak oleh orang yang tidak kukenal." },
+    { ja:"財布を<strong>盗まれて</strong>、警察に届けた。", id:"Dompetku dicuri, lalu aku melapor ke polisi." },
+    { ja:"夜中に子どもに<strong>起こされた</strong>ので、眠れなかった。", id:"Karena dibangunkan anakku tengah malam, aku tidak bisa tidur." }
+  ],
+  "〜させてください": [
+    { ja:"少し<strong>考えさせてください</strong>。お返事は明日します。", id:"Tolong izinkan saya berpikir sebentar. Saya akan menjawab besok." },
+    { ja:"一緒に写真を<strong>撮らせてください</strong>。", id:"Tolong izinkan saya berfoto bersama." },
+    { ja:"この仕事、私に<strong>やらせてください</strong>。", id:"Pekerjaan ini, tolong biarkan saya yang mengerjakan." }
+  ],
+  "〜ないと / 〜なくちゃ": [
+    { ja:"もうそろそろ出発し<strong>ないと</strong>、電車に乗り遅れる。", id:"Kalau tidak segera berangkat, aku akan ketinggalan kereta." },
+    { ja:"明日テストがあるから、今夜は勉強し<strong>なくちゃ</strong>。", id:"Karena besok ada ujian, malam ini harus belajar." },
+    { ja:"部屋を<strong>片付けなくちゃ</strong>。散らかりすぎてる。", id:"Harus membereskan kamar. Berantakan sekali." }
+  ],
+  "〜ちゃった / 〜じゃった": [
+    { ja:"大切なメールを間違えて<strong>消しちゃった</strong>。", id:"Email penting tanpa sengaja terhapus." },
+    { ja:"眠くて、授業中に<strong>寝ちゃった</strong>。先生に怒られた。", id:"Mengantuk, tanpa sadar tertidur di kelas. Dimarahi guru." },
+    { ja:"ケーキ、全部<strong>食べちゃおう</strong>か。もったいないし。", id:"Ayo sekalian habiskan saja kuenya. Sayang kalau tersisa." }
+  ],
+  "〜とく / 〜ておく（口語）": [
+    { ja:"旅行の前に地図を<strong>調べとこう</strong>。", id:"Sebelum perjalanan, aku cari tahu dulu petanya." },
+    { ja:"会議室、先に<strong>予約しとく</strong>ね。", id:"Ruang rapat, aku pesan dulu ya." },
+    { ja:"冷蔵庫に飲み物を<strong>入れとく</strong>ね。", id:"Aku masukkan minuman ke kulkas dulu ya." }
+  ],
+  "〜みたいだ": [
+    { ja:"あの二人、<strong>仲良しみたいだ</strong>ね。いつも一緒にいる。", id:"Kedua orang itu kelihatannya akrab ya. Selalu bersama." },
+    { ja:"この辺りは昔、海だった<strong>みたいだ</strong>。", id:"Kelihatannya dulu daerah ini adalah laut." },
+    { ja:"彼、<strong>疲れてるみたい</strong>。顔色が悪い。", id:"Dia kelihatannya lelah. Wajahnya pucat." }
+  ],
+  "〜らしい": [
+    { ja:"この店は<strong>人気があるらしく</strong>て、いつも並んでいる。", id:"Katanya toko ini populer, selalu ada antrean." },
+    { ja:"彼女はもう日本を<strong>떠났らしい</strong>。（＝떠났ようだ）", id:"Katanya dia sudah meninggalkan Jepang." },
+    { ja:"彼は<strong>医者らしい</strong>しゃべり方をする。", id:"Cara bicaranya benar-benar seperti dokter." }
+  ],
+  "〜っぽい": [
+    { ja:"この映画、<strong>子どもっぽい</strong>ストーリーだな。", id:"Cerita film ini kesan kekanak-kanakan ya." },
+    { ja:"彼女は感情<strong>的っぽい</strong>から、すぐ泣く。", id:"Dia terkesan emosional, mudah menangis." },
+    { ja:"この肉、<strong>古っぽい</strong>味がする。", id:"Daging ini terasa seperti sudah tidak segar." }
+  ],
+  "〜ないようにする": [
+    { ja:"夜遅くまで起きない<strong>ようにしています</strong>。", id:"Saya berusaha untuk tidak begadang sampai larut malam." },
+    { ja:"お菓子を食べすぎない<strong>ようにしている</strong>。", id:"Saya berusaha agar tidak makan kue terlalu banyak." },
+    { ja:"人を傷つける言葉を使わない<strong>ようにしよう</strong>。", id:"Mari berusaha untuk tidak menggunakan kata-kata yang menyakiti orang lain." }
+  ],
+  "〜ように〔目的〕": [
+    { ja:"日本語が上手になる<strong>ように</strong>、毎日練習しています。", id:"Agar bahasa Jepang menjadi bagus, saya berlatih setiap hari." },
+    { ja:"風邪を引かない<strong>ように</strong>、手を洗ってください。", id:"Agar tidak masuk angin, tolong cuci tangan." },
+    { ja:"字がきれいに書ける<strong>ように</strong>なりたい。", id:"Aku ingin menjadi bisa menulis huruf dengan indah." }
+  ],
+  "〜ようになる": [
+    { ja:"毎日聞いていたら、英語が<strong>聞き取れるようになった</strong>。", id:"Setelah mendengarkan setiap hari, akhirnya bisa mendengar bahasa Inggris." },
+    { ja:"子どもが一人で着替えられる<strong>ようになった</strong>。", id:"Anak itu sudah bisa berganti pakaian sendiri." },
+    { ja:"最近、早起きできる<strong>ようになりました</strong>。", id:"Belakangan ini saya sudah bisa bangun pagi." }
+  ],
+  "〜のように〔引用〕": [
+    { ja:"<strong>ご存じのように</strong>、来月から料金が変わります。", id:"Seperti yang Anda ketahui, mulai bulan depan tarifnya akan berubah." },
+    { ja:"報告書に<strong>書いてあるように</strong>、計画は順調です。", id:"Seperti yang tertulis di laporan, rencana berjalan lancar." },
+    { ja:"前回説明した<strong>ように</strong>、この操作は危険です。", id:"Seperti yang sudah dijelaskan sebelumnya, operasi ini berbahaya." }
+  ],
+  "〜ように〔指示〕": [
+    { ja:"遅刻しない<strong>ように</strong>、早めに家を出てください。", id:"Agar tidak terlambat, tolong keluar rumah lebih awal." },
+    { ja:"先生から、もっと丁寧に書く<strong>ように</strong>言われた。", id:"Dari guru, diperintahkan agar menulis lebih rapi." },
+    { ja:"ここでは静かにする<strong>ように</strong>。", id:"Di sini tolong bersikap tenang." }
+  ],
+  "〜ように。〔願望〕": [
+    { ja:"家族みんなが健康でいられます<strong>ように</strong>。", id:"Semoga seluruh keluarga selalu sehat." },
+    { ja:"好きな人と結婚できます<strong>ように</strong>。", id:"Semoga bisa menikah dengan orang yang dicintai." },
+    { ja:"来年こそ夢が叶います<strong>ように</strong>。", id:"Semoga tahun depan impian bisa terwujud." }
+  ],
+  "〜ようと思う": [
+    { ja:"今年こそ、運動を始め<strong>ようと思っている</strong>。", id:"Tahun ini pasti, aku berniat mulai berolahraga." },
+    { ja:"彼女に謝ろう<strong>と思っているが</strong>、なかなか言い出せない。", id:"Aku berniat minta maaf padanya, tapi belum bisa mengatakannya." },
+    { ja:"そろそろ新しい仕事を探そう<strong>と思う</strong>。", id:"Aku rasa sudah saatnya mencari pekerjaan baru." }
+  ],
+  "〜ようとする": [
+    { ja:"子どもが棚によじ登ろう<strong>としている</strong>。危ない！", id:"Anak itu sedang mencoba memanjat rak. Bahaya!" },
+    { ja:"家を出<strong>ようとしたとき</strong>、電話が鳴った。", id:"Tepat saat hendak keluar rumah, telepon berdering." },
+    { ja:"何かを言お<strong>うとしたが</strong>、声が出なかった。", id:"Hendak mengatakan sesuatu, tapi suaranya tidak keluar." }
+  ],
+  "〜ようとしない": [
+    { ja:"息子は全然勉強しよう<strong>としない</strong>。", id:"Putraku sama sekali tidak mau mencoba belajar." },
+    { ja:"彼は自分の失敗を認めよう<strong>としない</strong>。", id:"Dia tidak mau mengakui kegagalannya sendiri." },
+    { ja:"その猫は近づこう<strong>としても</strong>、逃げてしまう。", id:"Kucing itu meski didekati selalu kabur." }
+  ],
+  "〜ばかり / 〜てばかりいる": [
+    { ja:"最近、甘いものを食べて<strong>ばかりいる</strong>。太りそう。", id:"Belakangan ini terus-terusan makan yang manis. Sepertinya akan gemuk." },
+    { ja:"彼は文句を言って<strong>ばかりいる</strong>。", id:"Dia terus-terusan mengeluh saja." },
+    { ja:"このクラスは宿題<strong>ばかり</strong>で、楽しくない。", id:"Di kelas ini hanya PR saja, tidak menyenangkan." }
+  ],
+  "〜さえ / 〜さえ〜ば": [
+    { ja:"地図<strong>さえあれば</strong>、どこでも行ける。", id:"Asal ada peta, ke mana pun bisa pergi." },
+    { ja:"彼は挨拶<strong>さえ</strong>しない。礼儀がない。", id:"Bahkan menyapa pun dia tidak mau. Tidak punya sopan santun." },
+    { ja:"練習<strong>さえすれば</strong>、誰でも上手になれる。", id:"Asal mau berlatih, siapa pun bisa menjadi mahir." }
+  ],
+  "〜こそ": [
+    { ja:"今年<strong>こそ</strong>、N3に合格してみせる！", id:"Tahun ini pasti aku akan lulus N3!" },
+    { ja:"あなた<strong>こそ</strong>、私の一番の友達です。", id:"Justru kamu adalah teman terbaikku." },
+    { ja:"失敗した<strong>からこそ</strong>、成長できる。", id:"Justru karena gagal, kita bisa berkembang." }
+  ],
+  "〜に関して / 〜に関する": [
+    { ja:"環境問題<strong>に関して</strong>、もっと真剣に考えるべきだ。", id:"Mengenai masalah lingkungan, kita harus lebih serius memikirkannya." },
+    { ja:"このアンケートは学習方法<strong>に関する</strong>調査です。", id:"Kuesioner ini adalah survei berkaitan dengan metode belajar." },
+    { ja:"詳しい内容<strong>に関しては</strong>、後ほどご連絡します。", id:"Mengenai detail isinya, kami akan menghubungi Anda nanti." }
+  ],
+  "〜によれば / 〜によると": [
+    { ja:"彼女の話<strong>によると</strong>、二人はもう別れたらしい。", id:"Menurut ceritanya, keduanya katanya sudah putus." },
+    { ja:"この本<strong>によれば</strong>、睡眠は健康にとても大切だ。", id:"Menurut buku ini, tidur sangat penting bagi kesehatan." },
+    { ja:"先生の話<strong>によると</strong>、来週テストがあるそうだ。", id:"Menurut penjelasan guru, katanya minggu depan ada ujian." }
+  ],
+  "〜によって / 〜により": [
+    { ja:"この絵はピカソ<strong>によって</strong>描かれた。", id:"Lukisan ini dilukis oleh Picasso." },
+    { ja:"結果は努力<strong>によって</strong>変わる。", id:"Hasilnya berubah tergantung usaha." },
+    { ja:"規則は国<strong>によって</strong>違います。", id:"Peraturan berbeda-beda tergantung negaranya." }
+  ],
+  "〜のを / 〜のが / 〜のは（名詞化）": [
+    { ja:"音楽を聴く<strong>のが</strong>大好きです。", id:"Saya sangat suka mendengarkan musik." },
+    { ja:"彼が泳ぐ<strong>のを</strong>見たことがありますか？", id:"Pernahkah Anda melihat dia berenang?" },
+    { ja:"早起きする<strong>のは</strong>、体にいいですよ。", id:"Bangun pagi itu bagus untuk kesehatan." }
+  ],
+  "〜という〜": [
+    { ja:"「もんじゃ焼き」<strong>という食べ物</strong>を食べたことがありますか？", id:"Pernahkah Anda makan makanan yang disebut 'monjayaki'?" },
+    { ja:"「ありがとう」<strong>という言葉</strong>は日本語でよく使います。", id:"Kata 'arigatou' sering digunakan dalam bahasa Jepang." },
+    { ja:"山田<strong>という名前</strong>の学生が来ました。", id:"Datang seorang siswa yang bernama Yamada." }
+  ],
+  "〜ということ / 〜というのは": [
+    { ja:"N3に合格した<strong>ということは</strong>、かなり日本語が上手だということだ。", id:"Lulus N3 berarti bahasa Jepangnya sudah cukup bagus." },
+    { ja:"「根性」<strong>というのは</strong>、どういう意味ですか？", id:"Apa artinya kata 'konjou'?" },
+    { ja:"彼が辞める<strong>というのは</strong>、本当に残念だ。", id:"Sungguh disayangkan bahwa dia akan berhenti." }
+  ],
+  "〜というより": [
+    { ja:"これは教室<strong>というより</strong>、図書館みたいだ。", id:"Ini lebih seperti perpustakaan daripada ruang kelas." },
+    { ja:"彼女は怒っている<strong>というより</strong>、悲しんでいるようだ。", id:"Dia lebih terlihat sedih daripada marah." },
+    { ja:"この仕事は難しい<strong>というより</strong>、面倒くさい。", id:"Pekerjaan ini bukan sulit, lebih tepatnya merepotkan." }
+  ],
+  "〜というと / 〜といえば": [
+    { ja:"夏休み<strong>といえば</strong>、海水浴ですね。", id:"Ngomong-ngomong soal liburan musim panas, renang di laut ya." },
+    { ja:"インドネシア<strong>というと</strong>、バリ島が有名ですね。", id:"Kalau bicara soal Indonesia, Pulau Bali yang terkenal ya." },
+    { ja:"日本のスポーツ<strong>といえば</strong>、野球とサッカーですね。", id:"Berbicara tentang olahraga Jepang, baseball dan sepak bola ya." }
+  ],
+  "〜といっても": [
+    { ja:"スポーツが得意<strong>といっても</strong>、走るのは苦手だ。", id:"Meski dikatakan pandai olahraga, sebenarnya tidak suka berlari." },
+    { ja:"日本語ができる<strong>といっても</strong>、まだ初心者レベルです。", id:"Meski katanya bisa bahasa Jepang, masih level pemula." },
+    { ja:"暑い<strong>といっても</strong>、まだ30度以下だ。", id:"Meski dibilang panas, masih di bawah 30 derajat." }
+  ],
+  "〜てごらん": [
+    { ja:"この料理、<strong>食べてごらん</strong>。おいしいよ。", id:"Coba makan masakan ini. Enak lho." },
+    { ja:"わからなかったら、先生に<strong>聞いてごらん</strong>。", id:"Kalau tidak mengerti, coba saja tanya ke guru." },
+    { ja:"一度だけ<strong>やってごらん</strong>。きっとできるよ。", id:"Coba saja sekali. Pasti bisa kok." }
+  ],
+  "〜ように言う / 〜ように頼む": [
+    { ja:"医者に、もっと野菜を食べる<strong>ように言われた</strong>。", id:"Dokter menyuruhku agar lebih banyak makan sayuran." },
+    { ja:"友達に、秘密にする<strong>ように頼んだ</strong>。", id:"Aku meminta teman agar merahasiakannya." },
+    { ja:"上司に、報告書を明日までに出す<strong>ように言われた</strong>。", id:"Atasan menyuruhku agar mengumpulkan laporan paling lambat besok." }
+  ],
+  "〜てくれと頼まれた": [
+    { ja:"後輩に、一緒に練習し<strong>てくれと頼まれた</strong>。", id:"Junior memintaku untuk berlatih bersama." },
+    { ja:"母に、早く帰っ<strong>てくれと言われた</strong>。", id:"Ibu memintaku untuk pulang lebih awal." },
+    { ja:"彼女に、もう連絡しない<strong>でくれと言われた</strong>。", id:"Dia memintaku untuk tidak menghubunginya lagi." }
+  ],
+  "〜ても / どんなに〜ても": [
+    { ja:"何度<strong>説明しても</strong>、わかってもらえない。", id:"Berapa kali pun dijelaskan, tidak bisa dimengerti." },
+    { ja:"雨が降っ<strong>ても</strong>、試合は続く。", id:"Meski hujan, pertandingan tetap berlanjut." },
+    { ja:"<strong>どんなに忙しくても</strong>、家族との時間は大切にしている。", id:"Seberapa pun sibuknya, aku tetap menghargai waktu bersama keluarga." }
+  ],
+  "〜ずに / 〜ないで": [
+    { ja:"朝食を食べ<strong>ずに</strong>、学校へ行った。", id:"Pergi ke sekolah tanpa sarapan." },
+    { ja:"傘を持た<strong>ずに</strong>出かけたら、雨に降られた。", id:"Pergi keluar tanpa membawa payung, lalu kehujanan." },
+    { ja:"誰にも言わ<strong>ずに</strong>、一人で決めた。", id:"Tanpa memberi tahu siapa pun, memutuskan sendiri." }
+  ],
+  "〜として / 〜としては": [
+    { ja:"ボランティア<strong>として</strong>、地域の清掃活動に参加した。", id:"Sebagai relawan, ikut berpartisipasi dalam kegiatan kebersihan lingkungan." },
+    { ja:"友達<strong>として</strong>、正直に言わなければならない。", id:"Sebagai teman, aku harus berbicara jujur." },
+    { ja:"学生<strong>としては</strong>、もっと勉強するべきだ。", id:"Sebagai pelajar, seharusnya lebih giat belajar." }
+  ],
+  "〜にしては": [
+    { ja:"子ども<strong>にしては</strong>、難しい言葉をよく知っている。", id:"Untuk anak kecil, dia tahu banyak kata-kata sulit." },
+    { ja:"この店は値段<strong>にしては</strong>、ちょっとサービスが悪い。", id:"Mengingat harganya, pelayanan toko ini agak kurang baik." },
+    { ja:"初めて作った料理<strong>にしては</strong>、すごく上手だ。", id:"Untuk masakan yang dibuat pertama kali, ini sangat bagus." }
+  ],
+  "〜にしても": [
+    { ja:"冗談<strong>にしても</strong>、人を傷つけることは言ってはいけない。", id:"Sekalipun bercanda, jangan mengatakan hal yang menyakiti orang." },
+    { ja:"失敗した<strong>にしても</strong>、諦めるのは早すぎる。", id:"Sekalipun gagal, menyerah itu terlalu cepat." },
+    { ja:"遠い<strong>にしても</strong>、会いに行く価値はある。", id:"Sekalipun jauh, ada nilainya untuk pergi menemui." }
+  ],
+  "〜としたら / 〜とすれば": [
+    { ja:"もし宝くじが当たった<strong>としたら</strong>、何をしますか？", id:"Kalau seandainya menang lotre, apa yang akan kamu lakukan?" },
+    { ja:"彼が本当のことを話している<strong>とすれば</strong>、問題は深刻だ。", id:"Jika seandainya dia berbicara jujur, masalahnya serius." },
+    { ja:"それが本当<strong>だとしたら</strong>、すぐ対応しなければならない。", id:"Kalau itu memang benar, harus segera ditangani." }
+  ],
+  "〜つもりだ / 〜つもりだった": [
+    { ja:"将来は医者になる<strong>つもりです</strong>。", id:"Saya berniat untuk menjadi dokter di masa depan." },
+    { ja:"早く起きる<strong>つもりだったのに</strong>、寝坊してしまった。", id:"Tadinya berniat bangun pagi, tapi malah kesiangan." },
+    { ja:"冗談のつもりで言ったのに、本気にされてしまった。", id:"Tadinya bilang bercanda, tapi malah dianggap serius." }
+  ],
+  "〜はずだ / 〜はずがない": [
+    { ja:"彼はもう大学を卒業している<strong>はずだ</strong>。", id:"Dia seharusnya sudah lulus universitas." },
+    { ja:"こんなに勉強したから、合格できる<strong>はずだ</strong>。", id:"Karena sudah belajar sebanyak ini, seharusnya bisa lulus." },
+    { ja:"あの人が嘘をつく<strong>はずがない</strong>。正直な人だから。", id:"Tidak mungkin orang itu berbohong. Karena dia orang yang jujur." }
+  ],
+  "〜べきだ / 〜べきではない": [
+    { ja:"困っている人がいたら、助ける<strong>べきだ</strong>。", id:"Jika ada orang yang kesulitan, seharusnya kita bantu." },
+    { ja:"そんな失礼なことを言う<strong>べきではない</strong>。", id:"Seharusnya tidak mengatakan hal yang tidak sopan seperti itu." },
+    { ja:"もっと環境のことを考える<strong>べきだと思う</strong>。", id:"Saya rasa kita seharusnya lebih memikirkan lingkungan." }
+  ],
+  "〜たものだ": [
+    { ja:"若いころ、よく徹夜で勉強した<strong>ものだ</strong>。", id:"Waktu muda, dulu sering begadang untuk belajar." },
+    { ja:"夏になると、この川でよく泳いだ<strong>ものだ</strong>。", id:"Kalau musim panas tiba, dulu sering berenang di sungai ini." },
+    { ja:"子どものころ、この道をよく歩いた<strong>ものだ</strong>。", id:"Waktu kecil, dulu sering berjalan di jalan ini." }
+  ],
+  "〜ついでに": [
+    { ja:"図書館に行く<strong>ついでに</strong>、本を返してきた。", id:"Sambil pergi ke perpustakaan, sekalian mengembalikan buku." },
+    { ja:"買い物の<strong>ついでに</strong>、銀行にも寄った。", id:"Sambil belanja, sekalian mampir ke bank." },
+    { ja:"旅行する<strong>ついでに</strong>、友達のところにも顔を出した。", id:"Sambil berwisata, sekalian mampir ke rumah teman." }
+  ],
+  "〜たびに / 〜のたびに": [
+    { ja:"彼女に会う<strong>たびに</strong>、どきどきする。", id:"Setiap kali bertemu dia, jantung selalu berdebar." },
+    { ja:"この場所を通る<strong>たびに</strong>、昔の思い出がよみがえる。", id:"Setiap kali melewati tempat ini, kenangan lama selalu muncul kembali." },
+    { ja:"試験の<strong>たびに</strong>、緊張してしまう。", id:"Setiap kali ada ujian, selalu gugup." }
+  ],
+  "〜たとたん（に）": [
+    { ja:"名前を呼ばれた<strong>とたんに</strong>、心臓がドキドキした。", id:"Begitu namaku dipanggil, jantungku langsung berdebar." },
+    { ja:"バスに乗った<strong>とたん</strong>、雨が降り始めた。", id:"Tepat saat naik bus, hujan mulai turun." },
+    { ja:"布団に入った<strong>とたんに</strong>、眠ってしまった。", id:"Tepat saat masuk ke kasur, langsung tertidur." }
+  ],
+  "〜とおりに / 〜のとおりに": [
+    { ja:"レシピ<strong>のとおりに</strong>作ったが、うまくできなかった。", id:"Sudah membuat sesuai resep, tapi hasilnya tidak bagus." },
+    { ja:"彼の予想<strong>のとおりに</strong>、試合の結果はなった。", id:"Hasil pertandingan menjadi sesuai perkiraannya." },
+    { ja:"計画<strong>のとおりに</strong>進めば、来月には完成する。", id:"Jika berjalan sesuai rencana, bulan depan akan selesai." }
+  ],
+  "〜たまま / 〜ないまま": [
+    { ja:"財布を家に忘れた<strong>まま</strong>、出かけてしまった。", id:"Pergi keluar dengan dompet yang terlupakan di rumah." },
+    { ja:"彼は何も言わない<strong>まま</strong>、部屋を出て行った。", id:"Dia keluar dari kamar tanpa mengatakan apapun." },
+    { ja:"コートを着た<strong>まま</strong>、部屋に入らないでください。", id:"Tolong jangan masuk ke kamar sambil tetap memakai mantel." }
+  ],
+  "〜っぱなし": [
+    { ja:"水を出し<strong>っぱなし</strong>にしないでください。", id:"Tolong jangan biarkan air terus mengalir." },
+    { ja:"一日中テレビを<strong>つけっぱなし</strong>にしていた。", id:"Seharian membiarkan TV terus menyala." },
+    { ja:"引き出しを開け<strong>っぱなし</strong>にしないで。", id:"Jangan biarkan laci terus terbuka." }
+  ],
+  "〜てほしい / 〜てもらいたい": [
+    { ja:"君にはもっと自信を持って<strong>ほしい</strong>。", id:"Aku ingin kamu lebih percaya diri." },
+    { ja:"もう少し静かにして<strong>ほしい</strong>んだけど。", id:"Aku minta tolong lebih tenang sedikit." },
+    { ja:"子どもに健康に育って<strong>ほしい</strong>と思っている。", id:"Aku ingin anak itu tumbuh dengan sehat." }
+  ],
+  "〜がる / 〜たがる": [
+    { ja:"彼はいつも新しいものを<strong>ほしがる</strong>。", id:"Dia selalu menginginkan hal-hal baru." },
+    { ja:"子どもは外で遊びたが<strong>っている</strong>。", id:"Anak itu kelihatannya ingin bermain di luar." },
+    { ja:"みんな彼の秘密を知りたがっ<strong>ている</strong>。", id:"Semua orang kelihatannya ingin tahu rahasianya." }
+  ],
+  "〜ふりをする": [
+    { ja:"彼は気づいていないふりを<strong>している</strong>が、絶対わかっているはずだ。", id:"Dia berpura-pura tidak tahu, tapi pasti sudah mengerti." },
+    { ja:"財布を忘れたふりを<strong>して</strong>、払わなかった。", id:"Berpura-pura lupa dompet, lalu tidak membayar." },
+    { ja:"平気なふりを<strong>していた</strong>が、本当は悲しかった。", id:"Berpura-pura baik-baik saja, padahal sebenarnya sedih." }
+  ],
+  "〜だっけ？ / 〜っけ？": [
+    { ja:"彼女の誕生日、今月<strong>だっけ</strong>？確認しなきゃ。", id:"Ulang tahunnya bulan ini ya? Harus dicek." },
+    { ja:"あれ、鍵どこに置い<strong>たっけ</strong>？", id:"Eh, kunci tadi aku taruh di mana ya?" },
+    { ja:"この映画、もう<strong>見たっけ</strong>？内容を忘れた。", id:"Film ini, sudah pernah kutonton ya? Aku lupa isinya." }
+  ],
+  "〜しかない / 〜するしかない": [
+    { ja:"終電を逃したから、タクシーで帰る<strong>しかない</strong>。", id:"Karena ketinggalan kereta terakhir, tidak ada pilihan selain pulang naik taksi." },
+    { ja:"わからないことがあったら、先生に聞く<strong>しかない</strong>。", id:"Kalau ada yang tidak mengerti, tidak ada pilihan selain bertanya ke guru." },
+    { ja:"失敗しても、また挑戦する<strong>しかない</strong>。", id:"Meski gagal, tidak ada pilihan selain mencoba lagi." }
+  ],
+  "〜んだって / 〜だって": [
+    { ja:"「あの店、閉まった<strong>んだって</strong>。」「え、本当に？」", id:"'Katanya toko itu sudah tutup.' 'Eh, benarkah?'" },
+    { ja:"鈴木さん、子どもが生まれた<strong>んだって</strong>！", id:"Katanya Suzuki-san sudah melahirkan!" },
+    { ja:"来週から、授業が変わる<strong>んだって</strong>よ。", id:"Katanya mulai minggu depan, pelajarannya berubah." }
+  ],
+  "〜させられる（使役受身）": [
+    { ja:"子どものころ、嫌いな食べ物を食べ<strong>させられた</strong>。", id:"Waktu kecil, dipaksa makan makanan yang tidak disukai." },
+    { ja:"会社で毎週報告書を書か<strong>させられる</strong>。", id:"Di perusahaan dipaksa menulis laporan setiap minggu." },
+    { ja:"友達に長い時間、待た<strong>させられた</strong>。", id:"Dipaksa menunggu lama oleh teman." }
+  ],
+  "〜てくる / 〜ていく": [
+    { ja:"冬が近づいて<strong>きた</strong>。寒くなってきた。", id:"Musim dingin semakin mendekat. Mulai terasa dingin." },
+    { ja:"これからも友達として付き合って<strong>いきたい</strong>。", id:"Aku ingin terus berteman ke depannya." },
+    { ja:"スーパーで野菜を買って<strong>きて</strong>ください。", id:"Tolong belikan sayuran di supermarket dan bawa kembali." }
+  ],
+  "〜てたまらない / 〜でたまらない": [
+    { ja:"彼女のことが心配で<strong>たまらない</strong>。", id:"Aku sangat khawatir soal dia, tidak tertahankan." },
+    { ja:"眠くて<strong>たまらない</strong>のに、仕事が終わらない。", id:"Sangat mengantuk tidak tertahankan, tapi pekerjaan belum selesai." },
+    { ja:"故郷の料理が食べたくて<strong>たまらない</strong>。", id:"Sangat ingin makan masakan kampung halaman, tidak tertahankan." }
+  ],
+  "〜てならない": [
+    { ja:"あの事故のことが頭から離れて<strong>ならない</strong>。", id:"Kejadian kecelakaan itu tidak bisa lepas dari pikiranku." },
+    { ja:"なぜかその映画が気になって<strong>ならない</strong>。", id:"Entah kenapa film itu selalu mengusikku." },
+    { ja:"彼の言葉が嬉しくて<strong>ならなかった</strong>。", id:"Kata-katanya membuatku senang tidak tertahankan." }
+  ],
+  "〜さえ〜ば / 〜さえ〜たら": [
+    { ja:"健康で<strong>さえあれば</strong>、他には何もいらない。", id:"Asal sehat, tidak perlu yang lain." },
+    { ja:"もう少し時間<strong>さえあれば</strong>、できたのに。", id:"Andai saja ada sedikit lebih banyak waktu, pasti bisa." },
+    { ja:"彼女が来て<strong>さえくれれば</strong>、パーティーは成功する。", id:"Asal dia mau datang, pesta akan sukses." }
+  ],
+  "どうせ〜": [
+    { ja:"<strong>どうせ</strong>また雨だろう。最近ずっと雨だから。", id:"Toh pasti hujan lagi. Belakangan ini hujan terus." },
+    { ja:"<strong>どうせ</strong>やるなら、最初から全力でやろう。", id:"Toh kalau memang harus dilakukan, lakukan saja dengan sepenuh tenaga dari awal." },
+    { ja:"<strong>どうせ</strong>変わらないと思っていたが、変わった。", id:"Toh kupikir tidak akan berubah, ternyata berubah." }
+  ],
+  "〜わけだ / 〜わけがない": [
+    { ja:"毎日練習しているから、上手になる<strong>わけだ</strong>。", id:"Pantas saja mahir, karena berlatih setiap hari." },
+    { ja:"彼がそんな失礼なことをする<strong>わけがない</strong>。", id:"Tidak mungkin dia melakukan hal yang tidak sopan seperti itu." },
+    { ja:"これだけ食べたら、お腹いっぱいになる<strong>わけだ</strong>。", id:"Pantas saja kenyang, karena sudah makan sebanyak ini." }
+  ],
+  "〜ばよかった": [
+    { ja:"もっと早く病院に行け<strong>ばよかった</strong>。", id:"Seharusnya dulu pergi ke rumah sakit lebih awal." },
+    { ja:"彼女に素直に気持ちを伝えれ<strong>ばよかった</strong>。", id:"Seharusnya dulu jujur mengungkapkan perasaan padanya." },
+    { ja:"もっとお金を節約すれ<strong>ばよかった</strong>と後悔している。", id:"Aku menyesal karena seharusnya dulu lebih hemat uang." }
+  ],
+  "どうりで〜": [
+    { ja:"<strong>どうりで</strong>眠いと思ったら、昨夜2時間しか寝ていなかった。", id:"Pantas saja mengantuk, ternyata semalam hanya tidur 2 jam." },
+    { ja:"<strong>どうりで</strong>日本語が上手なわけだ。10年勉強しているんだって。", id:"Pantas saja bahasa Jepangnya bagus. Katanya sudah belajar 10 tahun." },
+    { ja:"<strong>どうりで</strong>安いと思ったら、セール中だったんだ。", id:"Pantas saja murah, ternyata sedang diskon." }
+  ],
+  "やっと〜 / ようやく〜": [
+    { ja:"3時間待って、<strong>やっと</strong>名前が呼ばれた。", id:"Menunggu 3 jam, akhirnya nama dipanggil." },
+    { ja:"<strong>ようやく</strong>宿題が終わった。", id:"Akhirnya PR selesai." },
+    { ja:"長い交渉の末、<strong>やっと</strong>合意に至った。", id:"Setelah negosiasi panjang, akhirnya tercapai kesepakatan." }
+  ],
+  "なかなか〜ない": [
+    { ja:"この漢字の読み方が<strong>なかなか覚えられない</strong>。", id:"Cara baca kanji ini tidak kunjung bisa dihapalkan." },
+    { ja:"頼んでいた荷物が<strong>なかなか届かない</strong>。", id:"Paket yang dipesan tidak kunjung datang." },
+    { ja:"<strong>なかなか</strong>いい仕事が<strong>見つからない</strong>。", id:"Pekerjaan yang bagus tidak kunjung ketemu." }
+  ],
+  "〜まで / 〜までに": [
+    { ja:"雨が止む<strong>まで</strong>、ここで待ちましょう。", id:"Mari menunggu di sini sampai hujan berhenti." },
+    { ja:"試験<strong>までに</strong>、この本を全部読まなければならない。", id:"Paling lambat sebelum ujian, harus membaca seluruh buku ini." },
+    { ja:"卒業する<strong>までに</strong>、N2に合格したい。", id:"Sebelum lulus, ingin lulus N2." }
+  ],
+  "〜にかけて / 〜から〜にかけて": [
+    { ja:"来週から再来週<strong>にかけて</strong>、出張があります。", id:"Dari minggu depan hingga minggu berikutnya, ada perjalanan dinas." },
+    { ja:"北海道から東北<strong>にかけて</strong>、大雪が降っている。", id:"Dari Hokkaido hingga Tohoku, turun salju lebat." },
+    { ja:"夕方から夜<strong>にかけて</strong>、気温が下がるでしょう。", id:"Dari sore hingga malam, suhu akan turun." }
+  ],
+  "〜すぎる": [
+    { ja:"昨日の飲み会で飲み<strong>すぎて</strong>、今日は頭が痛い。", id:"Di pesta minum-minum kemarin minum terlalu banyak, hari ini kepala sakit." },
+    { ja:"彼女は気を遣い<strong>すぎる</strong>から、疲れてしまう。", id:"Dia terlalu banyak memikirkan orang lain, jadinya kelelahan." },
+    { ja:"ゲームを夜遅くまでやり<strong>すぎない</strong>ようにしよう。", id:"Mari berusaha agar tidak main game terlalu lama sampai larut malam." }
+  ],
+  "あまりにも〜": [
+    { ja:"彼の言葉は<strong>あまりにも</strong>ひどくて、泣いてしまった。", id:"Kata-katanya terlalu keterlaluan sehingga aku menangis." },
+    { ja:"この問題は<strong>あまりにも</strong>難しすぎて、誰も解けなかった。", id:"Soal ini terlalu sulit sehingga tidak ada yang bisa menyelesaikannya." },
+    { ja:"<strong>あまりにも</strong>驚いて、声が出なかった。", id:"Terlalu terkejut sehingga suara tidak bisa keluar." }
+  ],
+  "〜ば〜ほど": [
+    { ja:"考えれ<strong>ば考えるほど</strong>、わからなくなる。", id:"Semakin dipikirkan, semakin tidak mengerti." },
+    { ja:"日本語を使え<strong>ば使うほど</strong>、上手になる。", id:"Semakin sering menggunakan bahasa Jepang, semakin mahir." },
+    { ja:"人は年をとれ<strong>ばとるほど</strong>、健康が大切になる。", id:"Semakin tua seseorang, kesehatan semakin menjadi penting." }
+  ],
+  "〜まで（も）〔強調〕": [
+    { ja:"親友<strong>まで</strong>私を裏切るとは思わなかった。", id:"Aku tidak menyangka bahkan sahabat terbaiku pun akan mengkhianatiku." },
+    { ja:"彼の誕生日を先生<strong>まで</strong>覚えていた。", id:"Bahkan guru pun mengingat ulang tahunnya." },
+    { ja:"子ども<strong>まで</strong>知っている有名な話だ。", id:"Ini cerita terkenal yang bahkan anak-anak pun tahu." }
+  ],
+  "〜ことにする / 〜ことにした": [
+    { ja:"健康のために、毎朝走る<strong>ことにした</strong>。", id:"Demi kesehatan, aku memutuskan untuk berlari setiap pagi." },
+    { ja:"彼との約束はなかった<strong>ことにしよう</strong>。", id:"Anggap saja tidak ada janji dengannya." },
+    { ja:"今年から、毎日日記をつける<strong>ことにしている</strong>。", id:"Mulai tahun ini, aku memutuskan untuk menulis jurnal setiap hari." }
+  ],
+  "〜ことになる / 〜ことになった": [
+    { ja:"結婚式は来年3月に行う<strong>ことになった</strong>。", id:"Pernikahan diputuskan akan diadakan bulan Maret tahun depan." },
+    { ja:"新しいルールが来月から適用される<strong>ことになる</strong>。", id:"Aturan baru akan diterapkan mulai bulan depan." },
+    { ja:"彼が会長に選ばれる<strong>ことになった</strong>。", id:"Dia terpilih menjadi ketua." }
+  ],
+  "〜てからでないと / 〜てからでなければ": [
+    { ja:"試食し<strong>てからでないと</strong>、買えません。", id:"Tidak bisa membeli sebelum mencicipi dulu." },
+    { ja:"彼に相談し<strong>てからでなければ</strong>、決められない。", id:"Tidak bisa memutuskan sebelum berkonsultasi dengannya dulu." },
+    { ja:"データをバックアップし<strong>てからでないと</strong>、削除できない。", id:"Tidak bisa menghapus sebelum mem-backup data dulu." }
+  ],
+  "〜たところ（だ）": [
+    { ja:"電話し<strong>たところ</strong>、留守だった。", id:"Setelah menelepon, ternyata tidak ada orang di rumah." },
+    { ja:"試してみた<strong>ところ</strong>、思ったより簡単だった。", id:"Setelah dicoba, ternyata lebih mudah dari yang dibayangkan." },
+    { ja:"ちょうど今、着い<strong>たところです</strong>。", id:"Saya baru saja tiba sekarang." }
+  ],
+  "もう少しで〜ところだった": [
+    { ja:"もう少しで転んで怪我をする<strong>ところだった</strong>。", id:"Hampir saja terjatuh dan cedera." },
+    { ja:"もう少しで大切なものを忘れていく<strong>ところだった</strong>。", id:"Hampir saja pergi dengan meninggalkan barang penting." },
+    { ja:"もう少しで試験に落ちる<strong>ところだった</strong>が、なんとか合格した。", id:"Hampir saja gagal ujian, tapi entah bagaimana berhasil lulus." }
+  ],
+  "〜てはじめて": [
+    { ja:"外国に住んで<strong>はじめて</strong>、日本のよさがわかった。", id:"Baru setelah tinggal di luar negeri, aku menyadari kebaikan Jepang." },
+    { ja:"病気になって<strong>はじめて</strong>、健康の大切さに気づいた。", id:"Baru setelah sakit, aku menyadari pentingnya kesehatan." },
+    { ja:"失って<strong>はじめて</strong>、その大切さがわかる。", id:"Baru setelah kehilangan, barulah menyadari betapa berharganya." }
+  ],
+  "〜としても / 〜だとしても": [
+    { ja:"忙しい<strong>としても</strong>、連絡くらいはできるはずだ。", id:"Sekalipun sibuk, seharusnya bisa setidaknya menghubungi." },
+    { ja:"たとえ反対される<strong>としても</strong>、自分の夢を諦めない。", id:"Sekalipun ditentang, aku tidak akan menyerah pada impianku." },
+    { ja:"それが事実<strong>だとしても</strong>、言い方が悪かった。", id:"Sekalipun itu kenyataan, cara mengatakannya tidak baik." }
+  ],
+  "〜あげく（に）": [
+    { ja:"何時間も話し合った<strong>あげく</strong>、喧嘩になってしまった。", id:"Setelah berdiskusi berjam-jam, ujung-ujungnya malah bertengkar." },
+    { ja:"あれこれ考えた<strong>あげく</strong>、結局やめることにした。", id:"Setelah memikirkan macam-macam, ujung-ujungnya memutuskan berhenti." },
+    { ja:"長い入院生活の<strong>あげく</strong>、亡くなってしまった。", id:"Setelah menjalani perawatan di rumah sakit yang panjang, ujung-ujungnya meninggal." }
+  ],
+  "〜にしろ / 〜にせよ / 〜にしても": [
+    { ja:"賛成する<strong>にしろ</strong>反対する<strong>にしろ</strong>、理由を言ってください。", id:"Apakah setuju atau tidak, tolong sebutkan alasannya." },
+    { ja:"どんな理由<strong>にせよ</strong>、遅刻はよくない。", id:"Apapun alasannya, terlambat itu tidak baik." },
+    { ja:"困難な状況<strong>にしろ</strong>、諦めてはいけない。", id:"Bagaimanapun situasi yang sulit, tidak boleh menyerah." }
+  ],
+  "〜どころか": [
+    { ja:"彼は謝る<strong>どころか</strong>、逆に私を責めた。", id:"Bukannya minta maaf, malah sebaliknya dia menyalahkan aku." },
+    { ja:"休む<strong>どころか</strong>、残業が増えた。", id:"Bukannya bisa istirahat, malah lemburnya bertambah." },
+    { ja:"日本語が上手になる<strong>どころか</strong>、忘れてきている。", id:"Bukannya bahasa Jepang makin bagus, malah semakin terlupakan." }
+  ],
+  "〜どころではない / 〜どころじゃない": [
+    { ja:"仕事が山積みで、休む<strong>どころではない</strong>。", id:"Pekerjaan menumpuk, bukan saatnya untuk istirahat." },
+    { ja:"試験前で、遊ぶ<strong>どころじゃない</strong>よ。", id:"Menjelang ujian, bukan saatnya untuk bermain." },
+    { ja:"財布をなくして、買い物<strong>どころではなかった</strong>。", id:"Karena kehilangan dompet, bukan saatnya untuk belanja." }
+  ],
+  "〜ば〜ほど（復習）": [
+    { ja:"日本に長くいれ<strong>ばいるほど</strong>、文化がわかってきた。", id:"Semakin lama tinggal di Jepang, semakin mengerti budayanya." },
+    { ja:"彼女のことを知れ<strong>ば知るほど</strong>、好きになる。", id:"Semakin aku mengenal dia, semakin suka." }
+  ]
+};
+
+// ── FURIGANA ──
+const READINGS = {
+  // Time
+  "今日":"きょう","昨日":"きのう","明日":"あした","今年":"ことし",
+  "来年":"らいねん","去年":"きょねん","今月":"こんげつ","来月":"らいげつ",
+  "先月":"せんげつ","今週":"こんしゅう","来週":"らいしゅう","先週":"せんしゅう",
+  "毎日":"まいにち","毎朝":"まいあさ","毎週":"まいしゅう","毎月":"まいつき",
+  "毎年":"まいとし","今夜":"こんや","今晩":"こんばん","今朝":"けさ",
+  "夜中":"よなか","直後":"ちょくご","最近":"さいきん",
+  // People / relations
+  "友達":"ともだち","先生":"せんせい","学生":"がくせい","子ども":"こども",
+  "家族":"かぞく","親友":"しんゆう","後輩":"こうはい","上司":"じょうし",
+  "医者":"いしゃ","赤ちゃん":"あかちゃん","自分":"じぶん","相手":"あいて",
+  "知人":"ちじん","息子":"むすこ","娘":"むすめ","彼女":"かのじょ",
+  // Places / facilities
+  "図書館":"としょかん","病院":"びょういん","銀行":"ぎんこう",
+  "会議室":"かいぎしつ","警察":"けいさつ","北海道":"ほっかいどう",
+  "東北":"とうほく","外国":"がいこく","故郷":"こきょう",
+  // Study / school
+  "勉強":"べんきょう","練習":"れんしゅう","授業":"じゅぎょう",
+  "宿題":"しゅくだい","試験":"しけん","入学式":"にゅうがくしき",
+  "入学":"にゅうがく","合格":"ごうかく","卒業":"そつぎょう",
+  "大学":"だいがく","初心者":"しょしんしゃ",
+  // Health
+  "健康":"けんこう","病気":"びょうき","入院":"にゅういん",
+  "手術":"しゅじゅつ","頭":"あたま","体":"からだ",
+  // Work / business
+  "仕事":"しごと","会社":"かいしゃ","会議":"かいぎ",
+  "報告書":"ほうこくしょ","残業":"ざんぎょう","出張":"しゅっちょう",
+  // Daily life / things
+  "財布":"さいふ","電話":"でんわ","電車":"でんしゃ",
+  "冷蔵庫":"れいぞうこ","地図":"ちず","写真":"しゃしん",
+  "旅行":"りょこう","食べ物":"たべもの","飲み物":"のみもの",
+  "料理":"りょうり","買い物":"かいもの","薬":"くすり",
+  // Concepts / abstract
+  "説明":"せつめい","気分":"きぶん","気持ち":"きもち",
+  "心配":"しんぱい","自信":"じしん","秘密":"ひみつ",
+  "約束":"やくそく","連絡":"れんらく","相談":"そうだん",
+  "計画":"けいかく","予約":"よやく","確認":"かくにん",
+  "理由":"りゆう","結果":"けっか","失敗":"しっぱい",
+  "成功":"せいこう","成長":"せいちょう","時間":"じかん",
+  "問題":"もんだい","言葉":"ことば","音楽":"おんがく",
+  "環境":"かんきょう","経験":"けいけん","文化":"ぶんか",
+  "社会":"しゃかい","将来":"しょうらい","世界":"せかい",
+  "場合":"ばあい","場所":"ばしょ","状況":"じょうきょう",
+  "方法":"ほうほう","目的":"もくてき","意味":"いみ",
+  "内容":"ないよう","準備":"じゅんび","運動":"うんどう",
+  "感情":"かんじょう","感謝":"かんしゃ","感動":"かんどう",
+  "交渉":"こうしょう","議論":"ぎろん","結婚":"けっこん",
+  "合意":"ごうい","規則":"きそく","態度":"たいど",
+  "調査":"ちょうさ","発表":"はっぴょう","研究":"けんきゅう",
+  "技術":"ぎじゅつ","影響":"えいきょう","経済":"けいざい",
+  "礼儀":"れいぎ","交通":"こうつう","情報":"じょうほう",
+  "記憶":"きおく","事故":"じこ","試合":"しあい",
+  "入試":"にゅうし","点数":"てんすう","成績":"せいせき",
+  "収入":"しゅうにゅう","給料":"きゅうりょう","節約":"せつやく",
+  "生活":"せいかつ","習慣":"しゅうかん","印象":"いんしょう",
+  // Adjective-related nouns
+  "大切":"たいせつ","大事":"だいじ","大丈夫":"だいじょうぶ",
+  "大変":"たいへん","重要":"じゅうよう","丁寧":"ていねい",
+  "親切":"しんせつ","正直":"しょうじき","不思議":"ふしぎ",
+  // Mixed kanji-kana compounds
+  "読み方":"よみかた","書き方":"かきかた","考え方":"かんがえかた",
+  "使い方":"つかいかた","話し方":"はなしかた","歩き方":"あるきかた",
+  "生き方":"いきかた","やり方":"やりかた","見方":"みかた",
+  // Other common N3 words
+  "世界中":"せかいじゅう","一日中":"いちにちじゅう",
+  "電気":"でんき","水道":"すいどう","洗濯":"せんたく",
+  "掃除":"そうじ","整理":"せいり","修理":"しゅうり",
+  "記念":"きねん","招待":"しょうたい","参加":"さんか",
+  "申込":"もうしこみ","申請":"しんせい","許可":"きょか",
+  "禁止":"きんし","注意":"ちゅうい","安全":"あんぜん",
+  "危険":"きけん","交番":"こうばん","案内":"あんない",
+  "乗客":"じょうきゃく","荷物":"にもつ","終電":"しゅうでん",
+  // Single kanji — nouns (matched only when no longer compound applies)
+  "本":"ほん","人":"ひと","年":"とし","月":"つき","日":"ひ",
+  "朝":"あさ","昼":"ひる","夜":"よる","時":"とき","間":"あいだ",
+  "花":"はな","木":"き","山":"やま","川":"かわ","海":"うみ",
+  "空":"そら","雨":"あめ","雪":"ゆき","風":"かぜ","雲":"くも",
+  "店":"みせ","家":"いえ","道":"みち","橋":"はし","駅":"えき",
+  "犬":"いぬ","猫":"ねこ","鳥":"とり","魚":"さかな","虫":"むし",
+  "水":"みず","酒":"さけ","茶":"ちゃ","肉":"にく","米":"こめ",
+  "傘":"かさ","服":"ふく","鍵":"かぎ","窓":"まど","棚":"たな",
+  "手":"て","目":"め","口":"くち","足":"あし","耳":"みみ",
+  "顔":"かお","声":"こえ","腕":"うで","指":"ゆび","歯":"は",
+  "金":"かね","力":"ちから","夢":"ゆめ","愛":"あい","心":"こころ",
+  "空気":"くうき","地面":"じめん","天井":"てんじょう",
+  // Single kanji — verb stems (reading consistent across conjugations)
+  "書":"か","読":"よ","聞":"き","見":"み","食":"た","飲":"の",
+  "泣":"な","笑":"わら","走":"はし","歩":"ある","待":"ま",
+  "持":"も","作":"つく","送":"おく","受":"う","払":"はら",
+  "渡":"わた","忘":"わす","覚":"おぼ","落":"お","置":"お",
+  "呼":"よ","頼":"たの","困":"こま","怒":"おこ","驚":"おどろ",
+  "疲":"つか","帰":"かえ","乗":"の","寝":"ね","話":"はな",
+  "泳":"およ","遊":"あそ","売":"う","買":"か","借":"か",
+  "貸":"か","返":"かえ","負":"ま","勝":"か","続":"つづ",
+  "始":"はじ","終":"お","開":"あ","閉":"し","起":"お",
+  "決":"き","選":"えら","比":"くら","調":"しら","並":"なら",
+  "働":"はたら","集":"あつ","集":"あつ","増":"ふ","減":"へ",
+  "変":"か","壊":"こわ","直":"なお","建":"た","捨":"す",
+  "拾":"ひろ","押":"お","引":"ひ","切":"き","折":"お",
+  // Japan / language
+  "日本語":"にほんご","日本":"にほん","日本人":"にほんじん",
+  "英語":"えいご","中国語":"ちゅうごくご","外国人":"がいこくじん",
+  "漢字":"かんじ","平仮名":"ひらがな","片仮名":"かたかな",
+  // Common 2-kanji daily vocab
+  "一人":"ひとり","一番":"いちばん","一緒":"いっしょ","一度":"いちど",
+  "上手":"じょうず","下手":"へた","大人":"おとな","子供":"こども",
+  "元気":"げんき","人気":"にんき","名前":"なまえ","番号":"ばんごう",
+  "番組":"ばんぐみ","映画":"えいが","音楽会":"おんがくかい",
+  "学校":"がっこう","高校":"こうこう","中学":"ちゅうがく",
+  "先輩":"せんぱい","同僚":"どうりょう","部下":"ぶか",
+  "部屋":"へや","玄関":"げんかん","台所":"だいどころ","押入":"おしいれ",
+  "野菜":"やさい","果物":"くだもの","食事":"しょくじ","朝食":"ちょうしょく",
+  "昼食":"ちゅうしょく","夕食":"ゆうしょく","弁当":"べんとう","飲食":"いんしょく",
+  "野球":"やきゅう","試合":"しあい","選手":"せんしゅ","応援":"おうえん",
+  "風邪":"かぜ","熱":"ねつ","痛み":"いたみ","体調":"たいちょう",
+  "天気":"てんき","気温":"きおん","台風":"たいふう","地震":"じしん",
+  "電気":"でんき","電池":"でんち","電力":"でんりょく",
+  "自転車":"じてんしゃ","飛行機":"ひこうき","新幹線":"しんかんせん",
+  "道路":"どうろ","信号":"しんごう","駐車場":"ちゅうしゃじょう",
+  "努力":"どりょく","挑戦":"ちょうせん","目標":"もくひょう","夢":"ゆめ",
+  "感想":"かんそう","意見":"いけん","批判":"ひはん","反対":"はんたい",
+  "賛成":"さんせい","同意":"どうい","合意":"ごうい",
+  "挨拶":"あいさつ","返事":"へんじ","報告":"ほうこく","連絡先":"れんらくさき",
+  "結婚式":"けっこんしき","誕生日":"たんじょうび","記念日":"きねんび",
+  "卒業式":"そつぎょうしき","入学式":"にゅうがくしき",
+  "郵便局":"ゆうびんきょく","役所":"やくしょ","市役所":"しやくしょ",
+  "温泉":"おんせん","神社":"じんじゃ","寺":"てら","城":"しろ",
+  "海水浴":"かいすいよく","登山":"とざん","花見":"はなみ",
+  "女性":"じょせい","男性":"だんせい","若者":"わかもの",
+  "老人":"ろうじん","両親":"りょうしん","親":"おや","兄":"あに",
+  "姉":"あね","弟":"おとうと","妹":"いもうと","祖父":"そふ","祖母":"そぼ",
+  "授業中":"じゅぎょうちゅう","旅行中":"りょこうちゅう",
+  "再来週":"さらいしゅう","再来月":"さらいげつ",
+  "間違い":"まちがい","失礼":"しつれい","迷惑":"めいわく","遠慮":"えんりょ",
+  "お礼":"おれい","お願い":"おねがい","お断り":"おことわり",
+  "交番":"こうばん","消防署":"しょうぼうしょ",
+  "引越":"ひっこし","家賃":"やちん","光熱費":"こうねつひ",
+  "材料":"ざいりょう","道具":"どうぐ","機械":"きかい","部品":"ぶひん",
+  "作業":"さぎょう","作品":"さくひん","作家":"さっか","作者":"さくしゃ",
+  "運転":"うんてん","駐車":"ちゅうしゃ","乗車":"じょうしゃ","降車":"こうしゃ",
+  "宝くじ":"たからくじ","保険":"ほけん","税金":"ぜいきん",
+  "相談相手":"そうだんあいて",
+  "感情的":"かんじょうてき","感動的":"かんどうてき","積極的":"せっきょくてき",
+  "一般的":"いっぱんてき","具体的":"ぐたいてき","基本的":"きほんてき",
+
+  // ── 競合修正用・複合語（単字より長いので先にマッチする）──
+  "返信":"へんしん","返却":"へんきゃく",
+  "出す":"だす","出口":"でぐち","出発":"しゅっぱつ","出席":"しゅっせき","出身":"しゅっしん",
+  "出来る":"できる","出来た":"できた","出来ない":"できない",
+  "出かける":"でかける","出会う":"であう","出会い":"であい",
+  "行動":"こうどう","行事":"ぎょうじ","行列":"ぎょうれつ","行為":"こうい",
+  "行う":"おこなう","行われ":"おこなわれ",
+  "来る":"くる","来た":"きた","来て":"きて","来ない":"こない",
+  "新聞":"しんぶん","知識":"ちしき",
+  "読書":"どくしょ","読者":"どくしゃ",
+  "集中":"しゅうちゅう","集合":"しゅうごう","集団":"しゅうだん",
+  "増加":"ぞうか","増減":"ぞうげん",
+  "減少":"げんしょう",
+  "変化":"へんか","変更":"へんこう","変換":"へんかん",
+  "終了":"しゅうりょう","終点":"しゅうてん",
+  "開始":"かいし","開発":"かいはつ","開催":"かいさい",
+  "閉店":"へいてん","閉会":"へいかい",
+  "選挙":"せんきょ","選択":"せんたく",
+  "調理":"ちょうり","調整":"ちょうせい","調節":"ちょうせつ",
+  "建物":"たてもの","建設":"けんせつ",
+  "直接":"ちょくせつ","直前":"ちょくぜん",
+  "比較":"ひかく","比率":"ひりつ",
+  "借金":"しゃっきん",
+  "勝負":"しょうぶ","勝利":"しょうり","勝手":"かって",
+  "切手":"きって","切符":"きっぷ","切実":"せつじつ",
+  "思い出":"おもいで","思いやり":"おもいやり","思い込":"おもいこ",
+  "物語":"ものがたり","物件":"ぶっけん","物価":"ぶっか",
+  "見える":"みえる","見せる":"みせる","見つける":"みつける",
+  "見つかる":"みつかる","見かける":"みかける","見直す":"みなおす",
+  "聞こえる":"きこえる","聞き取":"ききと",
+  "言う":"いう","言った":"いった","言われ":"いわれ","言葉":"ことば",
+  "思う":"おもう","思った":"おもった","思われ":"おもわれ",
+  "知る":"しる","知らない":"しらない","知られ":"しられ","知り合":"しりあ",
+  "気づく":"きづく","気になる":"きになる","気にする":"きにする","気がする":"きがする",
+  "続ける":"つづける","続く":"つづく",
+  "始める":"はじめる","始まる":"はじまる","始まり":"はじまり",
+  "終わる":"おわる","終わり":"おわり",
+  "変わる":"かわる","変える":"かえる",
+  "増える":"ふえる","増やす":"ふやす",
+  "減る":"へる","減らす":"へらす",
+  "集まる":"あつまる","集める":"あつめる",
+  "開く":"ひらく","開ける":"あける",
+  "閉まる":"しまる","閉める":"しめる",
+  "決まる":"きまる","決める":"きめる",
+  "選ぶ":"えらぶ","比べる":"くらべる","並べる":"ならべる",
+  "調べる":"しらべる",
+  "建てる":"たてる","直す":"なおす","直る":"なおる",
+  "落とす":"おとす","起こる":"おこる","起こす":"おこす",
+  "伝える":"つたえる","伝わる":"つたわる",
+  "引き出す":"ひきだす","取り出す":"とりだす","申し出":"もうしで",
+  "関係":"かんけい","関心":"かんしん","関与":"かんよ",
+
+  // ── 高頻度・単字漢字 ──
+  "彼":"かれ","彼氏":"かれし",
+  "早":"はや","悪":"わる","言":"い","思":"おも","知":"し","物":"もの",
+  "出":"で","行":"い","子":"こ",
+  "前":"まえ","後":"あと","中":"なか","上":"うえ","下":"した",
+  "外":"そと","右":"みぎ","左":"ひだり","横":"よこ","奥":"おく",
+  "男":"おとこ","女":"おんな","方":"かた","頃":"ごろ","度":"たび",
+
+  // ── 形容詞語幹（音読みなし・安全）──
+  "新":"あたら","古":"ふる","高":"たか","低":"ひく","多":"おお",
+  "長":"なが","短":"みじか","強":"つよ","弱":"よわ","軽":"かる",
+  "速":"はや","遅":"おそ","暑":"あつ","寒":"さむ",
+  "甘":"あま","楽":"たの","悲":"かな","難":"むずか",
+  "珍":"めずら","忙":"いそが","嬉":"うれ","怖":"こわ",
+  "優":"やさ","正":"ただ","美":"うつく","深":"ふか",
+  "狭":"せま","広":"ひろ","細":"ほそ","太":"ふと","痛":"いた",
+
+  // ── 色 ──
+  "白":"しろ","黒":"くろ","赤":"あか","青":"あお",
+  "黄色":"きいろ","茶色":"ちゃいろ","緑":"みどり","紫":"むらさき",
+
+  // ── よく使う名詞・副詞 ──
+  "全部":"ぜんぶ","全員":"ぜんいん","全体":"ぜんたい",
+  "最初":"さいしょ","最後":"さいご","最高":"さいこう","最低":"さいてい",
+  "以上":"いじょう","以下":"いか","以前":"いぜん","以後":"いご","以外":"いがい",
+  "必要":"ひつよう","普通":"ふつう","普段":"ふだん",
+  "一方":"いっぽう","一部":"いちぶ","一切":"いっさい","一応":"いちおう",
+  "実際":"じっさい","実は":"じつは","実力":"じつりょく","実物":"じつぶつ",
+  "結局":"けっきょく","当然":"とうぜん","当たり前":"あたりまえ",
+  "確か":"たしか","正確":"せいかく",
+  "便利":"べんり","不安":"ふあん","不満":"ふまん","不思議":"ふしぎ",
+  "理解":"りかい","解決":"かいけつ","解説":"かいせつ",
+  "部分":"ぶぶん","程度":"ていど",
+  "反省":"はんせい","反応":"はんのう",
+  "様子":"ようす","様々":"さまざま",
+  "特に":"とくに","特別":"とくべつ","特徴":"とくちょう",
+  "本当":"ほんとう","本来":"ほんらい","本人":"ほんにん","本音":"ほんね",
+  "突然":"とつぜん","絶対":"ぜったい","全然":"ぜんぜん","必ず":"かならず",
+  "大体":"だいたい","大抵":"たいてい",
+  "初めて":"はじめて","久しぶり":"ひさしぶり",
+  "自然":"しぜん","自体":"じたい","自ら":"みずか",
+  "同じ":"おなじ","違い":"ちがい","違う":"ちがう",
+  "近く":"ちかく","遠く":"とおく","間近":"まぢか",
+  "期待":"きたい","希望":"きぼう","願い":"ねがい","願う":"ねがう",
+  "誤解":"ごかい","説得":"せっとく","議論":"ぎろん",
+  "順番":"じゅんばん","次第":"しだい","手順":"てじゅん",
+  "言い方":"いいかた","聞き方":"ききかた","見方":"みかた",
+  "気分":"きぶん","気持ち":"きもち","気配":"けはい",
+
+  // ── 人名・地名 ──
+  "田中":"たなか","鈴木":"すずき","山田":"やまだ","東京":"とうきょう",
+  "大阪":"おおさか","京都":"きょうと","九州":"きゅうしゅう","バリ島":"バリとう",
+
+  // ── 複合語（曖昧な単字の前にマッチさせる） ──
+  "何度":"なんど","何回":"なんかい","何時間":"なんじかん","何も":"なにも",
+  "何か":"なにか","何で":"なんで","何人":"なんにん",
+  "少し":"すこし","少ない":"すくない","少なくとも":"すくなくとも",
+  "気をつける":"きをつける","気をつけ":"きをつけ",
+  "気がする":"きがする","気になる":"きになる","気にする":"きにする",
+  "気づく":"きづく","気づい":"きづい","気づか":"きづか",
+  "大きい":"おおきい","大きな":"おおきな","大きく":"おおきく",
+  "大切":"たいせつ","大事":"だいじ","大丈夫":"だいじょうぶ","大変":"たいへん",
+  "大体":"だいたい","大抵":"たいてい","大学":"だいがく",
+  "入れる":"いれる","入れ":"いれ","入る":"はいる","入り":"はいり",
+  "使う":"つかう","使い":"つかい","使わ":"つかわ","使え":"つかえ","使っ":"つかっ",
+  "考える":"かんがえる","考え":"かんがえ","考えれ":"かんがえれ",
+  "眠い":"ねむい","眠れ":"ねむれ","眠っ":"ねむっ","眠る":"ねむる",
+  "歌う":"うたう","歌い":"うたい","歌われ":"うたわれ","歌っ":"うたっ",
+  "降る":"ふる","降っ":"ふっ","降られ":"ふられ","降り":"ふり",
+  "遅刻":"ちこく","遅い":"おそい","遅く":"おそく","遅れ":"おくれ",
+  "着く":"つく","着い":"つい","着る":"きる","着て":"きて","着た":"きた",
+  "冗談":"じょうだん",
+  "休む":"やすむ","休み":"やすみ","休ん":"やすん","休日":"きゅうじつ",
+  "留守":"るす","留まる":"とどまる",
+  "値段":"ねだん","値上":"ねあ",
+  "昔":"むかし",
+  "静か":"しずか","静かに":"しずかに",
+  "誰":"だれ","誰か":"だれか","誰も":"だれも","誰で":"だれで",
+  "諦める":"あきらめる","諦め":"あきらめ",
+  "私":"わたし","私の":"わたしの","私が":"わたしが","私は":"わたしは","私に":"わたしに","私を":"わたしを",
+  "好き":"すき","好きな":"すきな","好きに":"すきに",
+  "国":"くに","外国":"がいこく","国際":"こくさい",
+  "母":"はは","父":"ちち",
+  "散らかる":"ちらかる","散らかり":"ちらかり",
+  "他に":"ほかに","他の":"ほかの","他は":"ほかは",
+  "住む":"すむ","住ん":"すん","住み":"すみ",
+  "面白い":"おもしろい","面白く":"おもしろく","面白な":"おもしろな",
+  "転ぶ":"ころぶ","転ん":"ころん","転職":"てんしょく",
+  "後悔":"こうかい",
+  "届く":"とどく","届い":"とどい","届け":"とどけ",
+  "二人":"ふたり","二つ":"ふたつ","二度":"にど",
+  "傷つく":"きずつく","傷つけ":"きずつけ","傷つい":"きずつい",
+  "謝る":"あやまる","謝り":"あやまり","謝っ":"あやまっ",
+  "逃げる":"にげる","逃げ":"にげ",
+  "夏":"なつ","夏休み":"なつやすみ",
+  "試す":"ためす","試み":"こころみ","試して":"ためして",
+  "抱く":"だく","抱っこ":"だっこ",
+  "辞書":"じしょ",
+  "手帳":"てちょう","日帳":"にっちょう",
+  "無駄":"むだ","無理":"むり","無い":"ない",
+  "お菓子":"おかし","菓子":"かし",
+  "守る":"まもる","守り":"まもり",
+  "住所":"じゅうしょ",
+  "付く":"つく","付ける":"つける","付き":"つき","付け":"つけ",
+  "有名":"ゆうめい","有る":"ある",
+  "合う":"あう","合わ":"あわ","合い":"あい",
+  "今":"いま",
+  "予想":"よそう","予定":"よてい","予習":"よしゅう","予約":"よやく",
+  "教える":"おしえる","教え":"おしえ","教室":"きょうしつ",
+  "段取り":"だんどり","手段":"しゅだん","値段":"ねだん",
+  "近い":"ちかい","近く":"ちかく","近づく":"ちかづく","近づい":"ちかづい",
+  "ご存知":"ごぞんじ","ご存じ":"ごぞんじ",
+  "遠い":"とおい","遠く":"とおく",
+  "絵":"え","絵を描く":"えをかく",
+  "描く":"かく",
+  "踏む":"ふむ","踏ん":"ふん","踏ま":"ふま",
+  "盗む":"ぬすむ","盗ま":"ぬすま","盗ん":"ぬすん",
+  "撮る":"とる","撮り":"とり","撮っ":"とっ",
+  "消える":"きえる","消え":"きえ","消す":"けす",
+  "仲良し":"なかよし","仲良く":"なかよく",
+  "辺り":"あたり",
+  "洗う":"あらう","洗い":"あらい",
+  "字":"じ","文字":"もじ",
+  "替える":"かえる","着替え":"きがえ","着替える":"きがえる",
+  "回す":"まわす","回る":"まわる",
+  "探す":"さがす","探し":"さがし",
+  "登る":"のぼる","登り":"のぼり",
+  "鳴る":"なる","鳴り":"なり","鳴っ":"なっ",
+  "認める":"みとめる","認め":"みとめ",
+  "真剣":"しんけん","真面目":"まじめ",
+  "詳しい":"くわしい","詳しく":"くわしく",
+  "別れる":"わかれる","別れ":"わかれ","別に":"べつに",
+  "睡眠":"すいみん",
+  "焼く":"やく","焼い":"やい","焼け":"やけ",
+  "根性":"こんじょう",
+  "残念":"ざんねん","残業":"ざんぎょう",
+  "室内":"しつない","会議室":"かいぎしつ",
+  "完成":"かんせい","完了":"かんりょう",
+  "進む":"すすむ","進め":"すすめ","進ん":"すすん",
+  "育てる":"そだてる","育て":"そだて","育つ":"そだつ",
+  "全力":"ぜんりょく","全国":"ぜんこく",
+  "腹":"はら","お腹":"おなか",
+  "素直":"すなお",
+  "若い":"わかい","若く":"わかく",
+  "嫌い":"きらい","嫌な":"いやな","嫌だ":"いやだ",
+  "嘘":"うそ","嘘をつく":"うそをつく",
+  "助ける":"たすける","助け":"たすけ",
+  "徹夜":"てつや",
+  "緊張":"きんちょう",
+  "心臓":"しんぞう",
+  "布団":"ふとん",
+  "寄る":"よる","立ち寄る":"たちよる",
+  "通る":"とおる","通り":"とおり","通って":"とおって",
+  "想像":"そうぞう","想い":"おもい",
+  "生まれる":"うまれる","生まれ":"うまれ","生む":"うむ",
+  "気遣い":"きづかい",
+  "皆":"みんな","皆さん":"みなさん",
+  "頑張る":"がんばる","頑張り":"がんばり","頑張っ":"がんばっ",
+  "品質":"ひんしつ","品物":"しなもの",
+  "円":"えん",
+  "無駄遣い":"むだづかい",
+  "立つ":"たつ","立て":"たて","立ち":"たち",
+  "断る":"ことわる","断り":"ことわり",
+  "公園":"こうえん",
+  "紙":"かみ","手紙":"てがみ","袋":"ふくろ",
+  "曲":"きょく",
+  "資料":"しりょう",
+  "暗い":"くらい","暗く":"くらく",
+  "慣れる":"なれる","慣れ":"なれ","慣ら":"なら",
+  "分かる":"わかる","分かっ":"わかっ","分かり":"わかり",
+  "梅":"うめ","梅雨":"つゆ",
+  "喜ぶ":"よろこぶ","喜び":"よろこび",
+  "引っ越し":"ひっこし","引越し":"ひっこし",
+  "勤める":"つとめる","勤め":"つとめ",
+  "迷う":"まよう","迷い":"まよい","迷っ":"まよっ",
+  "結論":"けつろん",
+  "片付ける":"かたづける","片付け":"かたづけ",
+  "先ほど":"さきほど","先に":"さきに",
+  "色々":"いろいろ",
+  "順調":"じゅんちょう",
+  "操作":"そうさ",
+  "叶う":"かなう","叶え":"かなえ",
+  "危ない":"あぶない","危なく":"あぶなく",
+  "文句":"もんく","文法":"ぶんぽう",
+  "習う":"ならう","習い":"ならい",
+  "興味":"きょうみ",
+  "範囲":"はんい",
+  "活動":"かつどう","清掃":"せいそう",
+  "地域":"ちいき",
+  "対応":"たいおう",
+  "暖かい":"あたたかい","暖か":"あたたか",
+  "春":"はる","冬":"ふゆ",
+  "聴く":"きく","聴い":"きい",
+  "毎回":"まいかい",
+  "小さい":"ちいさい","小さな":"ちいさな","小さく":"ちいさく",
+  "相手":"あいて","得意":"とくい","苦手":"にがて",
+  "存在":"そんざい",
+  "表情":"ひょうじょう","代表":"だいひょう",
+  "混む":"こむ","混ん":"こん","混じる":"まじる",
+  "弾く":"ひく","弾い":"ひい",
+  "村":"むら",
+  "克服":"こくふく",
+  "学ぶ":"まなぶ","学び":"まなび",
+  "飛ぶ":"とぶ","飛ん":"とん",
+  "曜日":"ようび","日曜日":"にちようび","月曜日":"げつようび",
+  "報じる":"ほうじる",
+  "説く":"とく","説明":"せつめい",
+  "気がつく":"きがつく","気がつい":"きがつい",
+  "付き合う":"つきあう","付き合い":"つきあい","付き合っ":"つきあっ",
+
+  // ── 残り漏れ（コンテキスト確認済み）──
+  "天気予報":"てんきよほう","料金":"りょうきん","授業料":"じゅぎょうりょう",
+  "学習":"がくしゅう","留学":"りゅうがく","転勤":"てんきん",
+  "事実":"じじつ",
+  "小説":"しょうせつ","本州":"ほんしゅう","本気":"ほんき","平気":"へいき",
+  "大好き":"だいすき","大雪":"おおゆき","大家":"おおや",
+  "前回":"ぜんかい","立場":"たちば",
+  "散歩":"さんぽ","無断":"むだん",
+  "顔色":"かおいろ",
+  "飲み会":"のみかい","会長":"かいちょう",
+  "話し合う":"はなしあう","話し合い":"はなしあい","話し合っ":"はなしあっ",
+  "歌舞伎":"かぶき","歌":"うた",
+  "信じる":"しんじる","信じ":"しんじ","信じられ":"しんじられ",
+  "吸う":"すう","吸わ":"すわ","吸っ":"すっ",
+  "味":"あじ",
+  "会う":"あう","会い":"あい","会っ":"あっ",
+  "入って":"はいって","入らない":"はいらない","入ら":"はいら",
+  "分":"ふん",
+  "眠く":"ねむく",
+  "喜ん":"よろこん",
+  "洗って":"あらって","洗っ":"あらっ","洗わ":"あらわ",
+  "消し":"けし","消しちゃ":"けしちゃ",
+  "焼き":"やき","もんじゃ焼き":"もんじゃやき",
+  "登ろ":"のぼろ","登っ":"のぼっ",
+  "描か":"えがか","描かれ":"えがかれ",
+  "撮ら":"とら","撮らせ":"とらせ","撮れ":"とれ",
+  "謝ろ":"あやまろ",
+  "引っ越す":"ひっこす","引っ越し":"ひっこし",
+  "近づこ":"ちかづこ",
+  "間違え":"まちがえ","間違えて":"まちがえて",
+  "関して":"かんして","関しては":"かんしては","関する":"かんする",
+  "探そ":"さがそ",
+  "気を遣う":"きをつかう","気を遣い":"きをつかい","気遣":"きづか",
+  "学ぼ":"まなぼ",
+  "課":"か",
+  "本州":"ほんしゅう",
+  "9課":"9か","10課":"10か",
+  "気になってならない":"きになってならない","気になって":"きになって",
+
+  // ── 最終残り ──
+  "毎食後":"まいしょくご","毎食":"まいしょく",
+  "プロ級":"プロきゅう","上級":"じょうきゅう","初級":"しょきゅう",
+  "気が付いた":"きがついた","気が付い":"きがつい",
+  "叶います":"かないます","叶い":"かない",
+  "辞める":"やめる","辞め":"やめ",
+  "面倒くさい":"めんどうくさい","面倒":"めんどう",
+  "価値":"かち",
+  "当たった":"あたった","当たる":"あたる","当たり":"あたり",
+  "深刻":"しんこく","遅刻":"ちこく",
+  "寝坊":"ねぼう",
+  "立ち寄る":"たちよる","立ち寄っ":"たちよっ","寄る":"よる","寄っ":"よっ",
+  "布団に入":"ふとんにはい",
+  "君":"きみ",
+  "育って":"そだって","育つ":"そだつ","育て":"そだて",
+  "終電を逃":"しゅうでんをのが","逃した":"のがした","逃す":"のがす",
+  "頭から離れ":"あたまからはなれ","離れ":"はなれ","離れる":"はなれる",
+  "伝えれ":"つたえれ",
+  "昨夜":"さくや",
+  "安い":"やすい","安く":"やすく","安さ":"やすさ",
+  "末":"すえ",
+  "至った":"いたった","至る":"いたる",
+  "届かない":"とどかない","届か":"とどか",
+  "止む":"やむ","止ま":"とどま","雨が止":"あめがや",
+  "夕方":"ゆうがた",
+  "解ける":"とける","解けな":"とけな","解け":"とけ",
+  "裏切る":"うらぎる","裏切っ":"うらぎっ","裏切り":"うらぎり",
+  "日記":"にっき",
+  "適用":"てきよう",
+  "試食":"ししょく",
+  "削除":"さくじょ",
+  "簡単":"かんたん",
+  "怪我":"けが",
+  "失う":"うしなう","失っ":"うしなっ","失い":"うしない",
+  "喧嘩":"けんか",
+  "亡くなっ":"なくなっ","亡くなる":"なくなる",
+  "逆に":"ぎゃくに","逆":"ぎゃく",
+  "責める":"せめる","責め":"せめ","責めた":"せめた",
+  "山積み":"やまづみ","積み":"つみ",
+  "何を":"なにを","何か":"なにか","何も":"なにも",
+  "来ました":"きました","来た":"きた","来て":"きて",
+  "入ったとたん":"はいったとたん","入った":"はいった","入らない":"はいらない",
+};
+
+// ── ROMAJI ──
+const ROMAJI = {
+  // 2-char combos (checked before single chars)
+  'きゃ':'kya','きゅ':'kyu','きょ':'kyo',
+  'しゃ':'sha','しゅ':'shu','しょ':'sho',
+  'ちゃ':'cha','ちゅ':'chu','ちょ':'cho',
+  'にゃ':'nya','にゅ':'nyu','にょ':'nyo',
+  'ひゃ':'hya','ひゅ':'hyu','ひょ':'hyo',
+  'みゃ':'mya','みゅ':'myu','みょ':'myo',
+  'りゃ':'rya','りゅ':'ryu','りょ':'ryo',
+  'ぎゃ':'gya','ぎゅ':'gyu','ぎょ':'gyo',
+  'じゃ':'ja','じゅ':'ju','じょ':'jo',
+  'ぢゃ':'ja','ぢゅ':'ju','ぢょ':'jo',
+  'びゃ':'bya','びゅ':'byu','びょ':'byo',
+  'ぴゃ':'pya','ぴゅ':'pyu','ぴょ':'pyo',
+  'ふぁ':'fa','ふぃ':'fi','ふぇ':'fe','ふぉ':'fo',
+  // Single chars
+  'あ':'a','い':'i','う':'u','え':'e','お':'o',
+  'か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko',
+  'さ':'sa','し':'shi','す':'su','せ':'se','そ':'so',
+  'た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to',
+  'な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no',
+  'は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho',
+  'ま':'ma','み':'mi','む':'mu','め':'me','も':'mo',
+  'や':'ya','ゆ':'yu','よ':'yo',
+  'ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro',
+  'わ':'wa','を':'o','ん':'n',
+  'が':'ga','ぎ':'gi','ぐ':'gu','げ':'ge','ご':'go',
+  'ざ':'za','じ':'ji','ず':'zu','ぜ':'ze','ぞ':'zo',
+  'だ':'da','ぢ':'ji','づ':'zu','で':'de','ど':'do',
+  'ば':'ba','び':'bi','ぶ':'bu','べ':'be','ぼ':'bo',
+  'ぱ':'pa','ぴ':'pi','ぷ':'pu','ぺ':'pe','ぽ':'po',
+  'ぁ':'a','ぃ':'i','ぅ':'u','ぇ':'e','ぉ':'o',
+  'ゃ':'ya','ゅ':'yu','ょ':'yo','ー':'-',
+};
+
+function getRomaji(html) {
+  // 1. Apply furigana → kanji become <ruby>X<rt>よみ</rt></ruby>
+  const marked = addFurigana(html);
+  // 2. Extract reading from ruby tags (kanji → hiragana)
+  let text = marked.replace(/<ruby>[^<]*<rt>([^<]*)<\/rt><\/ruby>/g, '$1');
+  // 3. Remove remaining HTML tags (<strong> etc.)
+  text = text.replace(/<[^>]+>/g, '');
+  // 4. Katakana → hiragana
+  text = text.replace(/[\u30A1-\u30F6]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0x60));
+  // 5. Convert hiragana → romaji char by char (2-char combos first)
+  let result = '', i = 0;
+  while (i < text.length) {
+    const two = text[i] + (text[i+1] || '');
+    if (ROMAJI[two]) { result += ROMAJI[two]; i += 2; continue; }
+    const ch = text[i];
+    if (ch === 'っ') {
+      const nxt2 = text[i+1] + (text[i+2] || '');
+      const nxt1 = text[i+1] || '';
+      const r = ROMAJI[nxt2] || ROMAJI[nxt1] || '';
+      if (r) result += r[0];
+      i++; continue;
+    }
+    if (ROMAJI[ch] !== undefined) { result += ROMAJI[ch]; i++; continue; }
+    // Japanese punctuation → Latin
+    if (ch === '。') { result += '. '; i++; continue; }
+    if (ch === '、') { result += ', '; i++; continue; }
+    if (ch === '「' || ch === '『' || ch === '（') { result += '"'; i++; continue; }
+    if (ch === '」' || ch === '』' || ch === '）') { result += '"'; i++; continue; }
+    if (ch === '・' || ch === '　') { result += ' '; i++; continue; }
+    if (ch === '〜' || ch === '～') { result += '~'; i++; continue; }
+    if (ch === '！') { result += '! '; i++; continue; }
+    if (ch === '？') { result += '? '; i++; continue; }
+    result += ch; // unregistered kanji kept as-is
+    i++;
+  }
+  // ── 助詞「は」→ "wa" に修正 ──
+  // 単語内部の は（hakkiri, hazu など）は文頭にくるため影響しない
+  // 母(haha)等の単語内 "aha" は READINGS で一括変換済みなので
+  // ここでの "aha"→"awa" は適用しない（誤変換防止）
+  result = result
+    .replace(/niha/g,  'niwa')  // には
+    .replace(/deha/g,  'dewa')  // では
+    .replace(/toha/g,  'towa')  // とは
+    .replace(/moha/g,  'mowa')  // もは / 〜もは
+    .replace(/kaha/g,  'kawa')  // か＋は
+    .replace(/nha/g,   'nwa')   // ん＋は
+    .replace(/iha/g,   'iwa')   // 私は・君は など（〜iは）
+    .replace(/eha/g,   'ewa')   // 彼は など（〜eは）
+    .replace(/uha/g,   'uwa')   // 学校は など（〜uは）
+    // aha→awa：歌は(utaha)→(utawa) など。母(はは→haha)は保護してから変換
+    .replace(/haha/g, '\x00HAHA\x00')
+    .replace(/aha/g,   'awa')   // 歌は など（〜aは）
+    .replace(/\x00HAHA\x00/g, 'haha')
+    // oha→owa：〜oは パターン（該当例があれば対応）
+    .replace(/oha/g,   'owa')   // 〜oは
+    // ── 助詞「へ」→ "e" に修正 ──
+    // 単語内部の へ（heya, henji など）は文頭にくるため影響しない
+    .replace(/([aiueon])he/g, '$1e'); // 〜へ（方向の助詞）
+  return result.trim();
+}
+
+let romajiOn = true;
+function toggleRomaji() {
+  romajiOn = !romajiOn;
+  document.body.classList.toggle('no-romaji', !romajiOn);
+  document.getElementById('romaji-btn').textContent = romajiOn ? 'ローマ字あり' : 'ローマ字なし';
+}
+
+function addFurigana(html) {
+  // Split the HTML string into alternating text/tag chunks
+  const parts = html.split(/(<[^>]+>)/);
+  // Build one regex from all READINGS keys, longest first to avoid partial matches
+  const words = Object.keys(READINGS).sort((a, b) => b.length - a.length);
+  const escaped = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const re = new RegExp(escaped.join('|'), 'g');
+  return parts.map((part, i) => {
+    // Odd indices are HTML tags — leave them untouched
+    if (i % 2 === 1) return part;
+    return part.replace(re, m => `<ruby>${m}<rt>${READINGS[m]}</rt></ruby>`);
+  }).join('');
+}
+
+let furiganaOn = true;
+function toggleFurigana() {
+  furiganaOn = !furiganaOn;
+  document.body.classList.toggle('no-furigana', !furiganaOn);
+  document.getElementById('furi-btn').textContent = furiganaOn ? 'ルビあり' : 'ルビなし';
+}
+
+// ── INIT ──
+renderHome();
+</script>
+</body>
+</html>
