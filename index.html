@@ -149,6 +149,20 @@
   .result-btns { display: flex; flex-direction: column; gap: 10px; }
   .result-btns button { padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; }
 
+  /* 穴埋め空欄 */
+  .blank-box {
+    display: inline-block;
+    border-bottom: 2.5px solid var(--red);
+    min-width: 72px;
+    background: rgba(230,57,70,.06);
+    border-radius: 4px;
+    padding: 1px 10px;
+    letter-spacing: 0.18em;
+    color: rgba(0,0,0,0);
+    vertical-align: middle;
+  }
+  .blank-badge { display: inline-block; background: var(--red); color: white; font-size: 0.72rem; border-radius: 20px; padding: 2px 10px; margin-bottom: 10px; }
+
   /* Ruby / Furigana */
   ruby { ruby-align: center; }
   rt { font-size: 0.55em; color: #888; line-height: 1.5; }
@@ -272,6 +286,7 @@
   <div class="nav-btns">
     <button class="nav-btn" onclick="showHome()">ホーム</button>
     <button class="nav-btn" onclick="showAllQuiz()">クイズ</button>
+    <button class="nav-btn" onclick="showBlankQuiz()">穴埋め</button>
     <button class="nav-btn" id="furi-btn" onclick="toggleFurigana()">ルビあり</button>
     <button class="nav-btn" id="romaji-btn" onclick="toggleRomaji()">ローマ字あり</button>
   </div>
@@ -1279,13 +1294,86 @@ function buildQuizItems(dayObjs) {
   return shuffle(items);
 }
 
+let isBlankQuiz = false;
+
+function buildBlankQuizItems(dayObjs) {
+  // 全例文の <strong> テキストをバッジ付きで収集
+  const allForms = [];
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => {
+    g.examples.forEach(ex => {
+      const m = ex.ja.match(/<strong>([^<]*)<\/strong>/);
+      if (m) allForms.push({ form: m[1], pattern: g.pattern, badge: g.badge });
+    });
+  })));
+
+  // 紛らわしさスコアで選択肢を選ぶ
+  function pickDistractors(correctForm, correctPattern, correctBadge) {
+    const correctLen = correctForm.length;
+    const end2 = correctForm.slice(-2);
+    const end3 = correctForm.slice(-3);
+    const candidates = allForms
+      .filter(e => e.pattern !== correctPattern && e.form !== correctForm)
+      .map(e => {
+        let score = 0;
+        // 同じバッジ（活用形カテゴリ）なら高スコア
+        if (e.badge === correctBadge) score += 8;
+        // バッジの最初の単語が一致（例: "Vて形" 系）
+        else if (e.badge.split('＋')[0] === correctBadge.split('＋')[0]) score += 4;
+        // 語尾が似ているほど高スコア
+        if (e.form.endsWith(end3)) score += 6;
+        else if (e.form.endsWith(end2)) score += 3;
+        // 文字数が近いほど高スコア
+        const diff = Math.abs(e.form.length - correctLen);
+        score += Math.max(0, 5 - diff);
+        return { form: e.form, score };
+      })
+      .sort((a, b) => b.score - a.score);
+    // 上位12件からランダムに3つ（毎回少し変わるように）
+    return shuffle(candidates.slice(0, 12)).slice(0, 3).map(e => e.form);
+  }
+
+  const items = [];
+  dayObjs.forEach(({g, wk}) => {
+    g.examples.forEach(ex => {
+      const match = ex.ja.match(/<strong>([^<]*)<\/strong>/);
+      if (!match) return;
+      const correctForm = match[1];
+      const blankHtml = ex.ja.replace(/<strong>[^<]*<\/strong>/, '<span class="blank-box">＿＿＿＿＿</span>');
+      const distractors = pickDistractors(correctForm, g.pattern, g.badge);
+      items.push({
+        questionBlankHtml: blankHtml,
+        questionId: ex.id,
+        badge: g.badge,
+        correct: correctForm,
+        pattern: g.pattern,
+        options: shuffle([correctForm, ...distractors]),
+        meaningId: g.meaningId
+      });
+    });
+  });
+  return shuffle(items);
+}
+
 function showAllQuiz() {
+  isBlankQuiz = false;
   const all = [];
   WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => all.push({g, wk}))));
   quizItems = buildQuizItems(shuffle(all).slice(0, 15));
   quizTitle = 'クイズ全体 / Kuis Semua Materi';
   qIdx = 0; qScore = 0; qAnswered = false;
   document.getElementById('quiz-back').onclick = showHome;
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function showBlankQuiz() {
+  isBlankQuiz = true;
+  const all = [];
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => all.push({g, wk}))));
+  quizItems = buildBlankQuizItems(shuffle(all).slice(0, 15));
+  quizTitle = '穴埋めクイズ / Kuis Isi Titik';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isBlankQuiz = false; showHome(); };
   renderQuizQ();
   showScreen('screen-quiz');
 }
@@ -1305,6 +1393,19 @@ function renderQuizQ() {
   if (qIdx >= quizItems.length) { renderResult(); return; }
   const q = quizItems[qIdx];
   const pct = (qIdx / quizItems.length) * 100;
+  let questionBlock = '';
+  if (isBlankQuiz) {
+    questionBlock = `
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — 空欄に入る文法はどれですか？ / Pilih tata bahasa yang tepat!</div>
+      <span class="blank-badge">${q.badge}</span>
+      <div class="q-text">${addFurigana(q.questionBlankHtml)}</div>
+      <div class="q-id-box"><span class="q-id-flag">🇮🇩</span>${q.questionId}</div>`;
+  } else {
+    questionBlock = `
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — この文に使われている文法はどれですか？</div>
+      <div class="q-text">${addFurigana(q.questionHtml)}</div>
+      <div class="q-id-box"><span class="q-id-flag">🇮🇩</span>${q.questionId}</div>`;
+  }
   document.getElementById('quiz-content').innerHTML = `
     <div class="quiz-header">
       <div class="quiz-meta">
@@ -1313,11 +1414,7 @@ function renderQuizQ() {
       </div>
       <div class="quiz-progress"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
     </div>
-    <div class="quiz-question">
-      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — この文に使われている文法はどれですか？</div>
-      <div class="q-text">${addFurigana(q.questionHtml)}</div>
-      <div class="q-id-box"><span class="q-id-flag">🇮🇩</span>${q.questionId}</div>
-    </div>
+    <div class="quiz-question">${questionBlock}</div>
     <div class="quiz-options">
       ${q.options.map((opt,i) => `<div class="quiz-opt" id="qo${i}" onclick="pickOpt(${i})">${opt}</div>`).join('')}
     </div>
@@ -1341,9 +1438,15 @@ function pickOpt(i) {
   });
   const fb = document.getElementById('qfb');
   fb.className = `quiz-feedback show ${ok ? 'correct-fb' : 'wrong-fb'}`;
-  fb.innerHTML = ok
-    ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${q.meaningId}</div>`
-    : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong><br>${q.meaningId}</div>`;
+  if (isBlankQuiz) {
+    fb.innerHTML = ok
+      ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${q.pattern}<br>${q.meaningId}</div>`
+      : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong>（${q.pattern}）<br>${q.meaningId}</div>`;
+  } else {
+    fb.innerHTML = ok
+      ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${q.meaningId}</div>`
+      : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong><br>${q.meaningId}</div>`;
+  }
   document.getElementById('qnext').classList.add('show');
 }
 
