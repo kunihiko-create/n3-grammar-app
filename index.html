@@ -27,6 +27,10 @@
   .nav-btns { display: flex; gap: 8px; }
   .nav-btn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: background .2s; }
   .nav-btn:hover, .nav-btn.active { background: var(--light-blue); }
+  .nav-btn.nav-display { background: rgba(233,196,106,.25); border-color: rgba(233,196,106,.6); color: var(--warning); }
+  .nav-btn.nav-display:hover { background: rgba(233,196,106,.4); color: white; }
+  .nav-btn.nav-home { background: rgba(45,106,79,.35); border-color: rgba(45,106,79,.7); color: #d8f3dc; }
+  .nav-btn.nav-home:hover { background: rgba(45,106,79,.6); color: white; }
 
   .screen { display: none; padding: 16px; max-width: 680px; margin: 0 auto; }
   .screen.active { display: block; }
@@ -321,14 +325,14 @@
 <nav>
   <h1>日本語N3 文法<span>Tata Bahasa Jepang N3</span></h1>
   <div class="nav-btns">
-    <button class="nav-btn" onclick="showHome()">ホーム</button>
-    <button class="nav-btn" onclick="showAllQuiz()">文法確認クイズ</button>
+    <button class="nav-btn nav-home" onclick="showHome()">ホーム</button>
+    <button class="nav-btn" onclick="showAllQuiz()">文法確認</button>
     <button class="nav-btn" onclick="showBlankQuiz()">穴埋め</button>
     <button class="nav-btn" onclick="showRearrangeQuiz()">並べ替え</button>
     <button class="nav-btn" onclick="showSynonymQuiz()">言い換え</button>
     <button class="nav-btn" onclick="showVerbDrill()">活用ドリル</button>
-    <button class="nav-btn" id="furi-btn" onclick="toggleFurigana()">ルビあり</button>
-    <button class="nav-btn" id="romaji-btn" onclick="toggleRomaji()">ローマ字あり</button>
+    <button class="nav-btn nav-display" id="furi-btn" onclick="toggleFurigana()">ふりがなあり</button>
+    <button class="nav-btn nav-display" id="romaji-btn" onclick="toggleRomaji()">ローマ字あり</button>
   </div>
 </nav>
 
@@ -1717,6 +1721,36 @@ const SYNONYM_GROUPS = [
     meaningJa:"程度が大きすぎる", meaningId:"Terlalu / Terlampau" },
   { forms:["〜たがる","〜たいと思っている"],
     meaningJa:"（第三者が）〜したい", meaningId:"(Orang lain) ingin melakukan sesuatu" },
+  { forms:["〜たばかり","〜たところ"],
+    meaningJa:"〜したすぐ後", meaningId:"Baru saja melakukan sesuatu" },
+  { forms:["〜うちに","〜あいだに"],
+    meaningJa:"〜の間に（時間）", meaningId:"Selama / Sementara (suatu keadaan)" },
+  { forms:["〜にちがいない","〜にきまっている"],
+    meaningJa:"絶対に〜だ（強い確信）", meaningId:"Pasti / Tidak diragukan lagi" },
+  { forms:["〜とおりに","〜どおりに"],
+    meaningJa:"〜の通りに", meaningId:"Sesuai dengan / Persis seperti" },
+  { forms:["〜だけでなく","〜ばかりでなく","〜のみならず"],
+    meaningJa:"〜だけじゃなくて", meaningId:"Tidak hanya / Bukan cuma" },
+  { forms:["〜にくらべて","〜よりも"],
+    meaningJa:"〜と比較して", meaningId:"Dibandingkan dengan" },
+  { forms:["〜たびに","〜ごとに"],
+    meaningJa:"〜するときはいつも", meaningId:"Setiap kali" },
+  { forms:["〜まま","〜状態で"],
+    meaningJa:"〜の状態のままで", meaningId:"Dalam keadaan / Tanpa berubah" },
+  { forms:["〜とは限らない","〜わけではない"],
+    meaningJa:"必ずしも〜ではない", meaningId:"Tidak selalu / Tidak berarti" },
+  { forms:["〜なんて","〜なんか"],
+    meaningJa:"〜のようなもの（軽蔑・例示）", meaningId:"Seperti / Hal seperti itu" },
+  { forms:["〜ものの","〜が（逆接）"],
+    meaningJa:"〜だけれども", meaningId:"Walaupun / Akan tetapi" },
+  { forms:["〜ばかりに","〜せいで"],
+    meaningJa:"〜が原因で（悪い結果）", meaningId:"Gara-gara / Karena (akibat negatif)" },
+  { forms:["〜たって","〜ても"],
+    meaningJa:"〜しても", meaningId:"Meskipun (kondisi)" },
+  { forms:["〜限り","〜うちは"],
+    meaningJa:"〜の状態が続いている間", meaningId:"Selama / Sejauh" },
+  { forms:["〜以上は","〜からには"],
+    meaningJa:"〜したのだから当然", meaningId:"Karena sudah / Sekali sudah (maka harus)" },
 ];
 
 function buildSynonymItems() {
@@ -1745,7 +1779,7 @@ function buildSynonymItems() {
       });
     });
   });
-  return shuffle(items).slice(0, 12);
+  return shuffle(items).slice(0, 18);
 }
 
 function showSynonymQuiz() {
@@ -1798,6 +1832,30 @@ const VERBS = [
     passive:"呼ばれる", causative:"呼ばせる", causPassive:"呼ばせられる", potential:"呼べる", nai:"呼ばない", te:"呼んで" },
   { base:"使う", reading:"つかう", group:1, mean:"menggunakan",
     passive:"使われる", causative:"使わせる", causPassive:"使わせられる", potential:"使える", nai:"使わない", te:"使って" },
+  { base:"持つ", reading:"もつ", group:1, mean:"memegang/punya",
+    passive:"持たれる", causative:"持たせる", causPassive:"持たせられる", potential:"持てる", nai:"持たない", te:"持って" },
+  { base:"知る", reading:"しる", group:1, mean:"tahu",
+    passive:"知られる", causative:"知らせる", causPassive:"知らせられる", potential:"知れる", nai:"知らない", te:"知って" },
+  { base:"帰る", reading:"かえる", group:1, mean:"pulang",
+    passive:"帰られる", causative:"帰らせる", causPassive:"帰らせられる", potential:"帰れる", nai:"帰らない", te:"帰って" },
+  { base:"入る", reading:"はいる", group:1, mean:"masuk",
+    passive:"入られる", causative:"入らせる", causPassive:"入らせられる", potential:"入れる", nai:"入らない", te:"入って" },
+  { base:"終わる", reading:"おわる", group:1, mean:"selesai",
+    passive:"終わられる", causative:"終わらせる", causPassive:"終わらせられる", potential:"終われる", nai:"終わらない", te:"終わって" },
+  { base:"作る", reading:"つくる", group:1, mean:"membuat",
+    passive:"作られる", causative:"作らせる", causPassive:"作らせられる", potential:"作れる", nai:"作らない", te:"作って" },
+  { base:"歌う", reading:"うたう", group:1, mean:"menyanyi",
+    passive:"歌われる", causative:"歌わせる", causPassive:"歌わせられる", potential:"歌える", nai:"歌わない", te:"歌って" },
+  { base:"歩く", reading:"あるく", group:1, mean:"berjalan",
+    passive:"歩かれる", causative:"歩かせる", causPassive:"歩かせられる", potential:"歩ける", nai:"歩かない", te:"歩いて" },
+  { base:"働く", reading:"はたらく", group:1, mean:"bekerja",
+    passive:"働かれる", causative:"働かせる", causPassive:"働かせられる", potential:"働ける", nai:"働かない", te:"働いて" },
+  { base:"貸す", reading:"かす", group:1, mean:"meminjamkan",
+    passive:"貸される", causative:"貸させる", causPassive:"貸させられる", potential:"貸せる", nai:"貸さない", te:"貸して" },
+  { base:"住む", reading:"すむ", group:1, mean:"tinggal",
+    passive:"住まれる", causative:"住ませる", causPassive:"住ませられる", potential:"住める", nai:"住まない", te:"住んで" },
+  { base:"休む", reading:"やすむ", group:1, mean:"istirahat",
+    passive:"休まれる", causative:"休ませる", causPassive:"休ませられる", potential:"休める", nai:"休まない", te:"休んで" },
   // ── Group 2 (一段) ──
   { base:"食べる", reading:"たべる", group:2, mean:"makan",
     passive:"食べられる", causative:"食べさせる", causPassive:"食べさせられる", potential:"食べられる", nai:"食べない", te:"食べて" },
@@ -1815,6 +1873,24 @@ const VERBS = [
     passive:"出られる", causative:"出させる", causPassive:"出させられる", potential:"出られる", nai:"出ない", te:"出て" },
   { base:"覚える", reading:"おぼえる", group:2, mean:"mengingat",
     passive:"覚えられる", causative:"覚えさせる", causPassive:"覚えさせられる", potential:"覚えられる", nai:"覚えない", te:"覚えて" },
+  { base:"答える", reading:"こたえる", group:2, mean:"menjawab",
+    passive:"答えられる", causative:"答えさせる", causPassive:"答えさせられる", potential:"答えられる", nai:"答えない", te:"答えて" },
+  { base:"借りる", reading:"かりる", group:2, mean:"meminjam",
+    passive:"借りられる", causative:"借りさせる", causPassive:"借りさせられる", potential:"借りられる", nai:"借りない", te:"借りて" },
+  { base:"始める", reading:"はじめる", group:2, mean:"memulai",
+    passive:"始められる", causative:"始めさせる", causPassive:"始めさせられる", potential:"始められる", nai:"始めない", te:"始めて" },
+  { base:"忘れる", reading:"わすれる", group:2, mean:"melupakan",
+    passive:"忘れられる", causative:"忘れさせる", causPassive:"忘れさせられる", potential:"忘れられる", nai:"忘れない", te:"忘れて" },
+  { base:"受ける", reading:"うける", group:2, mean:"menerima",
+    passive:"受けられる", causative:"受けさせる", causPassive:"受けさせられる", potential:"受けられる", nai:"受けない", te:"受けて" },
+  { base:"調べる", reading:"しらべる", group:2, mean:"memeriksa",
+    passive:"調べられる", causative:"調べさせる", causPassive:"調べさせられる", potential:"調べられる", nai:"調べない", te:"調べて" },
+  { base:"考える", reading:"かんがえる", group:2, mean:"memikirkan",
+    passive:"考えられる", causative:"考えさせる", causPassive:"考えさせられる", potential:"考えられる", nai:"考えない", te:"考えて" },
+  { base:"続ける", reading:"つづける", group:2, mean:"melanjutkan",
+    passive:"続けられる", causative:"続けさせる", causPassive:"続けさせられる", potential:"続けられる", nai:"続けない", te:"続けて" },
+  { base:"捨てる", reading:"すてる", group:2, mean:"membuang",
+    passive:"捨てられる", causative:"捨てさせる", causPassive:"捨てさせられる", potential:"捨てられる", nai:"捨てない", te:"捨てて" },
   // ── Group 3 (不規則) ──
   { base:"する", reading:"する", group:3, mean:"melakukan",
     passive:"される", causative:"させる", causPassive:"させられる", potential:"できる", nai:"しない", te:"して" },
@@ -1839,7 +1915,7 @@ function buildVerbDrillItems() {
       allCombos.push({ verb: v, form: f });
     });
   });
-  const picked = shuffle(allCombos).slice(0, 12);
+  const picked = shuffle(allCombos).slice(0, 20);
 
   return picked.map(({ verb, form }) => {
     const correct = verb[form.key];
@@ -3697,7 +3773,7 @@ let furiganaOn = true;
 function toggleFurigana() {
   furiganaOn = !furiganaOn;
   document.body.classList.toggle('no-furigana', !furiganaOn);
-  document.getElementById('furi-btn').textContent = furiganaOn ? 'ルビあり' : 'ルビなし';
+  document.getElementById('furi-btn').textContent = furiganaOn ? 'ふりがなあり' : 'ふりがななし';
 }
 
 // ── INIT ──
