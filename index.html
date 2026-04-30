@@ -162,6 +162,43 @@
     vertical-align: middle;
   }
   .blank-badge { display: inline-block; background: var(--red); color: white; font-size: 0.72rem; border-radius: 20px; padding: 2px 10px; margin-bottom: 10px; }
+  .id-toggle-btn { display: block; background: none; border: 1px dashed var(--light-blue); color: var(--light-blue); border-radius: 6px; padding: 5px 14px; font-size: 0.8rem; cursor: pointer; margin-top: 10px; }
+  .id-toggle-btn:hover { background: rgba(69,123,157,.08); }
+
+  /* ── 並べ替え問題 ── */
+  .rearrange-sentence { background: white; padding: 18px 16px; border-radius: 10px; font-size: 1rem; line-height: 2.6; margin-bottom: 14px; color: var(--blue); font-weight: bold; }
+  .rearrange-slot { display: inline-block; min-width: 78px; min-height: 36px; border: 2px dashed #bbb; margin: 0 4px; padding: 4px 10px; text-align: center; vertical-align: middle; background: rgba(0,0,0,.02); border-radius: 6px; cursor: pointer; color: var(--blue); font-weight: bold; transition: all .2s; }
+  .rearrange-slot:hover { background: rgba(69,123,157,.08); }
+  .rearrange-slot.empty { color: #aaa; font-weight: normal; font-size: 0.85rem; border-style: dashed; }
+  .rearrange-slot.star { border-color: var(--red); background: rgba(230,57,70,.06); }
+  .rearrange-slot.star.empty { color: var(--red); font-size: 1rem; }
+  .rearrange-slot.correct { border-color: var(--success); background: #d8f3dc; color: var(--success); border-style: solid; }
+  .rearrange-slot.wrong { border-color: var(--danger); background: #fde8df; color: var(--danger); border-style: solid; }
+  .rearrange-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .rearrange-chip { background: white; border: 2px solid var(--light-blue); border-radius: 8px; padding: 9px 14px; cursor: pointer; font-size: 0.95rem; color: var(--blue); transition: all .2s; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  .rearrange-chip:hover { background: var(--cream); }
+  .rearrange-chip.used { background: #f0f0f0; color: #ccc; border-color: #ddd; cursor: default; box-shadow: none; }
+  .rearrange-btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .rearrange-check-btn { flex: 2; padding: 14px; background: var(--red); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: bold; transition: background .2s; }
+  .rearrange-check-btn:disabled { background: #ccc; cursor: default; }
+  .rearrange-check-btn:not(:disabled):hover { background: #c1121f; }
+  .rearrange-reset-btn { flex: 1; padding: 14px; background: white; color: var(--gray); border: 2px solid #ddd; border-radius: 10px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: all .2s; }
+  .rearrange-reset-btn:disabled { background: #f5f5f5; color: #ccc; border-color: #eee; cursor: default; }
+  .rearrange-reset-btn:not(:disabled):hover { background: #f8f9fa; border-color: var(--gray); color: var(--blue); }
+
+  /* ── 言い換えクイズ ── */
+  .synonym-prompt { background: var(--blue); color: white; font-size: 1.5rem; font-weight: bold; padding: 22px 18px; border-radius: 10px; text-align: center; margin-bottom: 10px; letter-spacing: 0.04em; }
+  .synonym-meaning { font-size: 0.88rem; color: var(--gray); margin-bottom: 8px; text-align: center; font-style: italic; }
+
+  /* ── 動詞活用ドリル ── */
+  .verb-drill-card { background: var(--blue); color: white; border-radius: 10px; padding: 24px 18px; text-align: center; margin-bottom: 14px; }
+  .verb-drill-base { font-size: 1.8rem; font-weight: bold; letter-spacing: 0.05em; }
+  .verb-drill-base ruby rt { color: var(--light); font-size: 0.45em; }
+  .verb-drill-meaning { font-size: 0.85rem; color: var(--light); margin-top: 4px; font-style: italic; }
+  .verb-drill-arrow { color: var(--warning); font-size: 1.4rem; margin: 10px 0 6px; }
+  .verb-drill-form { background: var(--red); display: inline-block; padding: 8px 22px; border-radius: 20px; font-size: 1rem; font-weight: bold; }
+  .verb-drill-form-id { display: block; font-size: 0.75rem; color: var(--light); margin-top: 6px; font-style: italic; }
+  .verb-group-tag { display: inline-block; background: rgba(255,255,255,.18); border-radius: 12px; padding: 2px 10px; font-size: 0.72rem; margin-bottom: 8px; }
 
   /* Ruby / Furigana */
   ruby { ruby-align: center; }
@@ -285,8 +322,11 @@
   <h1>日本語N3 文法<span>Tata Bahasa Jepang N3</span></h1>
   <div class="nav-btns">
     <button class="nav-btn" onclick="showHome()">ホーム</button>
-    <button class="nav-btn" onclick="showAllQuiz()">クイズ</button>
+    <button class="nav-btn" onclick="showAllQuiz()">文法確認クイズ</button>
     <button class="nav-btn" onclick="showBlankQuiz()">穴埋め</button>
+    <button class="nav-btn" onclick="showRearrangeQuiz()">並べ替え</button>
+    <button class="nav-btn" onclick="showSynonymQuiz()">言い換え</button>
+    <button class="nav-btn" onclick="showVerbDrill()">活用ドリル</button>
     <button class="nav-btn" id="furi-btn" onclick="toggleFurigana()">ルビあり</button>
     <button class="nav-btn" id="romaji-btn" onclick="toggleRomaji()">ローマ字あり</button>
   </div>
@@ -1306,30 +1346,51 @@ function buildBlankQuizItems(dayObjs) {
     });
   })));
 
-  // 紛らわしさスコアで選択肢を選ぶ
+  // 紛らわしさスコアで選択肢を選ぶ（高難易度版）
   function pickDistractors(correctForm, correctPattern, correctBadge) {
     const correctLen = correctForm.length;
+    const end1 = correctForm.slice(-1);
     const end2 = correctForm.slice(-2);
     const end3 = correctForm.slice(-3);
+    const end4 = correctForm.slice(-4);
+    const begin1 = correctForm.slice(0, 1);
+    const begin2 = correctForm.slice(0, 2);
+
+    // 文字の重なり度（共通文字がいくつあるか）
+    function charOverlap(a, b) {
+      const set = new Set(a.split(''));
+      let n = 0;
+      for (const ch of b) if (set.has(ch)) n++;
+      return n;
+    }
+
     const candidates = allForms
       .filter(e => e.pattern !== correctPattern && e.form !== correctForm)
       .map(e => {
         let score = 0;
-        // 同じバッジ（活用形カテゴリ）なら高スコア
-        if (e.badge === correctBadge) score += 8;
-        // バッジの最初の単語が一致（例: "Vて形" 系）
-        else if (e.badge.split('＋')[0] === correctBadge.split('＋')[0]) score += 4;
-        // 語尾が似ているほど高スコア
-        if (e.form.endsWith(end3)) score += 6;
-        else if (e.form.endsWith(end2)) score += 3;
-        // 文字数が近いほど高スコア
+        // 同じバッジ（活用形カテゴリ）— 最重要
+        if (e.badge === correctBadge) score += 15;
+        // バッジの最初の単語が一致
+        else if (e.badge.split('＋')[0] === correctBadge.split('＋')[0]) score += 7;
+        // 語尾の一致（長いほど高スコア）
+        if (e.form.endsWith(end4) && end4.length === 4) score += 14;
+        else if (e.form.endsWith(end3)) score += 9;
+        else if (e.form.endsWith(end2)) score += 5;
+        else if (e.form.endsWith(end1)) score += 2;
+        // 語頭の一致（同じ動詞・似た動詞）
+        if (e.form.startsWith(begin2)) score += 6;
+        else if (e.form.startsWith(begin1)) score += 2;
+        // 文字数が近いほど高スコア（差が大きいと急減）
         const diff = Math.abs(e.form.length - correctLen);
-        score += Math.max(0, 5 - diff);
+        score += Math.max(0, 7 - diff * 2);
+        // 共通文字の数（似た見た目）
+        score += Math.min(charOverlap(correctForm, e.form), 4);
         return { form: e.form, score };
       })
       .sort((a, b) => b.score - a.score);
-    // 上位12件からランダムに3つ（毎回少し変わるように）
-    return shuffle(candidates.slice(0, 12)).slice(0, 3).map(e => e.form);
+
+    // 上位6件に絞ってランダムに3つ（より紛らわしい候補だけから選ぶ）
+    return shuffle(candidates.slice(0, 6)).slice(0, 3).map(e => e.form);
   }
 
   const items = [];
@@ -1356,6 +1417,9 @@ function buildBlankQuizItems(dayObjs) {
 
 function showAllQuiz() {
   isBlankQuiz = false;
+  isRearrange = false;
+  isSynonymQuiz = false;
+  isVerbDrill = false;
   const all = [];
   WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => all.push({g, wk}))));
   quizItems = buildQuizItems(shuffle(all).slice(0, 15));
@@ -1368,12 +1432,450 @@ function showAllQuiz() {
 
 function showBlankQuiz() {
   isBlankQuiz = true;
+  isRearrange = false;
+  isSynonymQuiz = false;
+  isVerbDrill = false;
   const all = [];
   WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => all.push({g, wk}))));
   quizItems = buildBlankQuizItems(shuffle(all).slice(0, 15));
   quizTitle = '穴埋めクイズ / Kuis Isi Titik';
   qIdx = 0; qScore = 0; qAnswered = false;
   document.getElementById('quiz-back').onclick = () => { isBlankQuiz = false; showHome(); };
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+// ═══════════════════════════════════════
+//   並べ替え問題 / Sentence Rearrangement
+// ═══════════════════════════════════════
+let isRearrange = false;
+let rearrangeOrder = [null, null, null, null]; // slot index -> chip pool index
+
+const REARRANGE_QUESTIONS = [
+  { prefix:"この本は", parts:["世界中の","多くの人に","読まれて","います"], starIdx:2, suffix:"。",
+    meaningId:"Buku ini dibaca oleh banyak orang di seluruh dunia.", pattern:"〜られている（受身）" },
+  { prefix:"電車の中で", parts:["となりの人に","足を","踏まれて","しまった"], starIdx:2, suffix:"。",
+    meaningId:"Di dalam kereta, kakiku terinjak orang di sebelah.", pattern:"〜に〜られた（迷惑の受身）" },
+  { prefix:"母は", parts:["子どもに","野菜を","食べ","させた"], starIdx:2, suffix:"。",
+    meaningId:"Ibu menyuruh anaknya makan sayur.", pattern:"〜させる（使役）" },
+  { prefix:"気分が悪いので", parts:["今日は","早く","帰らせて","ください"], starIdx:2, suffix:"。",
+    meaningId:"Karena saya tidak enak badan, izinkan saya pulang lebih awal hari ini.", pattern:"〜させてください" },
+  { prefix:"風邪のときは", parts:["薬を","飲んで","休んだ","ほうがいい"], starIdx:2, suffix:"。",
+    meaningId:"Saat flu, sebaiknya minum obat dan beristirahat.", pattern:"〜たほうがいい" },
+  { prefix:"明日", parts:["朝早く","学校に","行か","なければならない"], starIdx:2, suffix:"。",
+    meaningId:"Besok pagi-pagi saya harus pergi ke sekolah.", pattern:"〜なければならない" },
+  { prefix:"来年", parts:["日本に","留学","する","ことにした"], starIdx:2, suffix:"。",
+    meaningId:"Saya memutuskan untuk study di Jepang tahun depan.", pattern:"〜ことにする" },
+  { prefix:"練習したので", parts:["日本語が","上手に","話せる","ようになった"], starIdx:2, suffix:"。",
+    meaningId:"Karena berlatih, saya jadi bisa berbicara bahasa Jepang dengan baik.", pattern:"〜ようになる" },
+  { prefix:"電車の中に", parts:["大切な","かばんを","忘れて","しまった"], starIdx:2, suffix:"。",
+    meaningId:"Saya tidak sengaja meninggalkan tas penting di kereta.", pattern:"〜てしまう" },
+  { prefix:"私は", parts:["一度","富士山に","登った","ことがある"], starIdx:2, suffix:"。",
+    meaningId:"Saya pernah mendaki Gunung Fuji sekali.", pattern:"〜たことがある" },
+  { prefix:"夏休みは", parts:["友達と","海に","行く","つもりです"], starIdx:2, suffix:"。",
+    meaningId:"Saat libur musim panas, saya berniat pergi ke laut bersama teman.", pattern:"〜つもりだ" },
+  { prefix:"あの人は", parts:["有名な","歌手","かも","しれない"], starIdx:2, suffix:"。",
+    meaningId:"Orang itu mungkin penyanyi terkenal.", pattern:"〜かもしれない" },
+  { prefix:"明日は", parts:["きっと","天気が","よくなる","と思います"], starIdx:2, suffix:"。",
+    meaningId:"Saya pikir besok pasti cuaca akan membaik.", pattern:"〜と思う" },
+  { prefix:"音楽を", parts:["聞き","ながら","宿題を","した"], starIdx:1, suffix:"。",
+    meaningId:"Saya mengerjakan PR sambil mendengarkan musik.", pattern:"〜ながら" },
+  { prefix:"弟は", parts:["毎日","ゲーム","ばかり","している"], starIdx:2, suffix:"。",
+    meaningId:"Adik laki-lakiku setiap hari hanya main game.", pattern:"〜ばかり" },
+  { prefix:"日本語が", parts:["上手に","なる","ために","勉強しています"], starIdx:2, suffix:"。",
+    meaningId:"Saya belajar untuk menjadi mahir bahasa Jepang.", pattern:"〜ために" },
+  { prefix:"天気予報に", parts:["よると","明日は","雨が","降るそうです"], starIdx:2, suffix:"。",
+    meaningId:"Menurut prakiraan cuaca, besok katanya akan hujan.", pattern:"〜そうだ（伝聞）" },
+  { prefix:"あの店は", parts:["とても","おいしい","らしい","ですよ"], starIdx:2, suffix:"。",
+    meaningId:"Katanya restoran itu sangat enak.", pattern:"〜らしい" },
+  { prefix:"風が", parts:["強くて","台風","みたい","です"], starIdx:2, suffix:"。",
+    meaningId:"Anginnya kuat, sepertinya seperti topan.", pattern:"〜みたい" },
+  { prefix:"勉強しないで", parts:["ゲーム","ばかり","して","いる"], starIdx:2, suffix:"。",
+    meaningId:"Tidak belajar, malah main game terus.", pattern:"〜ないで" },
+  { prefix:"この問題は", parts:["難しくて","私には","解け","そうにない"], starIdx:2, suffix:"。",
+    meaningId:"Soal ini sulit, sepertinya saya tidak bisa menyelesaikannya.", pattern:"〜そうにない" },
+  { prefix:"雨が", parts:["降って","いる","のに","出かけた"], starIdx:2, suffix:"。",
+    meaningId:"Meskipun hujan turun, saya tetap keluar.", pattern:"〜のに" },
+  { prefix:"安いのに", parts:["品質が","とても","いい","です"], starIdx:2, suffix:"。",
+    meaningId:"Walaupun murah, kualitasnya sangat bagus.", pattern:"〜のに" },
+  { prefix:"宿題を", parts:["した","あとで","ゲームを","します"], starIdx:1, suffix:"。",
+    meaningId:"Setelah mengerjakan PR, saya akan main game.", pattern:"〜あとで" },
+  { prefix:"日本に", parts:["来た","ばかりで","日本語が","話せない"], starIdx:1, suffix:"。",
+    meaningId:"Saya baru saja datang ke Jepang, jadi belum bisa berbahasa Jepang.", pattern:"〜たばかり" },
+  { prefix:"先生に", parts:["わからない","ことを","質問","しました"], starIdx:2, suffix:"。",
+    meaningId:"Saya bertanya hal yang tidak mengerti kepada guru.", pattern:"質問する" },
+  { prefix:"暑ければ", parts:["暑い","ほど","のどが","かわく"], starIdx:1, suffix:"。",
+    meaningId:"Semakin panas, semakin haus.", pattern:"〜ば〜ほど" },
+  { prefix:"この本は", parts:["子どもにも","読み","やすい","です"], starIdx:1, suffix:"。",
+    meaningId:"Buku ini mudah dibaca bahkan oleh anak-anak.", pattern:"〜やすい" },
+  { prefix:"小さい字は", parts:["私には","読み","にくい","です"], starIdx:2, suffix:"。",
+    meaningId:"Huruf kecil sulit dibaca bagi saya.", pattern:"〜にくい" },
+  { prefix:"妹は", parts:["新しい","くつを","ほしがって","います"], starIdx:2, suffix:"。",
+    meaningId:"Adik perempuanku menginginkan sepatu baru.", pattern:"〜がる" },
+  { prefix:"この問題は", parts:["子どもには","難し","すぎる","と思います"], starIdx:1, suffix:"。",
+    meaningId:"Saya pikir soal ini terlalu sulit untuk anak-anak.", pattern:"〜すぎる" },
+  { prefix:"日本に", parts:["行った","ことが","ある","人ですか"], starIdx:1, suffix:"。",
+    meaningId:"Apakah kamu orang yang pernah pergi ke Jepang?", pattern:"〜たことがある" },
+  { prefix:"宿題が", parts:["終わったら","友達と","遊びに","行きます"], starIdx:2, suffix:"。",
+    meaningId:"Kalau PR sudah selesai, saya akan pergi bermain dengan teman.", pattern:"〜たら" },
+  { prefix:"駅まで", parts:["歩いて","20分","ぐらい","かかります"], starIdx:2, suffix:"。",
+    meaningId:"Sampai stasiun memakan waktu sekitar 20 menit jalan kaki.", pattern:"〜ぐらい" },
+];
+
+function buildRearrangeItems() {
+  return shuffle(REARRANGE_QUESTIONS).slice(0, 12).map(q => {
+    // chipPool: shuffled parts (this is what's shown to user)
+    const chipPool = shuffle([...q.parts]);
+    return { ...q, chipPool };
+  });
+}
+
+function showRearrangeQuiz() {
+  isRearrange = true;
+  isBlankQuiz = false;
+  isSynonymQuiz = false;
+  isVerbDrill = false;
+  quizItems = buildRearrangeItems();
+  quizTitle = '並べ替え / Penyusunan Kata';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  rearrangeOrder = [null, null, null, null];
+  document.getElementById('quiz-back').onclick = () => { isRearrange = false; showHome(); };
+  renderRearrangeQ();
+  showScreen('screen-quiz');
+}
+
+function renderRearrangeQ() {
+  if (qIdx >= quizItems.length) { renderResult(); return; }
+  const q = quizItems[qIdx];
+  const pct = (qIdx / quizItems.length) * 100;
+
+  // Build sentence display with slots
+  let slotsHtml = '';
+  for (let i = 0; i < 4; i++) {
+    const chipIdx = rearrangeOrder[i];
+    const filled = chipIdx !== null;
+    const isStar = i === q.starIdx;
+    const cls = `rearrange-slot${isStar ? ' star' : ''}${filled ? '' : ' empty'}`;
+    const inner = filled ? addFurigana(q.chipPool[chipIdx]) : (isStar ? '★' : (i+1));
+    slotsHtml += `<span class="${cls}" onclick="clearRearrangeSlot(${i})">${inner}</span>`;
+  }
+  const sentenceHtml = `${addFurigana(q.prefix)} ${slotsHtml} ${addFurigana(q.suffix)}`;
+
+  // Build chips
+  const chipsHtml = q.chipPool.map((part, idx) => {
+    const used = rearrangeOrder.includes(idx);
+    return `<div class="rearrange-chip${used ? ' used' : ''}" onclick="${used ? '' : `placeRearrangeChip(${idx})`}">${addFurigana(part)}</div>`;
+  }).join('');
+
+  const allFilled = !rearrangeOrder.includes(null);
+
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-header">
+      <div class="quiz-meta">
+        <div class="quiz-title">${quizTitle}</div>
+        <div class="quiz-score-disp">${qScore}/${qIdx} 正解</div>
+      </div>
+      <div class="quiz-progress"><div class="quiz-progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="quiz-question">
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — 正しい順番に並べて、★ に入る言葉を答えよう / Susun kata-kata dengan benar dan jawab apa yang masuk di posisi ★</div>
+      <div class="rearrange-sentence">${sentenceHtml}</div>
+      <button class="id-toggle-btn" id="id-toggle-btn" onclick="toggleIdBox()">🇮🇩 インドネシア語訳を見る / Lihat terjemahan</button>
+      <div class="q-id-box" id="blank-id-box" style="display:none"><span class="q-id-flag">🇮🇩</span>${q.meaningId}</div>
+    </div>
+    <div class="rearrange-chips">${chipsHtml}</div>
+    <div class="rearrange-btn-row">
+      <button class="rearrange-check-btn" id="rearrange-check" ${allFilled && !qAnswered ? '' : 'disabled'} onclick="checkRearrange()">確認する / Cek Jawaban</button>
+      <button class="rearrange-reset-btn" id="rearrange-reset" ${rearrangeOrder.some(x => x !== null) && !qAnswered ? '' : 'disabled'} onclick="resetRearrange()">↺ リセット</button>
+    </div>
+    <div class="quiz-feedback" id="qfb"></div>
+    <button class="quiz-next-btn" id="qnext" onclick="nextRearrange()">
+      ${qIdx+1 < quizItems.length ? '次の問題 →' : '結果を見る 🎉'}
+    </button>`;
+}
+
+function placeRearrangeChip(chipIdx) {
+  if (qAnswered) return;
+  if (rearrangeOrder.includes(chipIdx)) return;
+  const firstEmpty = rearrangeOrder.indexOf(null);
+  if (firstEmpty === -1) return;
+  rearrangeOrder[firstEmpty] = chipIdx;
+  renderRearrangeQ();
+}
+
+function clearRearrangeSlot(slotIdx) {
+  if (qAnswered) return;
+  if (rearrangeOrder[slotIdx] === null) return;
+  rearrangeOrder[slotIdx] = null;
+  renderRearrangeQ();
+}
+
+function resetRearrange() {
+  if (qAnswered) return;
+  rearrangeOrder = [null, null, null, null];
+  renderRearrangeQ();
+}
+
+function checkRearrange() {
+  if (qAnswered) return;
+  if (rearrangeOrder.includes(null)) return;
+  qAnswered = true;
+  const q = quizItems[qIdx];
+  let allOk = true;
+  for (let i = 0; i < 4; i++) {
+    if (q.chipPool[rearrangeOrder[i]] !== q.parts[i]) { allOk = false; break; }
+  }
+  if (allOk) qScore++;
+
+  // Re-render the sentence with correct/wrong markers
+  let slotsHtml = '';
+  for (let i = 0; i < 4; i++) {
+    const chipIdx = rearrangeOrder[i];
+    const userPart = q.chipPool[chipIdx];
+    const correctPart = q.parts[i];
+    const ok = userPart === correctPart;
+    const isStar = i === q.starIdx;
+    const cls = `rearrange-slot${isStar ? ' star' : ''} ${ok ? 'correct' : 'wrong'}`;
+    slotsHtml += `<span class="${cls}">${addFurigana(userPart)}</span>`;
+  }
+  const correctSentence = q.prefix + q.parts.join('') + q.suffix;
+  const starAnswer = q.parts[q.starIdx];
+
+  document.querySelector('.rearrange-sentence').innerHTML =
+    `${addFurigana(q.prefix)} ${slotsHtml} ${addFurigana(q.suffix)}`;
+  document.getElementById('rearrange-check').disabled = true;
+  // インドネシア語訳を自動表示
+  const idBox = document.getElementById('blank-id-box');
+  const idBtn = document.getElementById('id-toggle-btn');
+  if (idBox) idBox.style.display = 'block';
+  if (idBtn) idBtn.textContent = '🇮🇩 インドネシア語訳を隠す / Sembunyikan terjemahan';
+
+  const fb = document.getElementById('qfb');
+  fb.className = `quiz-feedback show ${allOk ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = allOk
+    ? `<strong>正解！ Benar! ✓</strong>
+       <div class="fb-detail">★ の答え: <strong>${starAnswer}</strong><br>
+       正しい文: ${addFurigana(correctSentence)}<br>
+       文法: ${q.pattern}</div>`
+    : `<strong>不正解 Salah. ✗</strong>
+       <div class="fb-detail">★ の答え: <strong>${starAnswer}</strong><br>
+       正しい文: ${addFurigana(correctSentence)}<br>
+       文法: ${q.pattern}</div>`;
+  document.getElementById('qnext').classList.add('show');
+}
+
+function nextRearrange() {
+  qIdx++;
+  qAnswered = false;
+  rearrangeOrder = [null, null, null, null];
+  renderRearrangeQ();
+}
+
+// ═══════════════════════════════════════
+//   言い換えクイズ / Kuis Sinonim
+// ═══════════════════════════════════════
+let isSynonymQuiz = false;
+
+const SYNONYM_GROUPS = [
+  { forms:["〜なくちゃ","〜なきゃ","〜ないといけない","〜なければならない"],
+    meaningJa:"〜する必要がある（義務）", meaningId:"Harus melakukan sesuatu (kewajiban)" },
+  { forms:["〜らしい","〜そうだ（伝聞）","〜と聞いた"],
+    meaningJa:"他の人から聞いた情報", meaningId:"Katanya / Mendengar dari orang lain" },
+  { forms:["〜ようだ","〜みたいだ"],
+    meaningJa:"〜のように見える／感じる", meaningId:"Tampaknya / Sepertinya / Mirip seperti" },
+  { forms:["〜つもりだ","〜予定だ"],
+    meaningJa:"〜する計画／意思がある", meaningId:"Berniat / Berencana melakukan sesuatu" },
+  { forms:["〜たほうがいい","〜たらいい"],
+    meaningJa:"〜するべき（アドバイス）", meaningId:"Sebaiknya melakukan sesuatu (saran)" },
+  { forms:["〜ことができる","〜られる"],
+    meaningJa:"〜する能力がある／可能だ", meaningId:"Bisa / Mampu melakukan sesuatu" },
+  { forms:["〜てもいい","〜てかまわない","〜ても大丈夫"],
+    meaningJa:"〜することを許可する", meaningId:"Boleh / Tidak masalah melakukan sesuatu" },
+  { forms:["〜てはいけない","〜てはだめ","〜ちゃいけない"],
+    meaningJa:"〜することを禁止する", meaningId:"Tidak boleh / Dilarang melakukan sesuatu" },
+  { forms:["〜ながら","〜つつ"],
+    meaningJa:"〜と同時に（二つの動作）", meaningId:"Sambil / Sembari (dua aktivitas bersamaan)" },
+  { forms:["〜ばかり","〜だけ"],
+    meaningJa:"〜のみ／〜以外ない", meaningId:"Hanya / Cuma" },
+  { forms:["〜ので","〜から"],
+    meaningJa:"〜が理由で", meaningId:"Karena / Sebab" },
+  { forms:["〜のに","〜けれども","〜けど"],
+    meaningJa:"〜だが、予想と違う", meaningId:"Padahal / Meskipun (di luar dugaan)" },
+  { forms:["〜について","〜に関して"],
+    meaningJa:"〜のことを（テーマ）", meaningId:"Tentang / Mengenai" },
+  { forms:["〜たことがある","〜た経験がある"],
+    meaningJa:"以前〜した経験がある", meaningId:"Pernah melakukan sesuatu" },
+  { forms:["〜あとで","〜てから"],
+    meaningJa:"〜した後に", meaningId:"Setelah melakukan sesuatu" },
+  { forms:["〜まえに","〜ない前に"],
+    meaningJa:"〜する前に", meaningId:"Sebelum melakukan sesuatu" },
+  { forms:["〜とき","〜際（さい）に"],
+    meaningJa:"〜する時点で", meaningId:"Ketika / Saat" },
+  { forms:["〜ために","〜ように（目的）"],
+    meaningJa:"〜という目的で", meaningId:"Untuk / Demi (tujuan)" },
+  { forms:["〜すぎる","〜あまりに"],
+    meaningJa:"程度が大きすぎる", meaningId:"Terlalu / Terlampau" },
+  { forms:["〜たがる","〜たいと思っている"],
+    meaningJa:"（第三者が）〜したい", meaningId:"(Orang lain) ingin melakukan sesuatu" },
+];
+
+function buildSynonymItems() {
+  // 全フォームを集めてディストラクター候補に
+  const allForms = [];
+  SYNONYM_GROUPS.forEach((g, gIdx) => {
+    g.forms.forEach(f => allForms.push({ form: f, group: gIdx }));
+  });
+
+  const items = [];
+  SYNONYM_GROUPS.forEach((g, gIdx) => {
+    if (g.forms.length < 2) return;
+    g.forms.forEach((prompt, pIdx) => {
+      const candidates = g.forms.filter((_, i) => i !== pIdx);
+      const correct = shuffle(candidates)[0];
+      // 別グループからディストラクター3つ
+      const distractors = shuffle(
+        allForms.filter(f => f.group !== gIdx)
+      ).slice(0, 3).map(f => f.form);
+      items.push({
+        promptForm: prompt,
+        correct: correct,
+        options: shuffle([correct, ...distractors]),
+        meaningJa: g.meaningJa,
+        meaningId: g.meaningId,
+      });
+    });
+  });
+  return shuffle(items).slice(0, 12);
+}
+
+function showSynonymQuiz() {
+  isSynonymQuiz = true;
+  isBlankQuiz = false;
+  isRearrange = false;
+  isVerbDrill = false;
+  quizItems = buildSynonymItems();
+  quizTitle = '言い換えクイズ / Kuis Sinonim';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isSynonymQuiz = false; showHome(); };
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+// ═══════════════════════════════════════
+//   動詞活用ドリル / Drill Konjugasi Verba
+// ═══════════════════════════════════════
+let isVerbDrill = false;
+
+const VERBS = [
+  // ── Group 1 (五段) ──
+  { base:"行く", reading:"いく", group:1, mean:"pergi",
+    passive:"行かれる", causative:"行かせる", causPassive:"行かせられる", potential:"行ける", nai:"行かない", te:"行って" },
+  { base:"書く", reading:"かく", group:1, mean:"menulis",
+    passive:"書かれる", causative:"書かせる", causPassive:"書かせられる", potential:"書ける", nai:"書かない", te:"書いて" },
+  { base:"読む", reading:"よむ", group:1, mean:"membaca",
+    passive:"読まれる", causative:"読ませる", causPassive:"読ませられる", potential:"読める", nai:"読まない", te:"読んで" },
+  { base:"飲む", reading:"のむ", group:1, mean:"minum",
+    passive:"飲まれる", causative:"飲ませる", causPassive:"飲ませられる", potential:"飲める", nai:"飲まない", te:"飲んで" },
+  { base:"話す", reading:"はなす", group:1, mean:"berbicara",
+    passive:"話される", causative:"話させる", causPassive:"話させられる", potential:"話せる", nai:"話さない", te:"話して" },
+  { base:"聞く", reading:"きく", group:1, mean:"mendengar",
+    passive:"聞かれる", causative:"聞かせる", causPassive:"聞かせられる", potential:"聞ける", nai:"聞かない", te:"聞いて" },
+  { base:"待つ", reading:"まつ", group:1, mean:"menunggu",
+    passive:"待たれる", causative:"待たせる", causPassive:"待たせられる", potential:"待てる", nai:"待たない", te:"待って" },
+  { base:"取る", reading:"とる", group:1, mean:"mengambil",
+    passive:"取られる", causative:"取らせる", causPassive:"取らせられる", potential:"取れる", nai:"取らない", te:"取って" },
+  { base:"立つ", reading:"たつ", group:1, mean:"berdiri",
+    passive:"立たれる", causative:"立たせる", causPassive:"立たせられる", potential:"立てる", nai:"立たない", te:"立って" },
+  { base:"笑う", reading:"わらう", group:1, mean:"tertawa",
+    passive:"笑われる", causative:"笑わせる", causPassive:"笑わせられる", potential:"笑える", nai:"笑わない", te:"笑って" },
+  { base:"買う", reading:"かう", group:1, mean:"membeli",
+    passive:"買われる", causative:"買わせる", causPassive:"買わせられる", potential:"買える", nai:"買わない", te:"買って" },
+  { base:"走る", reading:"はしる", group:1, mean:"berlari",
+    passive:"走られる", causative:"走らせる", causPassive:"走らせられる", potential:"走れる", nai:"走らない", te:"走って" },
+  { base:"泳ぐ", reading:"およぐ", group:1, mean:"berenang",
+    passive:"泳がれる", causative:"泳がせる", causPassive:"泳がせられる", potential:"泳げる", nai:"泳がない", te:"泳いで" },
+  { base:"呼ぶ", reading:"よぶ", group:1, mean:"memanggil",
+    passive:"呼ばれる", causative:"呼ばせる", causPassive:"呼ばせられる", potential:"呼べる", nai:"呼ばない", te:"呼んで" },
+  { base:"使う", reading:"つかう", group:1, mean:"menggunakan",
+    passive:"使われる", causative:"使わせる", causPassive:"使わせられる", potential:"使える", nai:"使わない", te:"使って" },
+  // ── Group 2 (一段) ──
+  { base:"食べる", reading:"たべる", group:2, mean:"makan",
+    passive:"食べられる", causative:"食べさせる", causPassive:"食べさせられる", potential:"食べられる", nai:"食べない", te:"食べて" },
+  { base:"見る", reading:"みる", group:2, mean:"melihat",
+    passive:"見られる", causative:"見させる", causPassive:"見させられる", potential:"見られる", nai:"見ない", te:"見て" },
+  { base:"起きる", reading:"おきる", group:2, mean:"bangun",
+    passive:"起きられる", causative:"起きさせる", causPassive:"起きさせられる", potential:"起きられる", nai:"起きない", te:"起きて" },
+  { base:"寝る", reading:"ねる", group:2, mean:"tidur",
+    passive:"寝られる", causative:"寝させる", causPassive:"寝させられる", potential:"寝られる", nai:"寝ない", te:"寝て" },
+  { base:"教える", reading:"おしえる", group:2, mean:"mengajar",
+    passive:"教えられる", causative:"教えさせる", causPassive:"教えさせられる", potential:"教えられる", nai:"教えない", te:"教えて" },
+  { base:"開ける", reading:"あける", group:2, mean:"membuka",
+    passive:"開けられる", causative:"開けさせる", causPassive:"開けさせられる", potential:"開けられる", nai:"開けない", te:"開けて" },
+  { base:"出る", reading:"でる", group:2, mean:"keluar",
+    passive:"出られる", causative:"出させる", causPassive:"出させられる", potential:"出られる", nai:"出ない", te:"出て" },
+  { base:"覚える", reading:"おぼえる", group:2, mean:"mengingat",
+    passive:"覚えられる", causative:"覚えさせる", causPassive:"覚えさせられる", potential:"覚えられる", nai:"覚えない", te:"覚えて" },
+  // ── Group 3 (不規則) ──
+  { base:"する", reading:"する", group:3, mean:"melakukan",
+    passive:"される", causative:"させる", causPassive:"させられる", potential:"できる", nai:"しない", te:"して" },
+  { base:"来る", reading:"くる", group:3, mean:"datang",
+    passive:"来られる", causative:"来させる", causPassive:"来させられる", potential:"来られる", nai:"来ない", te:"来て" },
+];
+
+const VERB_FORMS_LIST = [
+  { key:"passive",     label:"受身形",     labelId:"Bentuk Pasif" },
+  { key:"causative",   label:"使役形",     labelId:"Bentuk Kausatif" },
+  { key:"causPassive", label:"使役受身形", labelId:"Bentuk Kausatif Pasif" },
+  { key:"potential",   label:"可能形",     labelId:"Bentuk Potensial" },
+  { key:"nai",         label:"ない形",     labelId:"Bentuk Negatif" },
+  { key:"te",          label:"て形",       labelId:"Bentuk Te" },
+];
+
+function buildVerbDrillItems() {
+  // 動詞×活用形の組み合わせを大量に作って、その中からランダムに12個
+  const allCombos = [];
+  VERBS.forEach(v => {
+    VERB_FORMS_LIST.forEach(f => {
+      allCombos.push({ verb: v, form: f });
+    });
+  });
+  const picked = shuffle(allCombos).slice(0, 12);
+
+  return picked.map(({ verb, form }) => {
+    const correct = verb[form.key];
+
+    // 同じ動詞の他の活用形だけを選択肢に使う
+    const sameVerbOther = VERB_FORMS_LIST
+      .filter(f => f.key !== form.key)
+      .map(f => verb[f.key])
+      .filter(x => x !== correct);
+
+    // 重複を除いてシャッフルして3つ取る
+    const uniqueOther = [...new Set(sameVerbOther)];
+    const distractors = shuffle(uniqueOther).slice(0, 3);
+
+    return {
+      verb: verb.base,
+      reading: verb.reading,
+      mean: verb.mean,
+      group: verb.group,
+      formLabel: form.label,
+      formLabelId: form.labelId,
+      correct,
+      options: shuffle([correct, ...distractors]),
+    };
+  });
+}
+
+function showVerbDrill() {
+  isVerbDrill = true;
+  isSynonymQuiz = false;
+  isBlankQuiz = false;
+  isRearrange = false;
+  quizItems = buildVerbDrillItems();
+  quizTitle = '活用ドリル / Drill Konjugasi';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isVerbDrill = false; showHome(); };
   renderQuizQ();
   showScreen('screen-quiz');
 }
@@ -1390,16 +1892,36 @@ function startDayQuiz(wNum, dNum) {
 }
 
 function renderQuizQ() {
+  if (isRearrange) { renderRearrangeQ(); return; }
   if (qIdx >= quizItems.length) { renderResult(); return; }
   const q = quizItems[qIdx];
   const pct = (qIdx / quizItems.length) * 100;
   let questionBlock = '';
-  if (isBlankQuiz) {
+  if (isVerbDrill) {
+    const groupLabel = q.group === 1 ? "Group 1 (五段)" : q.group === 2 ? "Group 2 (一段)" : "Group 3 (不規則)";
+    const baseRuby = `<ruby>${q.verb}<rt>${q.reading}</rt></ruby>`;
     questionBlock = `
-      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — 空欄に入る文法はどれですか？ / Pilih tata bahasa yang tepat!</div>
-      <span class="blank-badge">${q.badge}</span>
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — 動詞を活用してください / Konjugasikan kata kerja berikut</div>
+      <div class="verb-drill-card">
+        <span class="verb-group-tag">${groupLabel}</span>
+        <div class="verb-drill-base">${baseRuby}</div>
+        <div class="verb-drill-meaning">${q.mean}</div>
+        <div class="verb-drill-arrow">↓</div>
+        <span class="verb-drill-form">${q.formLabel}</span>
+        <span class="verb-drill-form-id">${q.formLabelId}</span>
+      </div>`;
+  } else if (isSynonymQuiz) {
+    questionBlock = `
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — 同じ意味の表現はどれですか？ / Mana yang punya arti sama?</div>
+      <div class="synonym-prompt">${q.promptForm}</div>
+      <button class="id-toggle-btn" id="id-toggle-btn" onclick="toggleIdBox()">🇮🇩 インドネシア語訳を見る / Lihat terjemahan</button>
+      <div class="q-id-box" id="blank-id-box" style="display:none"><span class="q-id-flag">🇮🇩</span>${q.meaningId}</div>`;
+  } else if (isBlankQuiz) {
+    questionBlock = `
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — 空欄に入る言葉はどれですか？ / Pilih kata yang tepat untuk mengisi titik-titik!</div>
       <div class="q-text">${addFurigana(q.questionBlankHtml)}</div>
-      <div class="q-id-box"><span class="q-id-flag">🇮🇩</span>${q.questionId}</div>`;
+      <button class="id-toggle-btn" id="id-toggle-btn" onclick="toggleIdBox()">🇮🇩 インドネシア語訳を見る / Lihat terjemahan</button>
+      <div class="q-id-box" id="blank-id-box" style="display:none"><span class="q-id-flag">🇮🇩</span>${q.questionId}</div>`;
   } else {
     questionBlock = `
       <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — この文に使われている文法はどれですか？</div>
@@ -1438,16 +1960,45 @@ function pickOpt(i) {
   });
   const fb = document.getElementById('qfb');
   fb.className = `quiz-feedback show ${ok ? 'correct-fb' : 'wrong-fb'}`;
-  if (isBlankQuiz) {
+  if (isVerbDrill) {
     fb.innerHTML = ok
-      ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${q.pattern}<br>${q.meaningId}</div>`
-      : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong>（${q.pattern}）<br>${q.meaningId}</div>`;
+      ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${q.verb} → <strong>${q.correct}</strong>（${q.formLabel}）</div>`
+      : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong><br>${q.verb} を ${q.formLabel} に活用</div>`;
+  } else if (isSynonymQuiz) {
+    fb.innerHTML = ok
+      ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">「${q.promptForm}」 ≈ 「${q.correct}」<br>${q.meaningJa}<br>🇮🇩 ${q.meaningId}</div>`
+      : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong><br>「${q.promptForm}」 ≈ 「${q.correct}」<br>${q.meaningJa}<br>🇮🇩 ${q.meaningId}</div>`;
+    // 解答後はインドネシア語訳を自動表示
+    const idBox = document.getElementById('blank-id-box');
+    const idBtn = document.getElementById('id-toggle-btn');
+    if (idBox) { idBox.style.display = 'block'; }
+    if (idBtn) { idBtn.textContent = '🇮🇩 インドネシア語訳を隠す / Sembunyikan terjemahan'; }
+  } else if (isBlankQuiz) {
+    fb.innerHTML = ok
+      ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail"><span class="blank-badge">${q.badge}</span> ${q.pattern}<br>${q.meaningId}</div>`
+      : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong><br><span class="blank-badge">${q.badge}</span> ${q.pattern}<br>${q.meaningId}</div>`;
+    // 解答後はインドネシア語訳を表示する
+    const idBox = document.getElementById('blank-id-box');
+    const idBtn = document.getElementById('id-toggle-btn');
+    if (idBox) { idBox.style.display = 'block'; }
+    if (idBtn) { idBtn.textContent = '🇮🇩 インドネシア語訳を隠す / Sembunyikan terjemahan'; }
   } else {
     fb.innerHTML = ok
       ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${q.meaningId}</div>`
       : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${q.correct}</strong><br>${q.meaningId}</div>`;
   }
   document.getElementById('qnext').classList.add('show');
+}
+
+function toggleIdBox() {
+  const box = document.getElementById('blank-id-box');
+  const btn = document.getElementById('id-toggle-btn');
+  if (!box) return;
+  const hidden = box.style.display === 'none';
+  box.style.display = hidden ? 'block' : 'none';
+  btn.textContent = hidden
+    ? '🇮🇩 インドネシア語訳を隠す / Sembunyikan terjemahan'
+    : '🇮🇩 インドネシア語訳を見る / Lihat terjemahan';
 }
 
 function nextQ() { qIdx++; qAnswered = false; renderQuizQ(); }
@@ -1474,7 +2025,16 @@ function renderResult() {
     </div>`;
 }
 
-function replayQuiz() { qIdx = 0; qScore = 0; qAnswered = false; quizItems = shuffle(quizItems); renderQuizQ(); }
+function replayQuiz() {
+  qIdx = 0; qScore = 0; qAnswered = false;
+  quizItems = shuffle(quizItems);
+  if (isRearrange) {
+    rearrangeOrder = [null, null, null, null];
+    renderRearrangeQ();
+  } else {
+    renderQuizQ();
+  }
+}
 
 // ── VERB FORM EXPLANATIONS ──
 const VERBFORMS = {
