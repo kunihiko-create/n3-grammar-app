@@ -112,6 +112,14 @@
   .btn-uncomplete:hover { background: #6c757d; }
   .btn-quiz { background: var(--red); color: white; }
   .btn-quiz:hover { background: #c1121f; }
+  .btn-blank { background: var(--light-blue); color: white; }
+  .btn-blank:hover { background: #355c7d; }
+  .btn-rearrange { background: var(--success); color: white; }
+  .btn-rearrange:hover { background: #1b4332; }
+  .btn-synonym { background: #6c5ce7; color: white; }
+  .btn-synonym:hover { background: #5a4cc9; }
+  .lesson-nav-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .lesson-nav-row button { flex: 1; min-width: 80px; padding: 12px 6px; border: none; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all .2s; }
   .btn-secondary { background: #eee; color: var(--blue); }
   .btn-secondary:hover { background: #ddd; }
 
@@ -1285,11 +1293,18 @@ function renderLesson(wNum, dNum) {
     html += `</div>`;
   });
   const prev = dNum > 1 ? dNum-1 : null, next = dNum < wk.days.length ? dNum+1 : null;
+  // ── クイズボタン（4種類） ──
+  html += `<div class="lesson-nav-row">`;
+  html += `<button class="btn-quiz" onclick="startDayQuiz(${wNum},${dNum})">🎯 文法確認</button>`;
+  html += `<button class="btn-blank" onclick="startDayBlankQuiz(${wNum},${dNum})">📝 穴埋め</button>`;
+  html += `<button class="btn-rearrange" onclick="startDayRearrangeQuiz(${wNum},${dNum})">🔀 並べ替え</button>`;
+  html += `<button class="btn-synonym" onclick="startDaySynonymQuiz(${wNum},${dNum})">🔄 言い換え</button>`;
+  html += `</div>`;
+  // ── ナビゲーション（前・完了・次） ──
   html += `<div class="lesson-nav">`;
-  if (prev) html += `<button class="btn-secondary" onclick="showLesson(${wNum},${prev})">← ${prev}日目</button>`;
+  html += `<button class="btn-secondary" ${prev ? `onclick="showLesson(${wNum},${prev})"` : 'disabled style="visibility:hidden"'}>← ${prev || ''}日目</button>`;
   html += `<button class="${done ? 'btn-uncomplete' : 'btn-complete'}" onclick="toggleComplete(${wNum},${dNum})">${done ? '✓ 完了済み（取消）' : '完了 ✓'}</button>`;
-  html += `<button class="btn-quiz" onclick="startDayQuiz(${wNum},${dNum})">クイズ 🎯</button>`;
-  if (next) html += `<button class="btn-secondary" onclick="showLesson(${wNum},${next})">${next}日目 →</button>`;
+  html += `<button class="btn-secondary" ${next ? `onclick="showLesson(${wNum},${next})"` : 'disabled style="visibility:hidden"'}>${next || ''}日目 →</button>`;
   html += `</div>`;
   document.getElementById('lesson-content').innerHTML = html;
   document.getElementById('lesson-back').textContent = `← 第${wNum}週 / Minggu ${wNum}`;
@@ -1957,13 +1972,144 @@ function showVerbDrill() {
 }
 
 function startDayQuiz(wNum, dNum) {
+  isBlankQuiz = false;
+  isRearrange = false;
+  isSynonymQuiz = false;
+  isVerbDrill = false;
   const wk = WEEKS[wNum-1], d = wk.days[dNum-1];
   const pairs = d.grammar.map(g => ({g, wk}));
   quizItems = buildQuizItems(pairs);
-  quizTitle = `第${wNum}週 ${dNum}日目 クイズ`;
+  quizTitle = `第${wNum}週 ${dNum}日目 文法確認`;
   qIdx = 0; qScore = 0; qAnswered = false;
   document.getElementById('quiz-back').onclick = () => showLesson(wNum, dNum);
   renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function startDayBlankQuiz(wNum, dNum) {
+  isBlankQuiz = true;
+  isRearrange = false;
+  isSynonymQuiz = false;
+  isVerbDrill = false;
+  const wk = WEEKS[wNum-1], d = wk.days[dNum-1];
+  const pairs = d.grammar.map(g => ({g, wk}));
+  quizItems = buildBlankQuizItems(pairs);
+  quizTitle = `第${wNum}週 ${dNum}日目 穴埋め`;
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isBlankQuiz = false; showLesson(wNum, dNum); };
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function startDaySynonymQuiz(wNum, dNum) {
+  isBlankQuiz = false;
+  isRearrange = false;
+  isSynonymQuiz = true;
+  isVerbDrill = false;
+  const wk = WEEKS[wNum-1], d = wk.days[dNum-1];
+  const dayPatterns = d.grammar.map(g => g.pattern);
+
+  // パターンを正規化してマッチング
+  const strip = s => s.replace(/[（）()／\/\s〜～]+/g, '');
+  const matchedGroups = SYNONYM_GROUPS.filter(g => {
+    return g.forms.some(form => {
+      const fNorm = strip(form);
+      return dayPatterns.some(dp => {
+        const dNorm = strip(dp);
+        if (fNorm.length < 2 || dNorm.length < 2) return false;
+        // 3文字以上の共通部分があればマッチ
+        const minLen = Math.min(3, fNorm.length, dNorm.length);
+        for (let i = 0; i <= dNorm.length - minLen; i++) {
+          const slice = dNorm.substring(i, i + minLen);
+          if (fNorm.includes(slice)) return true;
+        }
+        return false;
+      });
+    });
+  });
+
+  // マッチが少なすぎる場合はランダムで補完
+  let pool = matchedGroups;
+  if (pool.length < 4) {
+    const extras = shuffle(SYNONYM_GROUPS.filter(g => !matchedGroups.includes(g))).slice(0, 4 - pool.length);
+    pool = [...pool, ...extras];
+  }
+
+  // 同義表現アイテムを生成
+  const allForms = [];
+  SYNONYM_GROUPS.forEach((g, gIdx) => g.forms.forEach(f => allForms.push({ form: f, group: gIdx })));
+  const poolIndices = pool.map(g => SYNONYM_GROUPS.indexOf(g));
+  const items = [];
+  pool.forEach(g => {
+    if (g.forms.length < 2) return;
+    g.forms.forEach((prompt, pIdx) => {
+      const candidates = g.forms.filter((_, i) => i !== pIdx);
+      const correct = shuffle(candidates)[0];
+      const gIdx = SYNONYM_GROUPS.indexOf(g);
+      const distractors = shuffle(allForms.filter(f => f.group !== gIdx)).slice(0, 3).map(f => f.form);
+      items.push({
+        promptForm: prompt,
+        correct,
+        options: shuffle([correct, ...distractors]),
+        meaningJa: g.meaningJa,
+        meaningId: g.meaningId,
+      });
+    });
+  });
+
+  quizItems = shuffle(items).slice(0, 10);
+  quizTitle = `第${wNum}週 ${dNum}日目 言い換え`;
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isSynonymQuiz = false; showLesson(wNum, dNum); };
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function startDayRearrangeQuiz(wNum, dNum) {
+  isBlankQuiz = false;
+  isRearrange = true;
+  isSynonymQuiz = false;
+  isVerbDrill = false;
+  const wk = WEEKS[wNum-1], d = wk.days[dNum-1];
+  const dayPatterns = d.grammar.map(g => g.pattern);
+
+  // パターン文字列を正規化（括弧・スペースを削除）
+  const strip = s => s.replace(/[（）()／\/\s]+/g, '');
+  // 日の文法パターンと並べ替え問題のパターンをマッチング
+  const matches = REARRANGE_QUESTIONS.filter(rq => {
+    const rNorm = strip(rq.pattern);
+    return dayPatterns.some(dp => {
+      const dNorm = strip(dp);
+      // 3文字以上の共通部分があればマッチ
+      for (let i = 0; i <= dNorm.length - 3; i++) {
+        const slice = dNorm.substring(i, i + 3);
+        if (rNorm.includes(slice)) return true;
+      }
+      // 逆方向もチェック
+      for (let i = 0; i <= rNorm.length - 3; i++) {
+        const slice = rNorm.substring(i, i + 3);
+        if (dNorm.includes(slice)) return true;
+      }
+      return false;
+    });
+  });
+
+  // マッチが少なすぎる場合はランダムで補完
+  let pool = matches;
+  if (pool.length < 5) {
+    const extras = shuffle(REARRANGE_QUESTIONS.filter(q => !matches.includes(q))).slice(0, 5 - pool.length);
+    pool = [...pool, ...extras];
+  }
+
+  quizItems = shuffle(pool).slice(0, Math.min(pool.length, 8)).map(q => ({
+    ...q,
+    chipPool: shuffle([...q.parts])
+  }));
+  quizTitle = `第${wNum}週 ${dNum}日目 並べ替え`;
+  qIdx = 0; qScore = 0; qAnswered = false;
+  rearrangeOrder = [null, null, null, null];
+  document.getElementById('quiz-back').onclick = () => { isRearrange = false; showLesson(wNum, dNum); };
+  renderRearrangeQ();
   showScreen('screen-quiz');
 }
 
@@ -3266,7 +3412,7 @@ const READINGS = {
   "漢字":"かんじ","平仮名":"ひらがな","片仮名":"かたかな",
   // Common 2-kanji daily vocab
   "一人":"ひとり","一番":"いちばん","一緒":"いっしょ","一度":"いちど",
-  "上手":"じょうず","下手":"へた","大人":"おとな","子供":"こども",
+  "上手い":"うまい","上手":"じょうず","下手":"へた","大人":"おとな","子供":"こども",
   "元気":"げんき","人気":"にんき","名前":"なまえ","番号":"ばんごう",
   "番組":"ばんぐみ","映画":"えいが","音楽会":"おんがくかい",
   "学校":"がっこう","高校":"こうこう","中学":"ちゅうがく",
