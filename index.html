@@ -1766,6 +1766,17 @@ const SYNONYM_GROUPS = [
     meaningJa:"〜の状態が続いている間", meaningId:"Selama / Sejauh" },
   { forms:["〜以上は","〜からには"],
     meaningJa:"〜したのだから当然", meaningId:"Karena sudah / Sekali sudah (maka harus)" },
+  // ── 残り3日カバー用 ──
+  { forms:["〜のは","〜のが","〜のを","〜こと"],
+    meaningJa:"動詞や文を名詞化する", meaningId:"Nominalisasi — menjadikan kata kerja sebagai subjek/objek" },
+  { forms:["やっと〜","ようやく〜","ついに〜"],
+    meaningJa:"長い時間や努力の後にやっと", meaningId:"Akhirnya / Pada akhirnya (setelah lama menunggu/usaha)" },
+  { forms:["〜てきた","〜なってきた","〜くなってきた"],
+    meaningJa:"だんだん〜の状態に変化する", meaningId:"Mulai menjadi / Berangsur-angsur (perubahan menuju sekarang)" },
+  { forms:["〜ていく","〜なっていく","〜くなっていく"],
+    meaningJa:"これから〜の状態に変化する", meaningId:"Akan menjadi / Berangsur-angsur (perubahan menuju masa depan)" },
+  { forms:["〜てたまらない","〜でたまらない","〜てならない"],
+    meaningJa:"非常に〜という気持ちで我慢できない", meaningId:"Sangat... sampai tidak tahan / Tidak tertahankan" },
 ];
 
 function buildSynonymItems() {
@@ -2001,6 +2012,46 @@ function startDayBlankQuiz(wNum, dNum) {
   showScreen('screen-quiz');
 }
 
+function showNoQuizMessage(title, kindLabel, wNum, dNum, generalCallback) {
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-header">
+      <div class="quiz-meta"><div class="quiz-title">${title}</div></div>
+    </div>
+    <div class="quiz-question" style="text-align:center; padding:30px 16px;">
+      <div style="font-size:3rem; margin-bottom:10px;">📭</div>
+      <div style="font-size:1rem; color:var(--blue); font-weight:bold; margin-bottom:8px;">
+        この日に対応する${kindLabel}問題はありません<br>
+        <span style="font-size:0.82rem; color:var(--gray); font-weight:normal;">Tidak ada soal ${kindLabel} khusus untuk hari ini</span>
+      </div>
+      <div style="font-size:0.85rem; color:var(--gray); margin-top:12px; line-height:1.6;">
+        全体の「${kindLabel}」クイズなら、もっと多くの問題が解けます。<br>
+        <span style="font-size:0.78rem;">Coba kuis ${kindLabel} umum untuk lebih banyak soal.</span>
+      </div>
+    </div>
+    <button class="quiz-next-btn show" style="background:var(--blue)" onclick="${generalCallback}">
+      全体の${kindLabel}クイズへ →
+    </button>
+    <button class="quiz-next-btn show" style="background:#eee; color:var(--blue); margin-top:8px" onclick="showLesson(${wNum},${dNum})">
+      ← レッスンに戻る
+    </button>`;
+  showScreen('screen-quiz');
+}
+
+// meaning フィールドから同義表現を抽出
+function extractSynonymFromMeaning(meaning) {
+  if (!meaning) return null;
+  // 括弧内の注釈を削除（例：「（硬い表現）」「（比喩・推測）」）
+  let cleaned = meaning.replace(/[（(][^）)]*[）)]/g, '').trim();
+  // 「①〜」「②〜」など番号付きを削除
+  cleaned = cleaned.replace(/[①②③④⑤]/g, '').trim();
+  // 「、」「・」「。」で区切られた最初の表現を取る
+  cleaned = cleaned.split(/[、・。]/)[0].trim();
+  // 「〜」で始まる表現のみ採用（説明文を除外）
+  if (!cleaned.startsWith('〜')) return null;
+  if (cleaned.length < 3 || cleaned.length > 18) return null;
+  return cleaned;
+}
+
 function startDaySynonymQuiz(wNum, dNum) {
   isBlankQuiz = false;
   isRearrange = false;
@@ -2009,38 +2060,34 @@ function startDaySynonymQuiz(wNum, dNum) {
   const wk = WEEKS[wNum-1], d = wk.days[dNum-1];
   const dayPatterns = d.grammar.map(g => g.pattern);
 
-  // パターンを正規化してマッチング
-  const strip = s => s.replace(/[（）()／\/\s〜～]+/g, '');
+  // パターンを正規化（厳密マッチ：括弧内容も削除）
+  const cleanParens = s => s.replace(/[（(][^）)]*[）)]/g, '').trim();
+  const stripAll = s => cleanParens(s).replace(/[（）()／\/\s〜～。、]+/g, '');
   const matchedGroups = SYNONYM_GROUPS.filter(g => {
     return g.forms.some(form => {
-      const fNorm = strip(form);
+      const fNorm = stripAll(form);
+      if (fNorm.length < 2) return false;
       return dayPatterns.some(dp => {
-        const dNorm = strip(dp);
-        if (fNorm.length < 2 || dNorm.length < 2) return false;
-        // 3文字以上の共通部分があればマッチ
-        const minLen = Math.min(3, fNorm.length, dNorm.length);
-        for (let i = 0; i <= dNorm.length - minLen; i++) {
-          const slice = dNorm.substring(i, i + minLen);
-          if (fNorm.includes(slice)) return true;
-        }
-        return false;
+        const forms = dp.split(/[／/]/).map(s => stripAll(s));
+        return forms.some(pf => {
+          if (pf.length < 2) return false;
+          if (fNorm === pf) return true;
+          if (fNorm.includes(pf) && (fNorm.length - pf.length) <= 3) return true;
+          if (pf.includes(fNorm) && (pf.length - fNorm.length) <= 3) return true;
+          return false;
+        });
       });
     });
   });
 
-  // マッチが少なすぎる場合はランダムで補完
-  let pool = matchedGroups;
-  if (pool.length < 4) {
-    const extras = shuffle(SYNONYM_GROUPS.filter(g => !matchedGroups.includes(g))).slice(0, 4 - pool.length);
-    pool = [...pool, ...extras];
-  }
-
-  // 同義表現アイテムを生成
+  // SYNONYM_GROUPS と meaning フィールドの両方からアイテムを集める
   const allForms = [];
   SYNONYM_GROUPS.forEach((g, gIdx) => g.forms.forEach(f => allForms.push({ form: f, group: gIdx })));
-  const poolIndices = pool.map(g => SYNONYM_GROUPS.indexOf(g));
+
   const items = [];
-  pool.forEach(g => {
+
+  // ① SYNONYM_GROUPS マッチを使う
+  matchedGroups.forEach(g => {
     if (g.forms.length < 2) return;
     g.forms.forEach((prompt, pIdx) => {
       const candidates = g.forms.filter((_, i) => i !== pIdx);
@@ -2057,12 +2104,120 @@ function startDaySynonymQuiz(wNum, dNum) {
     });
   });
 
+  // ② その日の文法 meaning フィールドから同義表現を抽出
+  d.grammar.forEach(g => {
+    const synonym = extractSynonymFromMeaning(g.meaning);
+    if (!synonym) return;
+    // pattern を出題、抽出した同義表現を正解にする
+    // pattern が「〜A / 〜B」形式の場合は最初の一つだけ使う
+    const promptForm = g.pattern.split(/[／/]/)[0].trim();
+    // 同義表現として promptForm 自身が出ないようにする
+    if (synonym === promptForm) return;
+    // ディストラクター：他の日の pattern や SYNONYM_GROUPS から
+    const otherPatterns = [];
+    WEEKS.forEach(wk2 => wk2.days.forEach(d2 => d2.grammar.forEach(g2 => {
+      if (g2.pattern === g.pattern) return;
+      const p = g2.pattern.split(/[／/]/)[0].trim();
+      if (p !== synonym && p !== promptForm) otherPatterns.push(p);
+    })));
+    const distractorPool = [...otherPatterns, ...allForms.map(f => f.form)];
+    const distractors = shuffle([...new Set(distractorPool)]).slice(0, 3);
+    items.push({
+      promptForm,
+      correct: synonym,
+      options: shuffle([synonym, ...distractors]),
+      meaningJa: g.meaning,
+      meaningId: g.meaningId,
+    });
+  });
+
+  if (items.length === 0) {
+    isSynonymQuiz = false;
+    document.getElementById('quiz-back').onclick = () => showLesson(wNum, dNum);
+    showNoQuizMessage(`第${wNum}週 ${dNum}日目 言い換え`, '言い換え', wNum, dNum, 'showSynonymQuiz()');
+    return;
+  }
+
   quizItems = shuffle(items).slice(0, 10);
   quizTitle = `第${wNum}週 ${dNum}日目 言い換え`;
   qIdx = 0; qScore = 0; qAnswered = false;
   document.getElementById('quiz-back').onclick = () => { isSynonymQuiz = false; showLesson(wNum, dNum); };
   renderQuizQ();
   showScreen('screen-quiz');
+}
+
+// 例文を 4 つの塊に自動分割して並べ替え問題を作る
+function autoSplitExample(jaWithStrong, pattern) {
+  const strongMatch = jaWithStrong.match(/<strong>([^<]+)<\/strong>/);
+  if (!strongMatch) return null;
+  const strongText = strongMatch[1];
+  const clean = jaWithStrong.replace(/<\/?strong>/g, '');
+  const strongPos = clean.indexOf(strongText);
+  if (strongPos < 0) return null;
+
+  let before = clean.substring(0, strongPos);
+  let after = clean.substring(strongPos + strongText.length);
+
+  const punctMatch = after.match(/[。！？]+$/);
+  const trailPunct = punctMatch ? punctMatch[0] : '';
+  if (punctMatch) after = after.substring(0, after.length - punctMatch[0].length);
+  after = after.replace(/^[、]/, ''); // 先頭の読点を削除
+
+  // 安全な助詞（長いものから優先）— 単語内に出にくいものに限定
+  const SAFE_PARTICLES = ['までに','からは','までは','には','では','とは','にも','でも',
+                           'は','を','から','まで','より','へ','が'];
+
+  function splitChunks(text) {
+    if (!text) return [];
+    const chunks = [];
+    let cur = '';
+    let i = 0;
+    while (i < text.length) {
+      let matched = null;
+      if (cur.length > 0) {
+        for (const p of SAFE_PARTICLES) {
+          if (text.substring(i, i + p.length) === p) { matched = p; break; }
+        }
+      }
+      if (matched) {
+        cur += matched;
+        chunks.push(cur);
+        cur = '';
+        i += matched.length;
+      } else {
+        cur += text[i];
+        i++;
+      }
+    }
+    if (cur) chunks.push(cur);
+    return chunks;
+  }
+
+  let beforeChunks = splitChunks(before);
+  let afterChunks = splitChunks(after);
+
+  // B + 1 + A = 4 → B + A = 3
+  if (beforeChunks.length + afterChunks.length < 3) return null;
+
+  let prefix = '', extraSuffix = '';
+  while (beforeChunks.length + afterChunks.length > 3) {
+    if (beforeChunks.length > 0) prefix += beforeChunks.shift();
+    else extraSuffix = afterChunks.pop() + extraSuffix;
+  }
+  if (beforeChunks.length + afterChunks.length !== 3) return null;
+
+  const parts = [...beforeChunks, strongText, ...afterChunks];
+  // 重複チェック（同じ文字列が複数あると並べ替えで困る）
+  if (new Set(parts).size !== parts.length) return null;
+
+  return {
+    prefix,
+    parts,
+    starIdx: beforeChunks.length,
+    suffix: extraSuffix + trailPunct,
+    pattern,
+    meaningId: '', // 後で例文の id をセット
+  };
 }
 
 function startDayRearrangeQuiz(wNum, dNum) {
@@ -2073,34 +2228,49 @@ function startDayRearrangeQuiz(wNum, dNum) {
   const wk = WEEKS[wNum-1], d = wk.days[dNum-1];
   const dayPatterns = d.grammar.map(g => g.pattern);
 
-  // パターン文字列を正規化（括弧・スペースを削除）
-  const strip = s => s.replace(/[（）()／\/\s]+/g, '');
-  // 日の文法パターンと並べ替え問題のパターンをマッチング
+  // パターン文字列を正規化（括弧の中身も削除して核だけ取り出す）
+  const cleanParens = s => s.replace(/[（(][^）)]*[）)]/g, '').trim();
+  const stripAll = s => cleanParens(s).replace(/[（）()／\/\s〜～。、]+/g, '');
+  // 厳密マッチ：パターンの「核」が完全一致、または最大3文字差以内で含まれる
   const matches = REARRANGE_QUESTIONS.filter(rq => {
-    const rNorm = strip(rq.pattern);
+    const rNorm = stripAll(rq.pattern);
+    if (rNorm.length < 3) return false;
     return dayPatterns.some(dp => {
-      const dNorm = strip(dp);
-      // 3文字以上の共通部分があればマッチ
-      for (let i = 0; i <= dNorm.length - 3; i++) {
-        const slice = dNorm.substring(i, i + 3);
-        if (rNorm.includes(slice)) return true;
-      }
-      // 逆方向もチェック
-      for (let i = 0; i <= rNorm.length - 3; i++) {
-        const slice = rNorm.substring(i, i + 3);
-        if (dNorm.includes(slice)) return true;
-      }
-      return false;
+      const forms = dp.split(/[／/]/).map(s => stripAll(s));
+      return forms.some(f => {
+        if (f.length < 3) return false;
+        if (rNorm === f) return true;
+        if (rNorm.includes(f) && (rNorm.length - f.length) <= 3) return true;
+        if (f.includes(rNorm) && (f.length - rNorm.length) <= 3) return true;
+        return false;
+      });
     });
   });
 
-  // マッチが少なすぎる場合はランダムで補完
+  // マッチがなければ、その日の例文から自動生成を試みる
   let pool = matches;
-  if (pool.length < 5) {
-    const extras = shuffle(REARRANGE_QUESTIONS.filter(q => !matches.includes(q))).slice(0, 5 - pool.length);
-    pool = [...pool, ...extras];
+  if (pool.length === 0) {
+    const autoGenerated = [];
+    d.grammar.forEach(g => {
+      g.examples.forEach(ex => {
+        const auto = autoSplitExample(ex.ja, g.pattern);
+        if (auto) {
+          auto.meaningId = ex.id;
+          autoGenerated.push(auto);
+        }
+      });
+    });
+    pool = autoGenerated;
   }
 
+  if (pool.length === 0) {
+    isRearrange = false;
+    document.getElementById('quiz-back').onclick = () => showLesson(wNum, dNum);
+    showNoQuizMessage(`第${wNum}週 ${dNum}日目 並べ替え`, '並べ替え', wNum, dNum, 'showRearrangeQuiz()');
+    return;
+  }
+
+  // 使用する問題（最大8問）
   quizItems = shuffle(pool).slice(0, Math.min(pool.length, 8)).map(q => ({
     ...q,
     chipPool: shuffle([...q.parts])
