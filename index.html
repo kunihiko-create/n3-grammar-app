@@ -1711,6 +1711,12 @@ function showAdditionalGrammar() {
     <div class="breadcrumb">📚 追加文法</div>
     <h2>本にない文法 / Tata Bahasa Tambahan</h2>
     <div class="lesson-sub">教科書には載っていないが、N3で役立つ文法</div>
+  </div>
+  <div class="lesson-nav-row">
+    <button class="btn-quiz" onclick="startExtraQuiz()">🎯 文法確認</button>
+    <button class="btn-blank" onclick="startExtraBlankQuiz()">📝 穴埋め</button>
+    <button class="btn-rearrange" onclick="startExtraRearrangeQuiz()">🔀 並べ替え</button>
+    <button class="btn-synonym" onclick="startExtraSynonymQuiz()">🔄 言い換え</button>
   </div>`;
   ADDITIONAL_GRAMMAR.forEach((g, gi) => {
     const extras = EXTRA_EXAMPLES[g.pattern] || [];
@@ -2871,6 +2877,117 @@ function startDayRearrangeQuiz(wNum, dNum) {
   rearrangeOrder = [null, null, null, null];
   document.getElementById('quiz-back').onclick = () => { isRearrange = false; showLesson(wNum, dNum); };
   renderRearrangeQ();
+  showScreen('screen-quiz');
+}
+
+// ═══════════════════════════════════════
+//   追加文法のクイズ / Kuis Tata Bahasa Tambahan
+// ═══════════════════════════════════════
+function startExtraQuiz() {
+  isBlankQuiz = false; isRearrange = false; isSynonymQuiz = false; isVerbDrill = false;
+  const allPat = ADDITIONAL_GRAMMAR.map(g => g.pattern);
+  const items = [];
+  ADDITIONAL_GRAMMAR.forEach(g => {
+    g.examples.forEach(ex => {
+      const distractors = shuffle(allPat.filter(p => p !== g.pattern)).slice(0, 3);
+      items.push({
+        question: ex.ja.replace(/<\/?strong>/g, ''),
+        questionHtml: ex.ja,
+        questionId: ex.id,
+        correct: g.pattern,
+        options: shuffle([g.pattern, ...distractors]),
+        meaningId: g.meaningId
+      });
+    });
+  });
+  quizItems = shuffle(items).slice(0, 15);
+  quizTitle = '追加文法 文法確認 / Tata Bahasa Tambahan';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => showAdditionalGrammar();
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function startExtraBlankQuiz() {
+  isBlankQuiz = true; isRearrange = false; isSynonymQuiz = false; isVerbDrill = false;
+  const allForms = [];
+  ADDITIONAL_GRAMMAR.forEach(g => g.examples.forEach(ex => {
+    const mm = ex.ja.match(/<strong>([^<]*)<\/strong>/);
+    if (mm) allForms.push({ form: mm[1], pattern: g.pattern });
+  }));
+  const items = [];
+  ADDITIONAL_GRAMMAR.forEach(g => {
+    g.examples.forEach(ex => {
+      const match = ex.ja.match(/<strong>([^<]*)<\/strong>/);
+      if (!match) return;
+      const correctForm = match[1];
+      const blankHtml = ex.ja.replace(/<strong>[^<]*<\/strong>/, '<span class="blank-box">＿＿＿＿＿</span>');
+      const distractors = shuffle(allForms.filter(e => e.pattern !== g.pattern && e.form !== correctForm)).slice(0, 3).map(e => e.form);
+      items.push({
+        questionBlankHtml: blankHtml,
+        questionId: ex.id,
+        badge: g.badge,
+        correct: correctForm,
+        pattern: g.pattern,
+        options: shuffle([correctForm, ...distractors]),
+        meaningId: g.meaningId
+      });
+    });
+  });
+  quizItems = shuffle(items).slice(0, 15);
+  quizTitle = '追加文法 穴埋め / Kuis Isi Titik';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isBlankQuiz = false; showAdditionalGrammar(); };
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
+function startExtraRearrangeQuiz() {
+  isBlankQuiz = false; isRearrange = true; isSynonymQuiz = false; isVerbDrill = false;
+  const autoGen = [];
+  ADDITIONAL_GRAMMAR.forEach(g => g.examples.forEach(ex => {
+    const auto = autoSplitExample(ex.ja, g.pattern);
+    if (auto) { auto.meaningId = ex.id; autoGen.push(auto); }
+  }));
+  if (autoGen.length === 0) { isRearrange = false; showAdditionalGrammar(); return; }
+  quizItems = shuffle(autoGen).slice(0, 8).map(q => ({ ...q, chipPool: shuffle([...q.parts]) }));
+  quizTitle = '追加文法 並べ替え / Penyusunan Kata';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  rearrangeOrder = [null, null, null, null];
+  document.getElementById('quiz-back').onclick = () => { isRearrange = false; showAdditionalGrammar(); };
+  renderRearrangeQ();
+  showScreen('screen-quiz');
+}
+
+function startExtraSynonymQuiz() {
+  isBlankQuiz = false; isRearrange = false; isSynonymQuiz = true; isVerbDrill = false;
+  const allForms = [];
+  SYNONYM_GROUPS.forEach((g, gIdx) => g.forms.forEach(f => allForms.push({ form: f, group: gIdx })));
+  const allPat = [];
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => allPat.push(g.pattern.split(/[／/]/)[0].trim()))));
+  ADDITIONAL_GRAMMAR.forEach(g => allPat.push(g.pattern.split(/[／/]/)[0].trim()));
+  const items = [];
+  ADDITIONAL_GRAMMAR.forEach(g => {
+    const synonym = extractSynonymFromMeaning(g.meaning);
+    if (!synonym) return;
+    const promptForm = g.pattern.split(/[／/]/)[0].trim();
+    if (synonym === promptForm) return;
+    const distractorPool = [...allPat.filter(p => p !== promptForm && p !== synonym), ...allForms.map(f => f.form)];
+    const distractors = shuffle([...new Set(distractorPool)]).slice(0, 3);
+    items.push({
+      promptForm,
+      correct: synonym,
+      options: shuffle([synonym, ...distractors]),
+      meaningJa: g.meaning,
+      meaningId: g.meaningId
+    });
+  });
+  if (items.length === 0) { isSynonymQuiz = false; showAdditionalGrammar(); return; }
+  quizItems = shuffle(items).slice(0, 12);
+  quizTitle = '追加文法 言い換え / Kuis Sinonim';
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isSynonymQuiz = false; showAdditionalGrammar(); };
+  renderQuizQ();
   showScreen('screen-quiz');
 }
 
