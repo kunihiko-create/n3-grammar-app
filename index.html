@@ -51,6 +51,11 @@
   .week-card .mini-bar { background: #eee; border-radius: 4px; height: 6px; overflow: hidden; margin-top: 10px; }
   .week-card .mini-fill { height: 100%; background: var(--light-blue); border-radius: 4px; }
   .week-card .mini-label { font-size: 0.68rem; color: var(--gray); margin-top: 2px; }
+  .week-card.extra-card { background: linear-gradient(135deg, #2d6a4f, #40916c); color: white; }
+  .week-card.extra-card .week-num { color: #d8f3dc; }
+  .week-card.extra-card .week-title { color: white; }
+  .week-card.extra-card .week-title-id { color: #b7e4c7; }
+  .week-card.extra-card .mini-label { color: #d8f3dc; }
 
   .back-btn { display: inline-flex; align-items: center; gap: 6px; color: var(--light-blue); cursor: pointer; font-size: 0.85rem; margin-bottom: 16px; }
   .back-btn:hover { color: var(--blue); }
@@ -370,6 +375,11 @@
   <div id="quiz-content"></div>
 </div>
 
+<div class="screen" id="screen-extra">
+  <div class="back-btn" onclick="showHome()">← Kembali / 戻る</div>
+  <div id="extra-content"></div>
+</div>
+
 <script>
 const WEEKS = [
   {
@@ -531,133 +541,180 @@ const WEEKS = [
   {
     num:2, title:"がんばってごらん！", titleId:"Coba saja!",
     days:[
-      { day:1, title:"明日こそ", titleId:"Pasti besok!",
+      { day:1, title:"うそばっかり！", titleId:"Bohong semua!",
         grammar:[
           { pattern:"〜ばかり / 〜てばかりいる", badge:"N/Vて＋ばかり",
-            meaning:"〜だけ・〜しすぎる", meaningId:"Hanya... saja / Terus-terusan...",
+            meaning:"〜だけ・いつも〜している", meaningId:"Hanya... saja / Terus-terusan...",
             examples:[
-              { ja:"このクラスは<strong>女性ばかり</strong>です。", id:"Di kelas ini hanya ada perempuan saja." },
-              { ja:"彼はゲームを<strong>してばかりいる</strong>。", id:"Dia terus-terusan main game saja." }
+              { ja:"この店のお客さんは、<strong>女性ばかり</strong>ですね。", id:"Pelanggan toko ini perempuan semua ya." },
+              { ja:"弟は、テレビを<strong>見てばかりいる</strong>。", id:"Adik laki-lakiku menonton TV melulu." },
+              { ja:"息子は仕事もしないで<strong>遊んでばかりいる</strong>。", id:"Anak laki-lakiku tidak bekerja, hanya main-main terus." }
             ]
           },
-          { pattern:"〜さえ / 〜さえ〜ば", badge:"N さえ",
-            meaning:"〜でも・〜だけで十分", meaningId:"Bahkan... / Asal... saja sudah cukup",
+          { pattern:"〜だけしか〜ない", badge:"N だけしか〜ない",
+            meaning:"〜だけ（「しか〜ない」で強調）", meaningId:"Hanya... saja (penekanan dengan 'tidak ada selain itu')",
             examples:[
-              { ja:"彼は<strong>ひらがなさえ</strong>読めない。", id:"Bahkan hiragana pun dia tidak bisa baca." },
-              { ja:"お金<strong>さえあれば</strong>、何でもできる。", id:"Asal ada uang, apapun bisa dilakukan." }
+              { ja:"このコンサートは、<strong>会員だけしか</strong>入れません。", id:"Konser ini hanya anggota saja yang boleh masuk." },
+              { ja:"今日はお客様が<strong>一人だけしか</strong>来ませんでした。", id:"Hari ini hanya satu pelanggan saja yang datang." }
+            ]
+          },
+          { pattern:"〜さえ", badge:"N さえ",
+            meaning:"〜も（極端な例を挙げる）", meaningId:"Bahkan... pun (memberi contoh ekstrem)",
+            examples:[
+              { ja:"<strong>ひらがなさえ</strong>書けないんですから、漢字なんて書けません。", id:"Bahkan hiragana saja tidak bisa menulis, apalagi kanji." },
+              { ja:"そんなこと、<strong>子どもでさえ</strong>知っている。", id:"Hal seperti itu, bahkan anak kecil pun tahu." }
             ]
           },
           { pattern:"〜こそ", badge:"N こそ",
             meaning:"強調「まさに〜」", meaningId:"Justru... / Pasti... (penekanan kuat)",
             examples:[
-              { ja:"<strong>明日こそ</strong>勉強するぞ！", id:"Besok aku pasti belajar!" },
-              { ja:"今年<strong>こそ</strong>、ダイエットに成功する。", id:"Tahun ini pasti berhasil diet." }
+              { ja:"<strong>明日こそ</strong>勉強するぞ！", id:"Besok pasti aku belajar!" },
+              { ja:"愛情がある<strong>からこそ</strong>、しかるんです。", id:"Justru karena sayang, makanya memarahi." }
             ]
           }
         ]
       },
-      { day:2, title:"努力によって", titleId:"Berkat usaha keras",
+      { day:2, title:"事故などによる渋滞", titleId:"Kemacetan akibat kecelakaan dll.",
         grammar:[
           { pattern:"〜に関して / 〜に関する", badge:"N に関して",
             meaning:"〜について（硬い表現）", meaningId:"Mengenai... / Berkaitan dengan... (lebih formal dari について)",
             examples:[
-              { ja:"この問題<strong>に関して</strong>、話し合いをしたい。", id:"Saya ingin berdiskusi mengenai masalah ini." },
-              { ja:"日本文化<strong>に関する</strong>本を読んでいる。", id:"Saya sedang membaca buku tentang budaya Jepang." }
+              { ja:"この問題<strong>に関して</strong>、ご意見ありませんか。", id:"Mengenai masalah ini, apakah ada pendapat?" },
+              { ja:"農業<strong>に関する</strong>論文を読む。", id:"Membaca makalah berkaitan dengan pertanian." }
+            ]
+          },
+          { pattern:"〜について", badge:"N について",
+            meaning:"〜のことを（話題・テーマ）", meaningId:"Tentang... / Mengenai... (topik atau tema)",
+            examples:[
+              { ja:"日本文化<strong>について</strong>勉強する。", id:"Belajar tentang budaya Jepang." },
+              { ja:"「受験<strong>についての</strong>注意」を読む。", id:"Membaca 'Perhatian tentang ujian masuk'." }
             ]
           },
           { pattern:"〜によれば / 〜によると", badge:"N によれば",
             meaning:"〜という情報では", meaningId:"Menurut... (menyampaikan informasi dari sumber tertentu)",
             examples:[
-              { ja:"<strong>天気予報によれば</strong>、明日は雪が降るそうだ。", id:"Menurut prakiraan cuaca, besok katanya akan turun salju." },
-              { ja:"ニュース<strong>によると</strong>、大きな地震があったらしい。", id:"Menurut berita, sepertinya ada gempa besar." }
+              { ja:"<strong>天気予報によれば</strong>、明日は晴れるらしい。", id:"Menurut prakiraan cuaca, besok katanya cerah." },
+              { ja:"さっきの地震は、テレビの<strong>速報によると</strong>震度3だそうだ。", id:"Gempa tadi, menurut berita kilat TV, katanya berkekuatan skala 3." }
             ]
           },
-          { pattern:"〜によって / 〜により", badge:"N によって",
+          { pattern:"〜によって / 〜により / 〜による", badge:"N によって",
             meaning:"〜を手段・原因・行為者として", meaningId:"Melalui... / Karena... / Oleh... (cara, sebab, atau pelaku pasif)",
             examples:[
               { ja:"彼は<strong>努力によって</strong>病気を克服した。", id:"Dia berhasil mengatasi penyakitnya berkat kerja keras." },
-              { ja:"この小説はシェークスピア<strong>によって</strong>書かれた。", id:"Novel ini ditulis oleh Shakespeare." },
-              { ja:"人<strong>によって</strong>考え方が違います。", id:"Cara berpikir berbeda-beda tergantung orangnya." }
+              { ja:"<strong>人によって</strong>考え方が違います。", id:"Cara berpikir berbeda-beda tergantung orangnya." },
+              { ja:"<strong>台風によって</strong>屋根が飛ばされた。", id:"Atap diterbangkan oleh topan." }
             ]
           }
         ]
       },
-      { day:3, title:"電話するのを忘れた", titleId:"Lupa menelepon",
+      { day:3, title:"あなたのこと", titleId:"Tentang dirimu",
         grammar:[
-          { pattern:"〜のを / 〜のが / 〜のは（名詞化）", badge:"V/A の＋助詞",
-            meaning:"動詞や文を名詞化する", meaningId:"Nominalisasi kata kerja — menjadikan kata kerja sebagai subjek/objek kalimat",
+          { pattern:"〜さ（名詞化）", badge:"A/なA ＋さ",
+            meaning:"形容詞を名詞にする（性質・程度）", meaningId:"Menominakan kata sifat (sifat / tingkat / derajat)",
+            examples:[
+              { ja:"<strong>大きさ</strong>は違うが、君と同じかばんを持っているよ。", id:"Ukurannya berbeda, tapi aku punya tas yang sama denganmu." },
+              { ja:"子どもに命の<strong>大切さ</strong>を教えなければならない。", id:"Kita harus mengajarkan pentingnya kehidupan kepada anak-anak." }
+            ]
+          },
+          { pattern:"〜み（名詞化）", badge:"A/なA ＋み",
+            meaning:"形容詞を名詞にする（状態・感じ）", meaningId:"Menominakan kata sifat (keadaan / kesan)",
+            examples:[
+              { ja:"戦争が終わった今でも、この国の<strong>苦しみ</strong>はまだ続いている。", id:"Meski perang sudah berakhir, penderitaan negara ini masih berlanjut." },
+              { ja:"田中さんの<strong>強み</strong>は、2ヶ国語が話せることです。", id:"Kelebihan Tanaka-san adalah bisa berbicara dua bahasa." }
+            ]
+          },
+          { pattern:"〜こと（名詞化）", badge:"文 ＋こと",
+            meaning:"文を名詞にする（事実・内容）", meaningId:"Menominakan kalimat (fakta / isi)",
+            examples:[
+              { ja:"来週のテストの<strong>こと</strong>で、質問があります。", id:"Saya ada pertanyaan tentang ujian minggu depan." },
+              { ja:"田中さんが入院した<strong>こと</strong>を知っていますか。", id:"Apakah kamu tahu bahwa Tanaka-san dirawat di rumah sakit?" }
+            ]
+          },
+          { pattern:"〜の（名詞化）", badge:"文 ＋の",
+            meaning:"動詞や文を名詞にする", meaningId:"Menominakan verba atau kalimat",
             examples:[
               { ja:"田中さんに電話する<strong>のを</strong>すっかり忘れていました。", id:"Saya benar-benar lupa menelepon Tanaka-san." },
-              { ja:"日曜日に混んだところへ行く<strong>のは</strong>、あまり好きじゃない。", id:"Aku tidak terlalu suka pergi ke tempat ramai pada hari Minggu." },
-              { ja:"ピアノを弾く<strong>のが</strong>好きです。", id:"Saya suka bermain piano." }
+              { ja:"日曜日に混んだところへ行く<strong>のは</strong>、あまり好きではありません。", id:"Saya tidak terlalu suka pergi ke tempat ramai pada hari Minggu." }
             ]
           }
         ]
       },
-      { day:4, title:"帰国するというのは本当ですか", titleId:"Benarkah kamu akan pulang?",
+      { day:4, title:"「デジカメ」というのは…", titleId:"Yang disebut 'Dejikame'...",
         grammar:[
           { pattern:"〜という〜", badge:"N という N",
-            meaning:"〜と呼ばれる〜（名前・定義）", meaningId:"... yang disebut... / yang bernama... (mendefinisikan atau memperkenalkan nama)",
+            meaning:"〜と呼ばれる〜（名前・定義）", meaningId:"... yang disebut... / yang bernama... (memperkenalkan nama)",
             examples:[
-              { ja:"<strong>木村さんという人</strong>から電話がありました。", id:"Ada telepon dari seseorang yang bernama Kimura-san." },
-              { ja:"<strong>デジカメというのは</strong>、デジタルカメラのことです。", id:"Yang dimaksud 'digikame' adalah kamera digital." }
+              { ja:"さっき、<strong>木村さんという人</strong>から電話がありました。", id:"Tadi ada telepon dari orang yang bernama Kimura-san." },
+              { ja:"これは、日本の楽器で<strong>「尺八」というもの</strong>です。", id:"Ini adalah alat musik Jepang yang disebut 'shakuhachi'." },
+              { ja:"この高校では、テニス、サッカー、<strong>野球といったスポーツ</strong>が盛んです。", id:"Di SMA ini, olahraga seperti tenis, sepak bola, dan baseball populer." }
             ]
           },
-          { pattern:"〜ということ / 〜というのは", badge:"S というのは",
-            meaning:"〜ということは（内容の確認・説明）", meaningId:"Apakah benar bahwa...? / Yang dimaksud dengan... (mengkonfirmasi atau menjelaskan informasi)",
+          { pattern:"〜というのは（意味）", badge:"N というのは",
+            meaning:"〜の意味は・〜とは", meaningId:"Yang dimaksud dengan... / Arti dari...",
             examples:[
-              { ja:"リンさんが<strong>帰国するというのは本当ですか</strong>。", id:"Apakah benar bahwa Lin-san akan pulang ke negaranya?" },
-              { ja:"田中さんが医者だ<strong>というのを</strong>知らなかった。", id:"Saya tidak tahu bahwa Tanaka-san adalah dokter." }
+              { ja:"<strong>「デジカメ」というのは</strong>、デジタルカメラを短くした言い方です。", id:"Yang dimaksud 'dejikame' adalah singkatan dari kamera digital." },
+              { ja:"<strong>「各停」というのは</strong>、各駅に停車する電車のことです。", id:"Yang dimaksud 'kakutei' adalah kereta yang berhenti di setiap stasiun." }
+            ]
+          },
+          { pattern:"〜ということ / 〜というのは（文）", badge:"文 というのは",
+            meaning:"〜という事実（文を名詞化）", meaningId:"Fakta bahwa... (menominakan kalimat)",
+            examples:[
+              { ja:"リンさんが<strong>帰国するということ</strong>を聞いて驚きました。", id:"Saya terkejut mendengar bahwa Lin-san akan pulang ke negaranya." },
+              { ja:"こんなによく<strong>遅刻をするというのは</strong>、問題ですよ。", id:"Sering terlambat seperti ini, itu masalah lho." },
+              { ja:"田中さんが<strong>医者だというのを</strong>知らなかった。", id:"Saya tidak tahu bahwa Tanaka-san adalah dokter." }
             ]
           }
         ]
       },
-      { day:5, title:"旅行といっても", titleId:"Meski dibilang wisata",
+      { day:5, title:"美人というより", titleId:"Lebih dari sekadar cantik",
         grammar:[
-          { pattern:"〜というより", badge:"S というより",
+          { pattern:"〜というより", badge:"文 というより",
             meaning:"〜と言うのは正確ではなく、むしろ〜", meaningId:"Lebih tepat dikatakan... daripada... (koreksi atau klarifikasi)",
             examples:[
-              { ja:"彼女は歌が上手い<strong>というより</strong>、プロ級だ。", id:"Dia bukan sekadar pandai menyanyi, lebih tepatnya sudah sekelas profesional." },
-              { ja:"走る<strong>というより</strong>飛んでいるようだ。", id:"Lebih seperti terbang daripada berlari." }
+              { ja:"前の車は遅すぎて、<strong>走るというより</strong>はっているようだ。", id:"Mobil di depan terlalu lambat, lebih seperti merayap daripada berjalan." },
+              { ja:"今日は<strong>涼しいというより</strong>寒いくらいだった。", id:"Hari ini lebih tepatnya dingin daripada sejuk." },
+              { ja:"あの学生は<strong>できないというより</strong>、やる気がないのでしょう。", id:"Siswa itu bukannya tidak bisa, lebih tepatnya tidak ada semangat." }
             ]
           },
-          { pattern:"〜というと / 〜といえば", badge:"N というと",
+          { pattern:"〜というと / 〜といえば / 〜といったら", badge:"N というと",
             meaning:"〜の話題が出たら思い浮かぶのは", meaningId:"Kalau bicara soal... / Ngomong-ngomong tentang...",
             examples:[
-              { ja:"日本の食べ物<strong>というと</strong>、すしが有名ですね。", id:"Kalau bicara soal makanan Jepang, sushi paling terkenal ya." },
-              { ja:"京都<strong>といえば</strong>、お寺や神社ですね。", id:"Ngomong-ngomong soal Kyoto, kuil dan kuil Shinto ya." }
+              { ja:"<strong>京都というと</strong>、お寺をイメージします。", id:"Kalau bicara soal Kyoto, terbayang kuil." },
+              { ja:"日本の<strong>食べ物といえば</strong>、おすしがいちばん有名だと思います。", id:"Kalau bicara makanan Jepang, menurutku sushi paling terkenal." },
+              { ja:"夏の<strong>果物といったら</strong>、やっぱりスイカだね。", id:"Kalau bicara buah musim panas, semangka ya." }
             ]
           },
-          { pattern:"〜といっても", badge:"N/S といっても",
+          { pattern:"〜といっても", badge:"N/文 といっても",
             meaning:"〜と言っているが、実際は〜", meaningId:"Meski dikatakan... tapi sebenarnya... (membatasi atau mengoreksi pernyataan)",
             examples:[
-              { ja:"旅行<strong>といっても</strong>、近くの温泉に行くだけです。", id:"Meski dibilang wisata, hanya pergi ke pemandian air panas di dekat sini." },
-              { ja:"料理ができる<strong>といっても</strong>、カレーくらいしか作れない。", id:"Meski katanya bisa masak, paling cuma bisa buat kari saja." }
+              { ja:"<strong>旅行といっても</strong>、近くの温泉に行っただけです。", id:"Meski dibilang berwisata, hanya pergi ke pemandian air panas dekat sini." },
+              { ja:"今週は<strong>忙しいといっても</strong>、先週ほどじゃない。", id:"Meski minggu ini sibuk, tidak sesibuk minggu lalu." }
             ]
           }
         ]
       },
-      { day:6, title:"教えてくれと頼まれた", titleId:"Diminta untuk mengajari",
+      { day:6, title:"食べてごらん", titleId:"Coba makan",
         grammar:[
           { pattern:"〜てごらん", badge:"Vて＋ごらん",
-            meaning:"試しに〜してみてください", meaningId:"Coba saja... (saran lembut agar mencoba sesuatu)",
+            meaning:"試しに〜してみなさい（目下の人に）", meaningId:"Coba saja... (kepada bawahan atau anak)",
             examples:[
-              { ja:"難しくないから、<strong>やってごらん</strong>。", id:"Tidak susah kok, coba saja." },
-              { ja:"この歌、<strong>聞いてごらん</strong>。いい歌だよ。", id:"Coba dengarkan lagu ini. Lagunya bagus." }
+              { ja:"わからなかったら、先生に<strong>聞いてごらん</strong>。", id:"Kalau tidak mengerti, coba tanya guru." },
+              { ja:"もう一度<strong>やってごらんなさい</strong>。", id:"Coba kerjakan sekali lagi." }
             ]
           },
           { pattern:"〜ように言う / 〜ように頼む", badge:"V＋ように言う",
             meaning:"〜してほしいと伝える（間接話法）", meaningId:"Menyuruh / meminta seseorang agar... (perintah tidak langsung)",
             examples:[
-              { ja:"先生は早く<strong>来るように言いました</strong>。", id:"Guru menyuruh agar datang lebih awal." },
-              { ja:"母に野菜を食べる<strong>ように言われた</strong>。", id:"Ibu menyuruhku agar makan sayuran." }
+              { ja:"田中さんに、私の部屋に<strong>来るように言って</strong>ください。", id:"Tolong suruh Tanaka-san datang ke kamar saya." },
+              { ja:"妻に、家ではたばこを<strong>吸わないように言われて</strong>います。", id:"Saya disuruh istri agar tidak merokok di rumah." }
             ]
           },
-          { pattern:"〜てくれと頼まれた", badge:"Vて＋くれと",
-            meaning:"「〜てくれ」と言われた（依頼の引用）", meaningId:"Diminta untuk... (mengutip permintaan orang lain)",
+          { pattern:"〜なと言われた / 命令形と言われた", badge:"命令・禁止＋と",
+            meaning:"命令や禁止のことばを引用する", meaningId:"Mengutip perintah atau larangan (gaya langsung)",
             examples:[
-              { ja:"友達に、田中さんの電話番号を<strong>教えてくれと頼まれた</strong>。", id:"Teman memintaku untuk memberitahu nomor telepon Tanaka-san." },
-              { ja:"大家に、玄関の前に自転車を置かない<strong>でくれと言われた</strong>。", id:"Pemilik kos memintaku agar tidak meletakkan sepeda di depan pintu masuk." }
+              { ja:"医者に酒を<strong>飲むなと言われた</strong>。", id:"Dokter menyuruhku jangan minum alkohol." },
+              { ja:"先生に、もっと<strong>勉強しろと言われた</strong>。", id:"Guru menyuruhku belajar lebih giat." },
+              { ja:"父に、もっと早く<strong>帰れと注意された</strong>。", id:"Ayah menegurku agar pulang lebih awal." }
             ]
           }
         ]
@@ -667,63 +724,71 @@ const WEEKS = [
   {
     num:3, title:"もっとがんばってほしい！", titleId:"Ingin kamu lebih semangat!",
     days:[
-      { day:1, title:"辞書を使わずに", titleId:"Tanpa menggunakan kamus",
+      { day:1, title:"いくら安くても", titleId:"Tidak peduli seberapa murah",
         grammar:[
-          { pattern:"〜ても / どんなに〜ても", badge:"V/A て＋も",
-            meaning:"〜という条件でも、結果は変わらない", meaningId:"Meski... / Seberapa pun... tetap... (kontras atau kondisi yang tidak mengubah hasil)",
+          { pattern:"〜ても", badge:"Vて/Aくて＋も",
+            meaning:"〜という条件でも、結果は変わらない", meaningId:"Meski... / Walaupun... (kondisi yang tidak mengubah hasil)",
             examples:[
-              { ja:"いくら<strong>調べても</strong>わからなかった。", id:"Meski sudah mencari, tetap tidak tahu." },
-              { ja:"<strong>どんなに練習しても</strong>、うまくならない。", id:"Seberapa pun berlatih, tetap tidak mahir." }
+              { ja:"<strong>調べても</strong>わからなかったので、先生に聞いた。", id:"Karena meski sudah dicari tetap tidak mengerti, aku bertanya ke guru." },
+              { ja:"必要なので、<strong>高くても</strong>買います。", id:"Karena perlu, meski mahal pun akan kubeli." },
+              { ja:"「黒は売り切れました。」「<strong>黒じゃなくても</strong>かまいません。」", id:"'Yang hitam sudah habis.' 'Tidak masalah meski bukan yang hitam.'" }
             ]
           },
-          { pattern:"〜ずに / 〜ないで", badge:"Vない形＋ずに",
-            meaning:"〜しないで（状態・方法）", meaningId:"Tanpa melakukan... (keadaan atau cara tanpa melakukan sesuatu)",
+          { pattern:"どんなに〜ても / いくら〜ても", badge:"どんなに〜ても",
+            meaning:"何回・どれだけ〜しても結果は同じ", meaningId:"Tidak peduli seberapa... tetap...",
+            examples:[
+              { ja:"ギターを習い始めたが、<strong>どんなに練習しても</strong>全然うまくならない。", id:"Aku mulai belajar gitar, tapi tidak peduli seberapa berlatih sama sekali tidak jadi mahir." },
+              { ja:"私は、<strong>いくらお酒を飲んでも</strong>顔色が変わらない。", id:"Aku, seberapa pun minum sake, warna wajahku tidak berubah." }
+            ]
+          },
+          { pattern:"〜ずに", badge:"Vない形＋ずに",
+            meaning:"〜しないで（＝〜ないで）", meaningId:"Tanpa melakukan... (= 〜ないで)",
             examples:[
               { ja:"辞書を<strong>使わずに</strong>書いたので、自信がありません。", id:"Karena ditulis tanpa menggunakan kamus, saya tidak yakin." },
-              { ja:"昨日、歯を<strong>みがかずに</strong>寝てしまった。", id:"Kemarin aku tidur tanpa menyikat gigi." }
+              { ja:"昨夜、歯を<strong>みがかずに</strong>寝てしまった。", id:"Tadi malam aku tertidur tanpa menyikat gigi." }
             ]
           }
         ]
       },
-      { day:2, title:"100円にしても", titleId:"Bahkan untuk 100 yen",
+      { day:2, title:"それにしては", titleId:"Kalau dilihat begitu",
         grammar:[
           { pattern:"〜として / 〜としては", badge:"N として",
             meaning:"〜という立場・役割で", meaningId:"Sebagai... / Dalam kapasitas sebagai... (menyatakan peran atau kedudukan)",
             examples:[
-              { ja:"<strong>日本代表として</strong>、試合に出ます。", id:"Saya akan bertanding sebagai wakil Jepang." },
-              { ja:"先生<strong>として</strong>は、学生に頑張ってほしい。", id:"Sebagai guru, saya ingin para siswa bersemangat." }
+              { ja:"彼は外国人だが、<strong>日本代表として</strong>試合に出る。", id:"Dia orang asing, tapi bertanding sebagai wakil Jepang." },
+              { ja:"彼女は女優<strong>としては</strong>最高だが、妻<strong>としては</strong>どうだろう。", id:"Sebagai aktris dia terbaik, tapi sebagai istri bagaimana ya." }
             ]
           },
           { pattern:"〜にしては", badge:"N/V にしては",
-            meaning:"〜を考えると、予想外だ", meaningId:"Untuk seorang... / Mengingat..., ternyata... (hasil di luar ekspektasi)",
+            meaning:"〜を考えると、予想外だ", meaningId:"Kalau dilihat sebagai... ternyata di luar dugaan",
             examples:[
-              { ja:"<strong>外国人にしては</strong>、日本語が上手ですね。", id:"Untuk orang asing, bahasa Jepangnya bagus ya." },
-              { ja:"値段<strong>にしては</strong>、品質がいい。", id:"Mengingat harganya, kualitasnya bagus." }
+              { ja:"<strong>外国人にしては</strong>日本語が上手だ。", id:"Untuk orang asing, bahasa Jepangnya bagus." },
+              { ja:"<strong>初めてにしては</strong>、よくできました。", id:"Untuk pertama kali, kamu mengerjakannya dengan baik." }
             ]
           },
-          { pattern:"〜にしても", badge:"N/S にしても",
+          { pattern:"〜にしても", badge:"N/文 にしても",
             meaning:"〜であっても（譲歩）", meaningId:"Bahkan kalau... / Sekalipun... (mengakui suatu kondisi tapi ada kelanjutan)",
             examples:[
-              { ja:"<strong>100円にしても</strong>、無駄遣いはよくない。", id:"Bahkan untuk 100 yen pun, memboroskan uang itu tidak baik." },
-              { ja:"冗談<strong>にしても</strong>、言っていいことと悪いことがある。", id:"Sekalipun bercanda, ada hal yang boleh dan tidak boleh dikatakan." }
+              { ja:"これは、<strong>100円にしても</strong>、高いと思う。", id:"Ini, sekalipun cuma 100 yen, menurutku mahal." },
+              { ja:"遅れるとは聞いていたけど、<strong>それにしても</strong>田中さん、遅いね。", id:"Aku dengar dia akan terlambat, tapi meski begitu Tanaka-san lama sekali ya." }
             ]
           },
-          { pattern:"〜としたら / 〜とすれば", badge:"S としたら",
+          { pattern:"〜としたら / 〜とすれば", badge:"文 としたら",
             meaning:"もし〜という状況なら", meaningId:"Kalau memang... / Jika seandainya... (kondisi hipotetis)",
             examples:[
-              { ja:"それが<strong>本当だとしたら</strong>、大変なことだ。", id:"Kalau itu memang benar, itu masalah besar." },
-              { ja:"あなたが私の立場<strong>だとしたら</strong>、どうしますか？", id:"Jika kamu berada di posisi saya, apa yang akan kamu lakukan?" }
+              { ja:"その話が<strong>本当だとしたら</strong>、うれしいです。", id:"Kalau cerita itu benar, saya senang." },
+              { ja:"飛行機で<strong>行くとしたら</strong>、いくらぐらいかかりますか。", id:"Kalau pergi dengan pesawat, kira-kira berapa biayanya?" }
             ]
           }
         ]
       },
       { day:3, title:"勉強するつもりでしたが…", titleId:"Tadinya berniat belajar, tapi…",
         grammar:[
-          { pattern:"〜つもりだ / 〜つもりだった", badge:"V る/ない＋つもり",
-            meaning:"〜する意図（意図・計画）", meaningId:"Berniat untuk... / Tadinya berencana untuk...",
+          { pattern:"〜つもりだった", badge:"V る/ない＋つもりだった",
+            meaning:"〜する予定だった（が、実際は違った）", meaningId:"Tadinya berniat/berencana... (tapi kenyataannya berbeda)",
             examples:[
               { ja:"昨日は買い物に行く<strong>つもりでしたが</strong>、頭が痛かったので家にいました。", id:"Kemarin tadinya berniat pergi belanja, tapi karena kepala sakit, akhirnya di rumah." },
-              { ja:"お菓子を食べない<strong>つもりでいましたが</strong>、つい食べてしまいました。", id:"Tadinya berniat tidak makan kue, tapi tanpa sadar sudah termakan juga." }
+              { ja:"お菓子を食べない<strong>つもりでしたが</strong>、つい食べてしまいました。", id:"Tadinya berniat tidak makan kue, tapi tanpa sadar sudah termakan juga." }
             ]
           },
           { pattern:"〜はずだ / 〜はずがない", badge:"V/A/N はずだ",
@@ -743,8 +808,8 @@ const WEEKS = [
           { pattern:"〜たものだ", badge:"Vた＋ものだ",
             meaning:"昔よく〜した（懐かしい思い出）", meaningId:"Dulu sering... (mengenang kebiasaan masa lalu)",
             examples:[
-              { ja:"子どものころ、よくこの公園で<strong>遊んだものだ</strong>。", id:"Waktu kecil, dulu sering bermain di taman ini." },
-              { ja:"昔はここによく<strong>来たものだ</strong>。", id:"Dulu sering datang ke sini." }
+              { ja:"子どものころはよく川で<strong>遊んだものだ</strong>。", id:"Waktu kecil dulu sering bermain di sungai." },
+              { ja:"学生時代は毎日図書館へ<strong>通ったものだ</strong>。", id:"Waktu jadi pelajar dulu setiap hari pergi ke perpustakaan." }
             ]
           }
         ]
@@ -758,68 +823,82 @@ const WEEKS = [
               { ja:"郵便局へ行った<strong>ついでに</strong>、はがきを買ってきた。", id:"Karena kebetulan pergi ke kantor pos, sekalian beli kartu pos." }
             ]
           },
-          { pattern:"〜たびに / 〜のたびに", badge:"V る・N の＋たびに",
+          { pattern:"〜たびに", badge:"V る・N の＋たびに",
             meaning:"〜するときはいつも", meaningId:"Setiap kali... selalu... (berulang setiap kali terjadi)",
             examples:[
               { ja:"買い物の<strong>たびに</strong>、袋をたくさんもらう。", id:"Setiap kali belanja, selalu dapat banyak kantong." },
-              { ja:"この曲を聞く<strong>たびに</strong>、故郷を思い出す。", id:"Setiap kali mendengar lagu ini, selalu teringat kampung halaman." }
+              { ja:"この曲を聞く<strong>たびに</strong>、ふるさとを思い出す。", id:"Setiap kali mendengar lagu ini, selalu teringat kampung halaman." }
             ]
           },
-          { pattern:"〜たとたん（に）", badge:"Vた＋とたんに",
+          { pattern:"〜たとたん", badge:"Vた＋とたん",
             meaning:"〜した瞬間に、すぐに〜", meaningId:"Tepat saat... / Begitu... langsung... (sesuatu terjadi tepat setelah tindakan)",
             examples:[
               { ja:"窓を<strong>開けたとたん</strong>、強い風が入ってきた。", id:"Tepat saat membuka jendela, angin kencang masuk." },
-              { ja:"お酒を飲んだ<strong>とたんに</strong>、顔が赤くなった。", id:"Begitu minum sake, wajahnya langsung memerah." }
+              { ja:"お酒を<strong>飲んだとたん</strong>、顔が赤くなった。", id:"Begitu minum sake, wajah langsung memerah." }
+            ]
+          },
+          { pattern:"〜最中に", badge:"N の・Vている＋最中に",
+            meaning:"〜しているちょうどそのとき", meaningId:"Sedang di tengah-tengah... (tepat saat sedang melakukan sesuatu)",
+            examples:[
+              { ja:"食事の<strong>最中に</strong>、お客さんが来た。", id:"Saat sedang makan, tamu datang." },
+              { ja:"会議をしている<strong>最中に</strong>、携帯電話が鳴った。", id:"Saat sedang rapat, ponsel berdering." }
             ]
           }
         ]
       },
-      { day:5, title:"テレビをつけたまま", titleId:"Dengan TV yang dibiarkan menyala",
+      { day:5, title:"一人っきり", titleId:"Sendirian",
         grammar:[
-          { pattern:"〜とおりに / 〜のとおりに", badge:"V る/た・N の＋とおりに",
+          { pattern:"〜とおり / 〜のとおり", badge:"V る/た・N の＋とおり",
             meaning:"〜と同じように・〜に従って", meaningId:"Sesuai dengan... / Seperti yang... (mengikuti petunjuk atau keadaan)",
             examples:[
-              { ja:"地図の<strong>とおりに</strong>来たら、ここに着いた。", id:"Mengikuti peta, akhirnya sampai di sini." },
-              { ja:"先生に言われた<strong>とおりに</strong>練習しました。", id:"Saya berlatih sesuai yang diajarkan guru." }
+              { ja:"友達がかいてくれた<strong>地図のとおり</strong>に来たのに、道に迷った。", id:"Padahal datang sesuai peta yang digambar teman, tetap tersesat." },
+              { ja:"雪が降ってきた。<strong>予報どおり</strong>だ。", id:"Salju mulai turun. Sesuai prakiraan." }
             ]
           },
           { pattern:"〜たまま / 〜ないまま", badge:"Vた/ない＋まま",
             meaning:"〜した状態が続いている", meaningId:"Dibiarkan... / Tetap dalam keadaan... (keadaan tidak berubah)",
             examples:[
-              { ja:"テレビを<strong>つけたまま</strong>、寝てしまった。", id:"Tertidur dengan TV yang dibiarkan menyala." },
-              { ja:"宿題を<strong>しないまま</strong>、学校へ行った。", id:"Pergi ke sekolah dengan PR yang belum dikerjakan." }
+              { ja:"昨夜は、テレビを<strong>つけたまま</strong>寝てしまった。", id:"Tadi malam tertidur dengan TV dibiarkan menyala." },
+              { ja:"この野菜は、<strong>生のまま</strong>で食べてもおいしいですよ。", id:"Sayuran ini, dimakan mentah pun enak lho." }
             ]
           },
           { pattern:"〜っぱなし", badge:"Vます形＋っぱなし",
             meaning:"〜した状態のままにしている（否定的）", meaningId:"Terus dibiarkan... / Ditinggal begitu saja... (keadaan yang seharusnya diubah tapi tidak)",
             examples:[
-              { ja:"電気を<strong>つけっぱなし</strong>にしないでください。", id:"Tolong jangan biarkan lampu terus menyala." },
-              { ja:"ドアを<strong>開けっぱなし</strong>にしないで。", id:"Jangan biarkan pintu terus terbuka." }
+              { ja:"窓を<strong>開けっぱなし</strong>で出てきた。", id:"Keluar dengan jendela dibiarkan terbuka." },
+              { ja:"水を<strong>出しっぱなし</strong>にしないでください。", id:"Tolong jangan biarkan air terus mengalir." }
+            ]
+          },
+          { pattern:"〜きり", badge:"N ＋きり",
+            meaning:"〜だけ（少ない数量）", meaningId:"Hanya... (jumlah yang sedikit)",
+            examples:[
+              { ja:"<strong>二人きり</strong>で話をしたいです。", id:"Saya ingin berbicara berdua saja." },
+              { ja:"彼に会ったのは<strong>1回きり</strong>です。", id:"Saya hanya pernah bertemu dia satu kali saja." }
             ]
           }
         ]
       },
-      { day:6, title:"知っているふりをする", titleId:"Berpura-pura tahu",
+      { day:6, title:"教えてほしい", titleId:"Ingin kamu mengajariku",
         grammar:[
-          { pattern:"〜てほしい / 〜てもらいたい", badge:"Vて＋ほしい",
-            meaning:"〜してくれることを望む", meaningId:"Ingin agar (kamu)... / Minta tolong... (keinginan atas tindakan orang lain)",
-            examples:[
-              { ja:"その資料を<strong>見せてほしい</strong>。", id:"Aku ingin kamu perlihatkan dokumen itu." },
-              { ja:"もっとゆっくり<strong>話してほしい</strong>んですが。", id:"Saya minta tolong bicaranya lebih pelan." }
-            ]
-          },
           { pattern:"〜がる / 〜たがる", badge:"A/V＋がる",
             meaning:"第三者が〜という感情を持っているようだ", meaningId:"Kelihatannya (orang lain) merasa... / ingin... (perasaan orang ketiga yang terlihat dari luar)",
             examples:[
-              { ja:"子どもは暗いところを<strong>こわがる</strong>。", id:"Anak-anak takut tempat gelap." },
-              { ja:"弟は新しいゲームを<strong>ほしがっている</strong>。", id:"Adik laki-lakiku kelihatannya ingin game baru." }
+              { ja:"<strong>怖がらないで</strong>ください。", id:"Tolong jangan takut." },
+              { ja:"田中さんが、あなたに<strong>会いたがって</strong>いましたよ。", id:"Tanaka-san tadi kelihatannya ingin bertemu denganmu lho." }
+            ]
+          },
+          { pattern:"〜てほしい / 〜てもらいたい", badge:"Vて＋ほしい",
+            meaning:"〜してくれることを望む", meaningId:"Ingin agar (kamu)... / Minta tolong... (keinginan atas tindakan orang lain)",
+            examples:[
+              { ja:"あのう、教科書を<strong>見せてほしい</strong>んですが……。", id:"Anu, saya ingin kamu memperlihatkan buku pelajarannya..." },
+              { ja:"もっと静かに<strong>してほしい</strong>。", id:"Saya ingin (kamu) lebih tenang." }
             ]
           },
           { pattern:"〜ふりをする", badge:"V/N の＋ふりをする",
             meaning:"〜であるように見せかける", meaningId:"Berpura-pura... (seolah-olah melakukan atau mengetahui sesuatu padahal tidak)",
             examples:[
-              { ja:"知っている<strong>ふりをする</strong>。", id:"Berpura-pura tahu." },
-              { ja:"寝ている<strong>ふりをして</strong>、話を聞いていた。", id:"Sambil berpura-pura tidur, aku mendengarkan pembicaraan mereka." }
+              { ja:"彼は<strong>知っているふりをして</strong>いるが、本当は知らないと思う。", id:"Dia berpura-pura tahu, tapi sebenarnya kurasa tidak tahu." },
+              { ja:"田中さんは<strong>独身のふりをして</strong>いるが、結婚して子どもがいる。", id:"Tanaka-san berpura-pura lajang, padahal sudah menikah dan punya anak." }
             ]
           }
         ]
@@ -829,98 +908,194 @@ const WEEKS = [
   {
     num:4, title:"がんばるしかない！", titleId:"Tidak ada pilihan selain semangat!",
     days:[
-      { day:1, title:"何だっけ？", titleId:"Apa ya tadi?",
+      { day:1, title:"子どものくせに", titleId:"Padahal masih anak-anak",
         grammar:[
-          { pattern:"〜だっけ？ / 〜っけ？", badge:"S＋っけ",
-            meaning:"忘れたことを思い出そうとする", meaningId:"... ya? / ... tadi? (mencoba mengingat sesuatu yang terlupakan)",
+          { pattern:"〜にとって", badge:"N にとって",
+            meaning:"〜の立場・視点から見ると", meaningId:"Bagi... / Untuk... (dari sudut pandang seseorang)",
             examples:[
-              { ja:"国へ帰るのは、来週<strong>だっけ</strong>？", id:"Pulang ke negaranya minggu depan ya?" },
-              { ja:"明日のパーティーのこと、話し<strong>たっけ</strong>？", id:"Soal pesta besok, sudah aku ceritakan belum ya?" }
+              { ja:"<strong>あなたにとって</strong>、いちばん大切なものは何ですか。", id:"Bagi kamu, apa hal yang paling penting?" },
+              { ja:"このあたりの<strong>人々にとっては</strong>、車は必需品です。", id:"Bagi orang-orang di sekitar sini, mobil adalah kebutuhan." }
             ]
           },
-          { pattern:"〜しかない / 〜するしかない", badge:"V る＋しかない",
-            meaning:"それ以外の方法がない", meaningId:"Tidak ada pilihan selain... / Terpaksa harus... (tidak ada cara lain)",
+          { pattern:"〜わりに / 〜わりには", badge:"V/A/な/N の＋わりに",
+            meaning:"〜から予想されることと違って", meaningId:"Padahal... / Kalau dilihat dari... ternyata (di luar dugaan)",
+            examples:[
+              { ja:"<strong>年のわりには</strong>若く見える。", id:"Untuk usianya, dia terlihat muda." },
+              { ja:"<strong>お金がないわりに</strong>、よく買い物をする。", id:"Padahal katanya tidak punya uang, tapi sering belanja." }
+            ]
+          },
+          { pattern:"〜くせに", badge:"V/A/な/N の＋くせに",
+            meaning:"〜のに（非難の気持ち）", meaningId:"Padahal... (dengan nada mencela atau menyalahkan)",
+            examples:[
+              { ja:"<strong>知っているくせに</strong>、教えてくれない。", id:"Padahal tahu, tapi tidak mau memberitahu." },
+              { ja:"<strong>元気なくせに</strong>、病気のふりをしている。", id:"Padahal sehat, tapi berpura-pura sakit." }
+            ]
+          },
+          { pattern:"〜なんか / 〜なんて", badge:"N ＋なんか/なんて",
+            meaning:"〜など（軽視・否定の強調）", meaningId:"(Hal seperti)... (meremehkan atau menekankan kesan negatif)",
+            examples:[
+              { ja:"<strong>お化粧なんか</strong>してはいけません。", id:"Tidak boleh berdandan segala (untuk anak kecil)." },
+              { ja:"<strong>納豆なんて</strong>嫌いだ。", id:"Natto sih aku benci." }
+            ]
+          }
+        ]
+      },
+      { day:2, title:"そのかわり", titleId:"Sebagai gantinya",
+        grammar:[
+          { pattern:"〜おかげで", badge:"V/A/な/N の＋おかげで",
+            meaning:"〜のために（よい結果）", meaningId:"Berkat... (menghasilkan akibat yang baik)",
+            examples:[
+              { ja:"<strong>先生のおかげで</strong>合格できました。", id:"Berkat guru, saya bisa lulus." },
+              { ja:"<strong>日本へ来たおかげで</strong>、日本語が上手になった。", id:"Berkat datang ke Jepang, bahasa Jepang saya jadi bagus." }
+            ]
+          },
+          { pattern:"〜せいで / 〜せいか", badge:"V/A/な/N の＋せいで",
+            meaning:"〜のために（悪い結果）", meaningId:"Gara-gara... (menghasilkan akibat yang buruk)",
+            examples:[
+              { ja:"<strong>バスが遅れたせいで</strong>、約束の時間に間に合わなかった。", id:"Gara-gara bus terlambat, saya tidak sempat tiba di waktu janjian." },
+              { ja:"<strong>疲れたせいか</strong>、頭が痛い。", id:"Entah karena lelah, kepala saya sakit." }
+            ]
+          },
+          { pattern:"〜かわりに", badge:"V/A/な/N の＋かわりに",
+            meaning:"〜の代わりに・〜ではなく", meaningId:"Sebagai ganti... / Bukan... melainkan...",
+            examples:[
+              { ja:"車で来たので、<strong>ビールのかわりに</strong>ジュースをください。", id:"Karena datang dengan mobil, sebagai ganti bir tolong beri jus." },
+              { ja:"<strong>日曜日に働いたかわりに</strong>、今日休みを取りました。", id:"Sebagai ganti bekerja pada hari Minggu, hari ini saya ambil libur." }
+            ]
+          },
+          { pattern:"〜にかわって / 〜にかわり", badge:"N に＋かわって",
+            meaning:"〜の代理として・〜から交代して", meaningId:"Menggantikan... / Atas nama...",
+            examples:[
+              { ja:"出張中の<strong>部長にかわって</strong>、私がごあいさついたします。", id:"Menggantikan kepala bagian yang sedang dinas luar, saya yang memberi sambutan." },
+              { ja:"<strong>野球にかわり</strong>、サッカーがさかんになってきた。", id:"Menggantikan baseball, sepak bola menjadi semakin populer." }
+            ]
+          }
+        ]
+      },
+      { day:3, title:"見れば見るほど", titleId:"Semakin dilihat semakin...",
+        grammar:[
+          { pattern:"〜くらい / 〜ほど", badge:"N/V/A＋くらい/ほど",
+            meaning:"〜と同じ程度・〜という程度", meaningId:"Kira-kira... / Sampai... (menyatakan derajat)",
+            examples:[
+              { ja:"それは<strong>米粒くらい</strong>の大きさです。", id:"Itu kira-kira sebesar butir beras." },
+              { ja:"この洗剤は、<strong>おもしろいほど</strong>汚れが落ちる。", id:"Deterjen ini menghilangkan kotoran sampai mengagumkan." }
+            ]
+          },
+          { pattern:"〜ほど（比較）", badge:"A/な＋ほど",
+            meaning:"〜のほうが（程度の比較）", meaningId:"Semakin... (perbandingan derajat)",
+            examples:[
+              { ja:"<strong>若い人ほど</strong>朝寝坊をする。", id:"Semakin muda orangnya, semakin suka bangun kesiangan." },
+              { ja:"伝統的なものは、<strong>古いほど</strong>価値がある。", id:"Barang tradisional, semakin tua semakin bernilai." }
+            ]
+          },
+          { pattern:"〜ば〜ほど", badge:"Vば Vるほど",
+            meaning:"〜すると、ますます〜", meaningId:"Semakin... semakin...",
+            examples:[
+              { ja:"彼のことを<strong>知れば知るほど</strong>好きになる。", id:"Semakin mengenalnya, semakin menyukainya." },
+              { ja:"荷物は<strong>少なければ少ないほど</strong>いい。", id:"Barang bawaan semakin sedikit semakin baik." }
+            ]
+          },
+          { pattern:"〜くらい〜はない / 〜ほど〜はない", badge:"N くらい〜はない",
+            meaning:"〜がいちばんだ（最上級）", meaningId:"Tidak ada yang se... (menyatakan paling/superlatif)",
+            examples:[
+              { ja:"<strong>彼女くらい</strong>親切な人は<strong>いない</strong>。", id:"Tidak ada orang sebaik dia." },
+              { ja:"<strong>今年ほど</strong>雪の降った年は<strong>なかった</strong>。", id:"Tidak ada tahun yang turun saljunya sebanyak tahun ini." }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"やってみることだ", titleId:"Sebaiknya kamu coba",
+        grammar:[
+          { pattern:"〜ことはない", badge:"Vる＋ことはない",
+            meaning:"〜しなくてもいい（必要ない）", meaningId:"Tidak perlu... (tidak ada keharusan melakukannya)",
+            examples:[
+              { ja:"君が<strong>あやまることはない</strong>よ。", id:"Kamu tidak perlu minta maaf kok." },
+              { ja:"<strong>来ることはありません</strong>。郵送でいいですよ。", id:"Tidak perlu datang. Cukup lewat pos saja." }
+            ]
+          },
+          { pattern:"〜ということだ", badge:"文＋ということだ",
+            meaning:"〜という意味だ・〜だそうだ", meaningId:"Berarti... / Katanya... (menyimpulkan makna atau menyampaikan informasi)",
+            examples:[
+              { ja:"田中さんから電話があって、少し<strong>遅れるということです</strong>。", id:"Ada telepon dari Tanaka-san, katanya akan sedikit terlambat." },
+              { ja:"試験の結果は70%。つまり<strong>合格ということだ</strong>。", id:"Hasil ujian 70%. Dengan kata lain, berarti lulus." }
+            ]
+          },
+          { pattern:"〜ことだ（忠告）", badge:"Vる/ない＋ことだ",
+            meaning:"〜したほうがいい（忠告・提案）", meaningId:"Sebaiknya... (memberi saran atau nasihat)",
+            examples:[
+              { ja:"暖かくして、ゆっくり<strong>休むことだ</strong>。", id:"Sebaiknya menghangatkan badan dan istirahat dengan tenang." },
+              { ja:"<strong>無理をしないことです</strong>。", id:"Sebaiknya jangan memaksakan diri." }
+            ]
+          },
+          { pattern:"〜ことか", badge:"どんなに〜ことか",
+            meaning:"とても〜だ（強い感情の強調）", meaningId:"Betapa...! (menekankan perasaan yang kuat)",
+            examples:[
+              { ja:"合格できたら、<strong>どんなにうれしいことか</strong>。", id:"Betapa senangnya kalau bisa lulus!" },
+              { ja:"<strong>何度注意したことか</strong>。", id:"Sudah berapa kali aku menegurmu!" }
+            ]
+          }
+        ]
+      },
+      { day:5, title:"聞いてみるしかない", titleId:"Tidak ada pilihan selain bertanya",
+        grammar:[
+          { pattern:"〜だっけ / 〜っけ", badge:"文＋っけ",
+            meaning:"忘れたことを思い出そうとする", meaningId:"... ya? / ... tadi? (mencoba mengingat sesuatu yang terlupakan)",
+            examples:[
+              { ja:"国へ帰るのは、<strong>来週だったっけ</strong>？", id:"Pulang ke negaranya minggu depan ya?" },
+              { ja:"明日のパーティーのこと、<strong>話したっけ</strong>？", id:"Soal pesta besok, sudah aku ceritakan belum ya?" }
+            ]
+          },
+          { pattern:"〜しかない", badge:"Vる＋しかない",
+            meaning:"それ以外の方法がない", meaningId:"Tidak ada pilihan selain... / Terpaksa harus...",
             examples:[
               { ja:"できるまで、<strong>やるしかない</strong>。", id:"Tidak ada pilihan selain terus mencoba sampai bisa." },
               { ja:"直せないから、新しいのを<strong>買うしかなかった</strong>。", id:"Karena tidak bisa diperbaiki, terpaksa harus beli yang baru." }
             ]
           },
-          { pattern:"〜んだって / 〜だって", badge:"S＋んだって",
+          { pattern:"〜んだって / 〜だって", badge:"文＋んだって",
             meaning:"〜そうだ（人から聞いた情報・口語）", meaningId:"Katanya... / Dengar-dengar... (informasi dari orang lain, informal)",
             examples:[
               { ja:"「田中さん、<strong>結婚してるんだって</strong>。」「へえ、知らなかった。」", id:"'Katanya Tanaka-san sudah menikah.' 'Wah, aku tidak tahu.'" },
-              { ja:"明日、休み<strong>なんだって</strong>。", id:"Katanya besok libur." }
-            ]
-          }
-        ]
-      },
-      { day:2, title:"ずいぶん待たされた", titleId:"Disuruh menunggu cukup lama",
-        grammar:[
-          { pattern:"〜させられる（使役受身）", badge:"V使役受身形",
-            meaning:"〜することを強制される", meaningId:"Dipaksa untuk... / Terpaksa harus... (dipaksa orang lain melakukan sesuatu)",
-            examples:[
-              { ja:"ずいぶん<strong>待たされた</strong>。", id:"Aku disuruh menunggu cukup lama." },
-              { ja:"子どものころ、毎日ピアノを<strong>練習させられた</strong>。", id:"Waktu kecil, setiap hari dipaksa berlatih piano." },
-              { ja:"上司に残業を<strong>させられた</strong>。", id:"Dipaksa lembur oleh atasan." }
-            ]
-          }
-        ]
-      },
-      { day:3, title:"最近慣れてきた", titleId:"Belakangan ini mulai terbiasa",
-        grammar:[
-          { pattern:"〜てくる / 〜ていく", badge:"Vて＋くる/いく",
-            meaning:"①移動の方向　②変化の方向", meaningId:"① Arah gerakan (datang/pergi sambil melakukan) ② Perubahan yang terus berlanjut",
-            examples:[
-              { ja:"コンビニに行って、お弁当を<strong>買ってきた</strong>。", id:"Pergi ke konbini dan kembali setelah membeli bento." },
-              { ja:"これからも日本語を<strong>勉強していく</strong>つもりです。", id:"Saya berencana untuk terus belajar bahasa Jepang ke depannya." },
-              { ja:"最近、物価が上がって<strong>きた</strong>。", id:"Belakangan ini harga-harga mulai naik." }
-            ]
-          }
-        ]
-      },
-      { day:4, title:"うれしくてたまらない", titleId:"Tidak tertahankan senangnya",
-        grammar:[
-          { pattern:"〜てたまらない / 〜でたまらない", badge:"Vて/A くて＋たまらない",
-            meaning:"非常に〜で、我慢できない", meaningId:"Tidak tertahankan... / Sangat... sampai tidak bisa ditahan (perasaan yang sangat kuat)",
-            examples:[
-              { ja:"合格の知らせを聞いて、<strong>うれしくてたまらない</strong>。", id:"Setelah mendengar kabar kelulusan, senangnya tidak tertahankan." },
-              { ja:"昨日から歯が<strong>痛くてたまらない</strong>。", id:"Dari kemarin gigi sakit sekali, tidak tertahankan." }
+              { ja:"試験の範囲は、50ページ<strong>までだって</strong>。", id:"Katanya cakupan ujian sampai halaman 50." }
             ]
           },
-          { pattern:"〜てならない", badge:"Vて/A くて＋ならない",
-            meaning:"自然に〜という気持ちになる", meaningId:"Tidak bisa tidak merasa... (perasaan yang muncul secara alami)",
+          { pattern:"〜だもん / 〜もん", badge:"文＋だもん",
+            meaning:"〜だから（理由を言う・口語）", meaningId:"Habis... sih / Soalnya... (menyatakan alasan, informal)",
             examples:[
-              { ja:"故郷のことが<strong>思い出されてならない</strong>。", id:"Kampung halaman terus-terusan terbayang, tidak bisa tidak." },
-              { ja:"彼が心配で<strong>ならない</strong>。", id:"Aku tidak bisa tidak khawatir soal dia." }
+              { ja:"「どうして食べないの？」「だって、<strong>まずいんだもん</strong>。」", id:"'Kenapa tidak dimakan?' 'Habis, rasanya tidak enak sih.'" },
+              { ja:"試験ができなかった。<strong>勉強しなかったんだもん</strong>。", id:"Ujianku jelek. Soalnya aku tidak belajar sih." }
             ]
           }
         ]
       },
-      { day:5, title:"お金さえあれば", titleId:"Asal ada uang",
+      { day:6, title:"つまり…", titleId:"Dengan kata lain...",
         grammar:[
-          { pattern:"〜さえ〜ば / 〜さえ〜たら", badge:"N さえ＋V ば",
-            meaning:"〜という条件だけで十分", meaningId:"Asal... saja sudah cukup / Kalau hanya... (kondisi minimal yang cukup)",
+          { pattern:"つまり", badge:"接続詞",
+            meaning:"言い換えると・要するに", meaningId:"Dengan kata lain / Singkatnya",
             examples:[
-              { ja:"お金<strong>さえあれば</strong>、大丈夫です。", id:"Asal ada uang, tidak masalah." },
-              { ja:"あなた<strong>さえいれば</strong>、他には何もいらない。", id:"Asal ada kamu, tidak perlu yang lain." }
-            ]
-          }
-        ]
-      },
-      { day:6, title:"どうせ無理だと思っていた", titleId:"Toh memang kupikir mustahil",
-        grammar:[
-          { pattern:"どうせ〜", badge:"どうせ＋S",
-            meaning:"結果がわかっていて、あきらめている", meaningId:"Toh... / Memang sudah... (pasrah atau pesimis karena sudah tahu hasilnya)",
-            examples:[
-              { ja:"<strong>どうせ</strong>、うまくいかないよ。", id:"Toh pasti tidak berhasil kok." },
-              { ja:"<strong>どうせ</strong>なら、もっといいものを買おう。", id:"Kalau memang begitu, lebih baik beli yang lebih bagus sekalian." }
+              { ja:"父の兄、<strong>つまり</strong>私の伯父は、医者をしている。", id:"Kakak ayah, dengan kata lain paman saya, adalah seorang dokter." },
+              { ja:"彼は携帯もパソコンも持っていない。<strong>つまり</strong>、メールで連絡はできない。", id:"Dia tidak punya ponsel maupun komputer. Singkatnya, tidak bisa dihubungi lewat email." }
             ]
           },
-          { pattern:"〜わけだ / 〜わけがない", badge:"S わけだ",
-            meaning:"〜という理由・結論になる", meaningId:"Pantas saja... / Berarti... / Tidak mungkin... (menyimpulkan alasan atau menyangkal kemungkinan)",
+          { pattern:"そのため(に)", badge:"接続詞",
+            meaning:"だから・その理由で", meaningId:"Oleh karena itu / Karena itu",
             examples:[
-              { ja:"10年日本に住んでいるから、日本語が上手な<strong>わけだ</strong>。", id:"Pantas saja bahasa Jepangnya bagus, karena sudah tinggal di Jepang 10 tahun." },
-              { ja:"そんなことが信じられる<strong>わけがない</strong>。", id:"Tidak mungkin percaya hal seperti itu." }
+              { ja:"隣の駅で事故があったらしい。<strong>そのために</strong>電車も遅れている。", id:"Katanya ada kecelakaan di stasiun sebelah. Karena itu kereta pun terlambat." },
+              { ja:"留学するつもりだ。<strong>そのために</strong>、バイトしてお金をためている。", id:"Saya berniat study ke luar negeri. Untuk itu, saya menabung dengan kerja paruh waktu." }
+            ]
+          },
+          { pattern:"その結果", badge:"接続詞",
+            meaning:"〜したあとで（結果として）", meaningId:"Sebagai hasilnya / Akibatnya",
+            examples:[
+              { ja:"父は、人の何倍も努力した。<strong>その結果</strong>、仕事で成功した。", id:"Ayah berusaha berkali-kali lipat dari orang lain. Sebagai hasilnya, sukses dalam pekerjaan." },
+              { ja:"3か月ダイエットを続けた。<strong>その結果</strong>、5キロやせた。", id:"Saya diet selama 3 bulan. Hasilnya, turun 5 kilo." }
+            ]
+          },
+          { pattern:"なぜなら〜から", badge:"なぜなら〜から",
+            meaning:"理由・原因を後で述べる", meaningId:"Alasannya adalah karena... (menjelaskan sebab setelahnya)",
+            examples:[
+              { ja:"来週、国に帰る予定です。<strong>なぜなら</strong>、親友の結婚式に出席する<strong>からです</strong>。", id:"Minggu depan saya akan pulang ke negara. Alasannya, karena akan hadir di pernikahan sahabat." },
+              { ja:"学校を変えた。<strong>なぜかというと</strong>、私のレベルのクラスがなかった<strong>からだ</strong>。", id:"Saya pindah sekolah. Alasannya, karena tidak ada kelas yang sesuai levelku." }
             ]
           }
         ]
@@ -930,110 +1105,194 @@ const WEEKS = [
   {
     num:5, title:"もっとがんばればよかった！", titleId:"Seharusnya lebih semangat!",
     days:[
-      { day:1, title:"どうりでおかしいと思った", titleId:"Pantas saja aku merasa aneh",
+      { day:1, title:"子どもばかりか", titleId:"Tidak hanya anak-anak",
         grammar:[
-          { pattern:"〜ばよかった", badge:"V ば＋よかった",
-            meaning:"〜すればよかった（後悔）", meaningId:"Seharusnya dulu... (menyesal tidak melakukan sesuatu di masa lalu)",
+          { pattern:"〜はもちろん", badge:"N は＋もちろん",
+            meaning:"〜は当然のこと、〜も", meaningId:"Tentu saja... dan juga...",
             examples:[
-              { ja:"もっと<strong>勉強すればよかった</strong>。", id:"Seharusnya dulu lebih giat belajar." },
-              { ja:"あのとき、正直に<strong>言えばよかった</strong>。", id:"Seharusnya waktu itu jujur saja." }
+              { ja:"彼は、<strong>勉強はもちろん</strong>スポーツもよくできる。", id:"Dia, jangankan belajar, olahraga pun pandai." },
+              { ja:"キャベツは、炒めて食べる<strong>のはもちろん</strong>、生で食べてもおいしい。", id:"Kubis, ditumis tentu enak, dimakan mentah pun enak." }
             ]
           },
-          { pattern:"どうりで〜", badge:"どうりで＋S",
-            meaning:"なるほど〜のはずだ（納得）", meaningId:"Pantas saja... / Makanya... (menyadari alasan mengapa sesuatu terjadi)",
+          { pattern:"〜ばかりか / 〜ばかりでなく", badge:"V/A/な/N の＋ばかりか",
+            meaning:"〜だけでなく（さらに〜も）", meaningId:"Tidak hanya... bahkan juga...",
             examples:[
-              { ja:"<strong>どうりで</strong>おかしいと思った。彼、昨日から熱があったんだ。", id:"Pantas saja aku merasa aneh. Ternyata dia sudah demam dari kemarin." },
-              { ja:"<strong>どうりで</strong>静かだと思ったら、みんな出かけていたんだ。", id:"Pantas saja terasa sepi, ternyata semua sudah pergi." }
+              { ja:"あの店は、<strong>味が悪いばかりか</strong>、店員の態度もひどい。", id:"Restoran itu, jangankan rasanya buruk, sikap pelayannya pun parah." },
+              { ja:"私は、<strong>漢字ばかりか</strong>、まだひらがなも書けません。", id:"Saya, jangankan kanji, hiragana pun belum bisa menulis." }
+            ]
+          },
+          { pattern:"〜に比べて", badge:"N に＋比べて",
+            meaning:"〜と比較すると", meaningId:"Dibandingkan dengan...",
+            examples:[
+              { ja:"試験問題は<strong>昨年に比べて</strong>易しくなった。", id:"Soal ujian menjadi lebih mudah dibanding tahun lalu." },
+              { ja:"店で買うの<strong>に比べて</strong>、通信販売は便利だが欠点もある。", id:"Dibanding membeli di toko, belanja online praktis tapi ada kekurangannya." }
+            ]
+          },
+          { pattern:"〜に対して", badge:"N に＋対して",
+            meaning:"〜に向かって・〜とは反対に", meaningId:"Terhadap... / Berbeda dengan... (kontras)",
+            examples:[
+              { ja:"田中先生は、<strong>生徒に対して</strong>厳しい。", id:"Tanaka-sensei tegas terhadap murid-muridnya." },
+              { ja:"まじめな<strong>長男に対して</strong>、次男は遊んでばかりだ。", id:"Berbeda dengan anak sulung yang rajin, anak kedua main terus." }
             ]
           }
         ]
       },
-      { day:2, title:"やっと慣れてきた", titleId:"Akhirnya mulai terbiasa",
+      { day:2, title:"炊きたて", titleId:"Baru matang",
         grammar:[
-          { pattern:"やっと〜 / ようやく〜", badge:"副詞",
-            meaning:"長い時間や努力の後に、ついに〜", meaningId:"Akhirnya... / Dengan susah payah akhirnya... (setelah usaha atau waktu yang lama)",
+          { pattern:"〜上げる", badge:"Vます＋上げる",
+            meaning:"完全に〜し終わる", meaningId:"Selesai sepenuhnya / Menyelesaikan sampai tuntas",
             examples:[
-              { ja:"<strong>やっと</strong>日本語に慣れてきました。", id:"Akhirnya mulai terbiasa dengan bahasa Jepang." },
-              { ja:"<strong>ようやく</strong>合格できた。", id:"Dengan susah payah akhirnya berhasil lulus." }
+              { ja:"やっとレポートを<strong>書き上げた</strong>。", id:"Akhirnya selesai menulis laporan sampai tuntas." },
+              { ja:"ケーキが<strong>焼き上がりました</strong>。", id:"Kuenya sudah selesai dipanggang." }
             ]
           },
-          { pattern:"なかなか〜ない", badge:"なかなか＋Vない",
-            meaning:"期待しているのに、なかなか〜しない", meaningId:"Tidak kunjung... / Susah sekali untuk... (sesuatu yang diharapkan belum terjadi juga)",
+          { pattern:"〜切れない / 〜切る", badge:"Vます＋切る/切れない",
+            meaning:"全部〜する／全部は〜できない", meaningId:"Melakukan sepenuhnya / Tidak bisa habis sepenuhnya",
             examples:[
-              { ja:"日本語が<strong>なかなか</strong>上手に<strong>なれない</strong>。", id:"Bahasa Jepang tidak kunjung bisa bagus juga." },
-              { ja:"バスが<strong>なかなか来ない</strong>。", id:"Bus tidak kunjung datang." }
+              { ja:"ご飯の量が多くて、<strong>食べ切れない</strong>。", id:"Porsi nasinya banyak sampai tidak bisa habis." },
+              { ja:"長い小説を、2日間で<strong>読み切った</strong>。", id:"Novel panjang itu kubaca habis dalam 2 hari." }
+            ]
+          },
+          { pattern:"〜かけ / 〜かけの", badge:"Vます＋かけ",
+            meaning:"〜している途中だ", meaningId:"Setengah jalan / Belum selesai melakukan",
+            examples:[
+              { ja:"この本はまだ<strong>読みかけ</strong>だ。", id:"Buku ini masih dibaca setengah jalan." },
+              { ja:"おふろに<strong>入りかけた</strong>ときに電話が鳴った。", id:"Saat hendak masuk ke bak mandi, telepon berdering." }
+            ]
+          },
+          { pattern:"〜たて", badge:"Vます＋たて",
+            meaning:"〜したばかり（できたて）", meaningId:"Baru saja (dibuat/dikerjakan)",
+            examples:[
+              { ja:"<strong>焼きたて</strong>のパンはおいしい。", id:"Roti yang baru dipanggang itu enak." },
+              { ja:"あのスーパーは、<strong>とりたて</strong>の新鮮な野菜を売っている。", id:"Supermarket itu menjual sayuran segar yang baru dipetik." }
             ]
           }
         ]
       },
-      { day:3, title:"映画が始まるまで", titleId:"Sampai film mulai",
+      { day:3, title:"受かっていたらいいなあ", titleId:"Andai saja lulus",
         grammar:[
-          { pattern:"〜まで / 〜までに", badge:"N/V る＋まで(に)",
-            meaning:"まで：〜が続く時点　までに：〜する期限", meaningId:"まで: sampai (titik berakhir) ／ までに: paling lambat sampai (batas waktu)",
+          { pattern:"〜といい / 〜たらいい", badge:"文＋といい(なあ)",
+            meaning:"〜であることを願う", meaningId:"Semoga... / Andai saja... (harapan)",
+            examples:[
+              { ja:"もっと日本語がうまく<strong>話せるといいなあ</strong>。", id:"Andai saja bisa berbahasa Jepang lebih lancar." },
+              { ja:"明日、<strong>雨が降らないといいなあ</strong>。", id:"Semoga besok tidak hujan." }
+            ]
+          },
+          { pattern:"〜ばよかった", badge:"Vば＋よかった",
+            meaning:"〜すればよかった（後悔）", meaningId:"Seharusnya dulu... (menyesal)",
+            examples:[
+              { ja:"遅刻してしまった。もっと早く家を<strong>出ればよかった</strong>。", id:"Saya terlambat. Seharusnya keluar rumah lebih awal." },
+              { ja:"田中さんにあんなことを<strong>言わなければよかった</strong>。", id:"Seharusnya aku tidak mengatakan hal seperti itu pada Tanaka-san." }
+            ]
+          },
+          { pattern:"〜ばよかったのに", badge:"Vば＋よかったのに",
+            meaning:"〜したほうがよかった（残念）", meaningId:"Harusnya kamu... (menyesalkan tindakan orang lain)",
+            examples:[
+              { ja:"パーティー、楽しかったよ。君も<strong>行けばよかったのに</strong>。", id:"Pestanya seru lho. Sayang kamu tidak ikut." },
+              { ja:"安かったんだから、<strong>買えばよかったのに</strong>。", id:"Kan murah, harusnya kamu beli saja." }
+            ]
+          },
+          { pattern:"〜ないかなあ / 〜かなあ", badge:"文＋かなあ",
+            meaning:"願望や疑問を表す", meaningId:"Semoga... / Kira-kira... ya (harapan atau keraguan)",
+            examples:[
+              { ja:"バス、<strong>早く来ないかなあ</strong>。", id:"Semoga busnya cepat datang." },
+              { ja:"今日、<strong>富士山が見えるかなあ</strong>。", id:"Apa hari ini Gunung Fuji kelihatan ya?" }
+            ]
+          }
+        ]
+      },
+      { day:4, title:"今晩から明日の朝にかけて", titleId:"Dari malam ini sampai besok pagi",
+        grammar:[
+          { pattern:"〜まで", badge:"Vる＋まで",
+            meaning:"〜が続く時点まで（ずっと）", meaningId:"Sampai... (suatu keadaan berlanjut)",
             examples:[
               { ja:"映画が<strong>始まるまで</strong>、30分あります。", id:"Masih ada 30 menit sampai film mulai." },
-              { ja:"3時<strong>までに</strong>来てください。", id:"Tolong datang paling lambat jam 3." }
+              { ja:"連絡が<strong>あるまで</strong>待っています。", id:"Saya akan menunggu sampai ada kabar." }
             ]
           },
-          { pattern:"〜にかけて / 〜から〜にかけて", badge:"N から N にかけて",
-            meaning:"〜の期間・範囲にわたって", meaningId:"Dari... hingga... (rentang waktu atau tempat yang bertahap)",
+          { pattern:"〜まで（強調）", badge:"N まで",
+            meaning:"意外なものも含めて〜（驚き）", meaningId:"Bahkan... pun... (penekanan, contoh ekstrem yang mengejutkan)",
             examples:[
-              { ja:"今晩から<strong>明日の朝にかけて</strong>、雪が降るんだって。", id:"Katanya akan turun salju dari malam ini hingga besok pagi." },
-              { ja:"九州から本州<strong>にかけて</strong>梅雨に入りました。", id:"Musim hujan telah tiba dari Kyushu hingga Honshu." }
+              { ja:"この魚は<strong>骨まで</strong>食べられます。", id:"Ikan ini bahkan tulangnya pun bisa dimakan." },
+              { ja:"<strong>あなたまで</strong>私を疑うのですか。", id:"Bahkan kamu pun meragukanku?" }
+            ]
+          },
+          { pattern:"〜から〜にかけて", badge:"N から N にかけて",
+            meaning:"〜の期間・範囲にわたって", meaningId:"Dari... hingga... (rentang waktu atau tempat)",
+            examples:[
+              { ja:"明日は<strong>昼から夕方にかけて</strong>雨でしょう。", id:"Besok kemungkinan hujan dari siang sampai sore." },
+              { ja:"<strong>九州から本州にかけて</strong>梅雨入りしました。", id:"Musim hujan telah tiba dari Kyushu sampai Honshu." }
+            ]
+          },
+          { pattern:"〜において", badge:"N に＋おいて",
+            meaning:"〜で（硬い表現）", meaningId:"Di / Dalam... (ungkapan formal dari で)",
+            examples:[
+              { ja:"<strong>大阪において</strong>、国際会議が行われた。", id:"Konferensi internasional diadakan di Osaka." },
+              { ja:"結果は<strong>ホームページにおいて</strong>発表されます。", id:"Hasilnya akan diumumkan di situs web." }
             ]
           }
         ]
       },
-      { day:4, title:"あまりにも高すぎる", titleId:"Terlalu mahal",
+      { day:5, title:"たとえ高くても", titleId:"Sekalipun mahal",
         grammar:[
-          { pattern:"〜すぎる", badge:"V/A＋すぎる",
-            meaning:"程度が必要以上に大きい", meaningId:"Terlalu... (melampaui batas yang wajar atau diinginkan)",
+          { pattern:"たとえ〜ても", badge:"たとえ＋Vても",
+            meaning:"もし〜という場合でも", meaningId:"Sekalipun... / Seandainya pun...",
             examples:[
-              { ja:"食べ<strong>すぎて</strong>、おなかが痛い。", id:"Terlalu banyak makan sampai sakit perut." },
-              { ja:"この問題は難し<strong>すぎる</strong>。", id:"Soal ini terlalu sulit." }
+              { ja:"<strong>たとえ反対されても</strong>留学します。", id:"Sekalipun ditentang, saya akan study ke luar negeri." },
+              { ja:"<strong>たとえ元気じゃなくても</strong>、家族への手紙には元気だと書く。", id:"Sekalipun tidak sehat, di surat untuk keluarga aku tulis bahwa aku sehat." }
             ]
           },
-          { pattern:"あまりにも〜", badge:"あまりにも",
-            meaning:"程度が非常に大きい（否定的）", meaningId:"Terlalu... / Sangat berlebihan... (derajat yang melampaui batas normal)",
+          { pattern:"もしかすると〜かもしれない", badge:"もしかすると〜かも",
+            meaning:"〜の可能性がある", meaningId:"Mungkin saja... (ada kemungkinan)",
             examples:[
-              { ja:"この服は<strong>あまりにも</strong>高すぎる。", id:"Baju ini terlalu mahal." },
-              { ja:"<strong>あまりにも</strong>暑くて、外に出られない。", id:"Terlalu panas sehingga tidak bisa keluar." }
+              { ja:"<strong>もしかすると</strong>彼の話はうそ<strong>かもしれない</strong>。", id:"Mungkin saja ceritanya bohong." },
+              { ja:"<strong>もしかしたら</strong>、明日行けない<strong>かもしれません</strong>。", id:"Mungkin saja besok saya tidak bisa pergi." }
+            ]
+          },
+          { pattern:"必ずしも〜とは限らない", badge:"必ずしも〜とは限らない",
+            meaning:"必ず〜とは言えない", meaningId:"Belum tentu... / Tidak selalu...",
+            examples:[
+              { ja:"お金持ちが<strong>必ずしも</strong>幸福だ<strong>とは限らない</strong>。", id:"Orang kaya belum tentu bahagia." },
+              { ja:"高いものが<strong>必ずしも</strong>いい<strong>とは限らない</strong>。", id:"Barang mahal belum tentu bagus." }
+            ]
+          },
+          { pattern:"まるで〜よう / まるで〜みたい", badge:"まるで〜よう",
+            meaning:"ちょうど〜のようだ（比喩）", meaningId:"Seolah-olah... / Persis seperti... (perumpamaan)",
+            examples:[
+              { ja:"合格した！<strong>まるで</strong>夢の<strong>ようだ</strong>。", id:"Lulus! Seolah-olah seperti mimpi." },
+              { ja:"彼の日本語は<strong>まるで</strong>日本人が話している<strong>みたいだ</strong>。", id:"Bahasa Jepangnya seolah-olah seperti orang Jepang yang bicara." }
             ]
           }
         ]
       },
-      { day:5, title:"読めば読むほど面白い", titleId:"Semakin dibaca semakin menarik",
+      { day:6, title:"ところで…", titleId:"Ngomong-ngomong...",
         grammar:[
-          { pattern:"〜ば〜ほど", badge:"V ば＋V ほど",
-            meaning:"〜すればするほど、さらに〜", meaningId:"Semakin... semakin... (peningkatan berbanding lurus)",
+          { pattern:"だけど", badge:"接続詞",
+            meaning:"けれど・しかし", meaningId:"Tapi / Namun (informal)",
             examples:[
-              { ja:"<strong>読めば読むほど</strong>、面白くなる。", id:"Semakin banyak dibaca, semakin menarik." },
-              { ja:"練習すれ<strong>ばするほど</strong>、上手になります。", id:"Semakin banyak berlatih, semakin mahir." }
+              { ja:"旅行に行きたい。<strong>だけど</strong>暇がない。", id:"Aku ingin berwisata. Tapi tidak ada waktu luang." },
+              { ja:"よくカラオケに行く。<strong>だけど</strong>歌は下手だ。", id:"Aku sering ke karaoke. Tapi nyanyiku jelek." }
             ]
           },
-          { pattern:"〜まで（も）〔強調〕", badge:"N まで(も)",
-            meaning:"意外なものも含めて〜だ", meaningId:"Bahkan... pun... (penekanan — sesuatu yang tidak terduga juga termasuk)",
+          { pattern:"ですから", badge:"接続詞",
+            meaning:"だから（ていねい）", meaningId:"Oleh karena itu (sopan)",
             examples:[
-              { ja:"ネコ<strong>まで</strong>喜んでいる。", id:"Bahkan kucingnya pun ikut senang." },
-              { ja:"あなた<strong>まで</strong>そんなことを言うの？", id:"Bahkan kamu pun bilang hal seperti itu?" }
-            ]
-          }
-        ]
-      },
-      { day:6, title:"ネコまで喜んでいる", titleId:"Bahkan kucingnya pun ikut senang",
-        grammar:[
-          { pattern:"〜ことにする / 〜ことにした", badge:"V る/ない＋ことにする",
-            meaning:"自分の意志で〜と決める", meaningId:"Memutuskan untuk... (keputusan atas kemauan sendiri)",
-            examples:[
-              { ja:"引っ越す<strong>ことにした</strong>。", id:"Aku memutuskan untuk pindah." },
-              { ja:"お酒を飲まない<strong>ことにしている</strong>。", id:"Saya memutuskan untuk tidak minum alkohol." }
+              { ja:"午後から雨だそうです。<strong>ですから</strong>、傘を持っていったほうがいい。", id:"Katanya sore akan hujan. Karena itu, sebaiknya bawa payung." },
+              { ja:"明日から旅行に行きます。<strong>ですから</strong>、パーティーには出席できません。", id:"Mulai besok saya bepergian. Karena itu, tidak bisa hadir di pesta." }
             ]
           },
-          { pattern:"〜ことになる / 〜ことになった", badge:"V る/ない＋ことになる",
-            meaning:"（状況・決定により）〜という結果になる", meaningId:"Menjadi keputusan bahwa... / Ternyata harus... (hasil dari situasi atau keputusan eksternal)",
+          { pattern:"ところが", badge:"接続詞",
+            meaning:"〜のに（予想外の結果）", meaningId:"Namun ternyata... (hasil di luar dugaan)",
             examples:[
-              { ja:"来月から大阪に転勤する<strong>ことになった</strong>。", id:"Ternyata mulai bulan depan harus pindah ke Osaka." },
-              { ja:"会議の日が変わる<strong>ことになりました</strong>。", id:"Hari pertemuan menjadi berubah." }
+              { ja:"行くつもりだった。<strong>ところが</strong>病気で行けなくなった。", id:"Tadinya berniat pergi. Namun ternyata sakit jadi tidak bisa." },
+              { ja:"田中さんは若いと思っていた。<strong>ところが</strong>実は5歳も年上だった。", id:"Kukira Tanaka-san muda. Namun ternyata 5 tahun lebih tua." }
+            ]
+          },
+          { pattern:"ところで", badge:"接続詞",
+            meaning:"話題を変えるときに使う", meaningId:"Ngomong-ngomong (mengganti topik)",
+            examples:[
+              { ja:"明日、試験でしょ。<strong>ところで</strong>、来週の月曜日は空いてる？", id:"Besok ujian kan. Ngomong-ngomong, Senin depan kamu kosong?" },
+              { ja:"もうすぐ今年も終わりですね。<strong>ところで</strong>、お正月はどうなさいますか。", id:"Sebentar lagi tahun ini berakhir ya. Ngomong-ngomong, bagaimana rencana Tahun Baru Anda?" }
             ]
           }
         ]
@@ -1041,108 +1300,333 @@ const WEEKS = [
     ]
   },
   {
-    num:6, title:"もっとがんばることにした", titleId:"Memutuskan untuk lebih semangat!",
+    num:6, title:"もっとがんばることにした！", titleId:"Memutuskan untuk lebih semangat!",
     days:[
-      { day:1, title:"引っ越すことにした", titleId:"Memutuskan untuk pindah",
+      { day:1, title:"もし私じゃなかったら", titleId:"Seandainya bukan aku",
         grammar:[
-          { pattern:"〜てからでないと / 〜てからでなければ", badge:"Vて＋からでないと",
-            meaning:"〜してからでなければ〜できない", meaningId:"Harus setelah... dulu baru bisa... (sesuatu tidak bisa dilakukan sebelum hal lain selesai)",
+          { pattern:"もし〜なら / もし〜たら", badge:"もし＋Vた(なら)",
+            meaning:"現実と反対のことを仮定する", meaningId:"Seandainya... (mengandaikan hal yang berlawanan dengan kenyataan)",
             examples:[
-              { ja:"実物を<strong>見てからでないと</strong>、決められない。", id:"Tidak bisa memutuskan sebelum melihat barang aslinya dulu." },
-              { ja:"内容を確認し<strong>てからでなければ</strong>、サインできません。", id:"Tidak bisa tanda tangan sebelum mengecek isinya dulu." }
+              { ja:"<strong>もし</strong>試験を受けていた<strong>なら</strong>、合格していたと思う。", id:"Seandainya dulu ikut ujian, kurasa aku akan lulus." },
+              { ja:"<strong>もし</strong>彼が社長だった<strong>なら</strong>、会社はつぶれていたと思う。", id:"Seandainya dia jadi direktur, kurasa perusahaan akan bangkrut." }
+            ]
+          },
+          { pattern:"もし〜としても", badge:"もし＋文としても",
+            meaning:"もし〜という場合でも", meaningId:"Seandainya pun... (kemungkinan yang rendah)",
+            examples:[
+              { ja:"<strong>もし</strong>休みが取れた<strong>としても</strong>、旅行には行かないつもりです。", id:"Seandainya pun bisa ambil libur, saya tidak berniat bepergian." },
+              { ja:"<strong>もし</strong>お金がたくさんあった<strong>としても</strong>、そんなものは買わない。", id:"Seandainya pun punya banyak uang, aku tidak akan membeli barang seperti itu." }
+            ]
+          },
+          { pattern:"もしも〜なら / もしも〜ても", badge:"もしも＋文",
+            meaning:"「もし」を強調した言い方", meaningId:"Seandainya... (penekanan dari もし)",
+            examples:[
+              { ja:"<strong>もしも</strong>生まれ変われる<strong>なら</strong>、男になりたい。", id:"Seandainya bisa terlahir kembali, aku ingin jadi laki-laki." },
+              { ja:"<strong>もしも</strong>地震が起き<strong>ても</strong>、この家は丈夫だから倒れないでしょう。", id:"Seandainya pun gempa terjadi, rumah ini kuat jadi tidak akan roboh." }
             ]
           }
         ]
       },
-      { day:2, title:"見てからでないといけない", titleId:"Harus setelah melihat dulu",
+      { day:2, title:"話せることは話せますが…", titleId:"Bisa sih bisa, tapi...",
         grammar:[
-          { pattern:"〜たところ（だ）", badge:"Vた＋ところ",
-            meaning:"①〜した直後　②〜してみたら", meaningId:"① Baru saja selesai... ② Setelah mencoba..., ternyata...",
+          { pattern:"〜ことにする / 〜ことにしている", badge:"Vる/ない＋ことにする",
+            meaning:"自分の意志で決める／習慣にしている", meaningId:"Memutuskan sendiri / Membiasakan diri untuk...",
             examples:[
-              { ja:"先生に今度のテストの範囲を<strong>聞いたところ</strong>、10課までだと言われた。", id:"Setelah menanyakan cakupan ujian kepada guru, ternyata sampai pelajaran ke-10." },
-              { ja:"今、帰ってきた<strong>ところです</strong>。", id:"Saya baru saja pulang." }
+              { ja:"毎朝、30分ジョギングする<strong>ことにしています</strong>。", id:"Saya membiasakan diri jogging 30 menit setiap pagi." },
+              { ja:"「買い物に行かないの？」「うん、明日行く<strong>ことにした</strong>。」", id:"'Tidak pergi belanja?' 'Iya, aku memutuskan pergi besok saja.'" }
             ]
           },
-          { pattern:"もう少しで〜ところだった", badge:"もう少しで＋V るところだった",
-            meaning:"あと少しで〜しそうだった（危ない状況）", meaningId:"Hampir saja... / Nyaris... (situasi berbahaya yang hampir terjadi)",
+          { pattern:"〜ことになる / 〜ことになっている", badge:"Vる/ない＋ことになる",
+            meaning:"（決定により）〜と決まっている", meaningId:"Sudah diputuskan/diatur bahwa... (keputusan dari luar)",
             examples:[
-              { ja:"もう少しで<strong>遅刻するところだった</strong>。", id:"Hampir saja terlambat." },
-              { ja:"もう少しで電車に<strong>乗り遅れるところだった</strong>。", id:"Hampir saja ketinggalan kereta." }
+              { ja:"明日、新しい企画の会議が行われる<strong>ことになっている</strong>。", id:"Besok sudah diatur akan diadakan rapat proyek baru." },
+              { ja:"今度、大阪に転勤する<strong>ことになりました</strong>。", id:"Kali ini saya jadi dipindahtugaskan ke Osaka." }
+            ]
+          },
+          { pattern:"〜ことは〜が", badge:"Vることは Vるが",
+            meaning:"〜なのは確かだが（限定）", meaningId:"...nya sih..., tapi... (mengakui sebagian)",
+            examples:[
+              { ja:"ピアノは、弾ける<strong>ことは弾けますが</strong>、うまくありません。", id:"Piano, bisa main sih bisa, tapi tidak pandai." },
+              { ja:"このバッグは高い<strong>ことは高いけれど</strong>、すごく使いやすい。", id:"Tas ini, mahal sih mahal, tapi sangat mudah dipakai." }
+            ]
+          },
+          { pattern:"〜ないことはない", badge:"Vない＋ことはない",
+            meaning:"〜しないわけではない（できる）", meaningId:"Bukannya tidak bisa... (sebenarnya bisa)",
+            examples:[
+              { ja:"鶏肉は、食べ<strong>ないことはない</strong>ですが、あまり好きではありません。", id:"Ayam, bukannya tidak kumakan, tapi tidak terlalu suka." },
+              { ja:"走れば、間に合わ<strong>ないことはない</strong>よ。急ごう！", id:"Kalau lari, bukannya tidak keburu kok. Ayo cepat!" }
             ]
           }
         ]
       },
       { day:3, title:"もう少しで乗り遅れるところだった", titleId:"Hampir saja ketinggalan",
         grammar:[
+          { pattern:"〜たところ", badge:"Vた＋ところ",
+            meaning:"〜してみたら（その結果）", meaningId:"Ketika/setelah dicoba..., ternyata...",
+            examples:[
+              { ja:"先生にテストの範囲を<strong>聞いたところ</strong>、10課までだと言われた。", id:"Ketika menanyakan cakupan ujian ke guru, ternyata sampai pelajaran ke-10." },
+              { ja:"歯医者さんに<strong>行ったところ</strong>、ひどい虫歯だと言われた。", id:"Ketika pergi ke dokter gigi, ternyata dibilang gigiku berlubang parah." }
+            ]
+          },
+          { pattern:"もう少しで〜ところだった", badge:"もう少しで＋Vるところだった",
+            meaning:"あと少しで〜しそうだった（危ない）", meaningId:"Hampir saja... / Nyaris... (situasi yang nyaris terjadi)",
+            examples:[
+              { ja:"<strong>もう少しで遅刻するところだった</strong>。", id:"Hampir saja terlambat." },
+              { ja:"あと少しで<strong>合格するところだったのに</strong>……。", id:"Padahal sedikit lagi hampir lulus..." }
+            ]
+          },
           { pattern:"〜てはじめて", badge:"Vて＋はじめて",
-            meaning:"〜して初めて、それが可能・わかる", meaningId:"Baru setelah... bisa... / Tidak sampai... belum... (sesuatu baru terwujud setelah kondisi terpenuhi)",
+            meaning:"〜して、そのときやっと〜", meaningId:"Baru setelah... (sesuatu baru terjadi setelah kondisi terpenuhi)",
             examples:[
               { ja:"先生に<strong>注意されてはじめて</strong>、漢字の間違いに気が付いた。", id:"Baru setelah diingatkan guru, aku menyadari kesalahan kanjinya." },
               { ja:"歌舞伎を<strong>見てはじめて</strong>、日本文化に興味を持った。", id:"Baru setelah menonton kabuki, aku mulai tertarik dengan budaya Jepang." }
             ]
           },
-          { pattern:"〜としても / 〜だとしても", badge:"S としても",
-            meaning:"〜という条件でも（譲歩）", meaningId:"Sekalipun... / Meskipun... (mengakui kondisi tapi ada konsekuensi berbeda)",
+          { pattern:"〜うちに", badge:"Vている/ない・Aい＋うちに",
+            meaning:"〜の間に／〜する前に", meaningId:"Selama / Sebelum... (mumpung masih dalam keadaan tertentu)",
             examples:[
-              { ja:"合格した<strong>としても</strong>、入学金が払えない。", id:"Sekalipun lulus, tidak bisa membayar uang masuk." },
-              { ja:"たとえ失敗した<strong>としても</strong>、後悔しない。", id:"Sekalipun gagal, aku tidak akan menyesal." }
+              { ja:"明るい<strong>うちに</strong>帰ってきなさい。", id:"Pulanglah selagi masih terang." },
+              { ja:"忘れない<strong>うちに</strong>、メモをしておこう。", id:"Selagi belum lupa, mari kucatat dulu." }
             ]
           }
         ]
       },
-      { day:4, title:"さんざん迷ったあげく", titleId:"Ujung-ujungnya setelah lama bingung",
+      { day:4, title:"できるわけがない", titleId:"Mustahil bisa",
         grammar:[
-          { pattern:"〜あげく（に）", badge:"V た/N の＋あげく",
-            meaning:"長い過程の末、（否定的な）結果になった", meaningId:"Ujung-ujungnya... (hasil negatif setelah proses panjang)",
+          { pattern:"〜わけだ", badge:"文＋わけだ",
+            meaning:"〜のは当然だ・なるほど〜だ", meaningId:"Pantas saja... / Wajar saja...",
             examples:[
-              { ja:"さんざん迷った<strong>あげく</strong>、やめることにした。", id:"Setelah berlama-lama bingung, ujung-ujungnya memutuskan untuk berhenti." },
-              { ja:"長い議論の<strong>あげく</strong>、結論が出なかった。", id:"Setelah perdebatan panjang, ujung-ujungnya tidak ada kesimpulan." }
+              { ja:"<strong>暑いわけだ</strong>。気温が36度もある。", id:"Pantas saja panas. Suhunya sampai 36 derajat." },
+              { ja:"なるほど、それで<strong>元気がないわけだ</strong>。", id:"Oh begitu, pantas saja dia lesu." }
             ]
           },
-          { pattern:"〜にしろ / 〜にせよ / 〜にしても", badge:"S にしろ",
-            meaning:"どんな場合でも〜", meaningId:"Apapun... / Bagaimanapun... (apapun kondisinya, kesimpulan tetap sama)",
+          { pattern:"〜わけではない", badge:"文＋わけではない",
+            meaning:"〜というのは正しくない（部分否定）", meaningId:"Bukan berarti... (menyangkal sebagian)",
             examples:[
-              { ja:"行く<strong>にしろ</strong>行かない<strong>にしろ</strong>、早く決めてください。", id:"Apakah mau pergi atau tidak, tolong segera putuskan." },
-              { ja:"冗談<strong>にしろ</strong>、言っていいことと悪いことがある。", id:"Sekalipun bercanda, ada hal yang boleh dan tidak boleh dikatakan." }
+              { ja:"<strong>きらいなわけではない</strong>が、肉はあまり食べない。", id:"Bukan berarti benci, tapi aku tidak banyak makan daging." },
+              { ja:"テレビは<strong>見ないわけではない</strong>が、音楽を聴くほうが多い。", id:"Bukan berarti tidak nonton TV, tapi lebih sering dengar musik." }
+            ]
+          },
+          { pattern:"〜わけがない", badge:"文＋わけがない",
+            meaning:"絶対に〜ない（強い否定）", meaningId:"Mustahil... / Tidak mungkin... (penyangkalan kuat)",
+            examples:[
+              { ja:"あの強い相手に<strong>勝てるわけがない</strong>。", id:"Mustahil bisa menang melawan lawan sekuat itu." },
+              { ja:"<strong>古いわけがない</strong>。昨日買ったから。", id:"Tidak mungkin basi. Kan baru kubeli kemarin." }
+            ]
+          },
+          { pattern:"〜わけにはいかない", badge:"Vる＋わけにはいかない",
+            meaning:"〜することはできない（事情があって）", meaningId:"Tidak bisa... (karena ada keadaan tertentu)",
+            examples:[
+              { ja:"大事な会議があるから、<strong>休むわけにはいかない</strong>。", id:"Karena ada rapat penting, tidak bisa libur." },
+              { ja:"社長の命令だから、<strong>従わないわけにはいかない</strong>。", id:"Karena perintah direktur, tidak bisa tidak menurut." }
             ]
           }
         ]
       },
-      { day:5, title:"やめるどころか、もっとがんばる", titleId:"Bukannya berhenti, malah makin semangat",
+      { day:5, title:"めったに行かない", titleId:"Jarang pergi",
         grammar:[
-          { pattern:"〜どころか", badge:"V/A/N どころか",
-            meaning:"〜は全然なくて、むしろその反対", meaningId:"Bukannya... malah... / Jangankan... bahkan... (keadaan jauh berbeda dari perkiraan)",
+          { pattern:"決して〜ない", badge:"決して＋Vない",
+            meaning:"絶対に〜ない", meaningId:"Sama sekali tidak... / Tidak akan pernah...",
             examples:[
-              { ja:"やめる<strong>どころか</strong>、もっとがんばるつもりだ。", id:"Bukannya berhenti, malah semakin berniat semangat." },
-              { ja:"上手になる<strong>どころか</strong>、もっと下手になった。", id:"Bukannya mahir, malah semakin tidak bisa." }
+              { ja:"私は<strong>決して</strong>夢をあきらめ<strong>ません</strong>。", id:"Saya tidak akan pernah menyerah pada impian saya." },
+              { ja:"「うそは<strong>決して</strong>申し<strong>ません</strong>。」と彼は言った。", id:"'Saya sama sekali tidak akan berbohong,' katanya." }
             ]
           },
-          { pattern:"〜どころではない / 〜どころじゃない", badge:"V/N どころではない",
-            meaning:"〜する状況ではまったくない", meaningId:"Bukan saatnya... / Tidak sempat untuk... (situasi tidak memungkinkan sama sekali)",
+          { pattern:"まったく〜ない", badge:"まったく＋Vない",
+            meaning:"全然〜ない", meaningId:"Sama sekali tidak...",
             examples:[
-              { ja:"忙しくて、旅行<strong>どころではない</strong>。", id:"Sangat sibuk, bukan saatnya untuk jalan-jalan." },
-              { ja:"体調が悪くて、食事<strong>どころじゃない</strong>。", id:"Kondisi badan sedang buruk, tidak sempat untuk makan." }
+              { ja:"私は<strong>まったく</strong>泳げ<strong>ない</strong>。", id:"Saya sama sekali tidak bisa berenang." },
+              { ja:"彼が怒っている理由が、<strong>まったく</strong>わから<strong>ない</strong>。", id:"Saya sama sekali tidak mengerti alasan dia marah." }
+            ]
+          },
+          { pattern:"めったに〜ない", badge:"めったに＋Vない",
+            meaning:"ほとんど〜ない（回数が少ない）", meaningId:"Jarang sekali... (frekuensinya sedikit)",
+            examples:[
+              { ja:"こんなチャンスは<strong>めったにない</strong>よ。", id:"Kesempatan seperti ini jarang sekali ada lho." },
+              { ja:"忙しくて、<strong>めったに</strong>休みが取れ<strong>ない</strong>。", id:"Karena sibuk, jarang sekali bisa ambil libur." }
+            ]
+          },
+          { pattern:"少しも〜ない / ちっとも〜ない", badge:"少しも＋Vない",
+            meaning:"全然〜ない（否定の強調）", meaningId:"Sedikit pun tidak... (penekanan negatif)",
+            examples:[
+              { ja:"あの人が話す英語は<strong>少しも</strong>わから<strong>ない</strong>。", id:"Bahasa Inggris yang dia ucapkan sedikit pun tidak kumengerti." },
+              { ja:"スタイルのことは、<strong>少しも</strong>気になら<strong>ない</strong>。", id:"Soal bentuk tubuh, aku sedikit pun tidak peduli." }
             ]
           }
         ]
       },
-      { day:6, title:"もっとがんばることにした！", titleId:"Sudah memutuskan untuk lebih semangat!",
+      { day:6, title:"その上…", titleId:"Lagi pula...",
         grammar:[
-          { pattern:"〜ばよかった", badge:"V ば＋よかった",
-            meaning:"〜すればよかった（後悔）", meaningId:"Seharusnya dulu... (menyesal tidak melakukan sesuatu di masa lalu)",
+          { pattern:"それと / あと", badge:"接続詞",
+            meaning:"〜に付け加えて言う", meaningId:"Dan juga... / Selain itu... (menambahkan sesuatu)",
             examples:[
-              { ja:"もっと<strong>勉強すればよかった</strong>。", id:"Seharusnya dulu lebih giat belajar." },
-              { ja:"もっと早く<strong>始めればよかった</strong>。", id:"Seharusnya dulu mulai lebih awal." }
+              { ja:"レタスひとつとトマトを3個ください。<strong>それと</strong>、ピーマンも。", id:"Tolong satu selada dan tiga tomat. Dan juga, paprika." },
+              { ja:"言われたことはしました。<strong>あと</strong>、何をすればいいですか。", id:"Yang disuruh sudah kukerjakan. Lalu, apa lagi yang harus dilakukan?" }
             ]
           },
-          { pattern:"〜ば〜ほど（復習）", badge:"V ば＋V ほど",
-            meaning:"〜すればするほど、さらに〜", meaningId:"Semakin... semakin... (peningkatan berbanding lurus)",
+          { pattern:"それとも", badge:"接続詞",
+            meaning:"〜か、それとも〜か（疑問をつなぐ）", meaningId:"Atau... (menghubungkan dua pertanyaan/pilihan)",
             examples:[
-              { ja:"勉強すれ<strong>ばするほど</strong>、日本語が楽しくなる。", id:"Semakin banyak belajar, bahasa Jepang semakin menyenangkan." }
+              { ja:"コーヒーにしますか。<strong>それとも</strong>紅茶にしますか。", id:"Mau kopi? Atau teh?" },
+              { ja:"来週にしますか。<strong>それとも</strong>再来週がいいですか。", id:"Minggu depan? Atau dua minggu lagi lebih baik?" }
+            ]
+          },
+          { pattern:"その上", badge:"接続詞",
+            meaning:"それに加えて（さらに）", meaningId:"Lagi pula... / Di samping itu... (menambahkan)",
+            examples:[
+              { ja:"この店の料理はおいしい。<strong>その上</strong>値段も安い。", id:"Masakan restoran ini enak. Lagi pula harganya murah." },
+              { ja:"彼は頭がいい。<strong>その上</strong>スポーツも何でもできる。", id:"Dia pintar. Lagi pula, segala olahraga pun bisa." }
             ]
           }
         ]
       }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════
+//   追加文法（本にない文法）/ Tata Bahasa Tambahan
+//   本のテキストに載っていないが、N3で役立つ文法をまとめる
+// ═══════════════════════════════════════
+const ADDITIONAL_GRAMMAR = [
+  { pattern:"〜さえ〜ば", badge:"N/Vさえ ＋ば",
+    meaning:"〜だけで十分（条件）", meaningId:"Asal... saja (maka...) — syarat cukup",
+    examples:[
+      { ja:"お金<strong>さえあれば</strong>、何でもできる。", id:"Asal ada uang, apa pun bisa dilakukan." },
+      { ja:"薬を<strong>飲みさえすれば</strong>、すぐ治る。", id:"Asal minum obat, akan segera sembuh." },
+      { ja:"天気<strong>さえよければ</strong>、出かけよう。", id:"Asal cuacanya bagus, ayo keluar." }
+    ]
+  },
+  { pattern:"〜てくれと頼まれた", badge:"Vて＋くれと",
+    meaning:"「〜てくれ」と言われた（依頼の引用）", meaningId:"Diminta untuk... (mengutip permintaan orang lain)",
+    examples:[
+      { ja:"友達に、田中さんの電話番号を<strong>教えてくれと頼まれた</strong>。", id:"Teman memintaku untuk memberitahu nomor telepon Tanaka-san." },
+      { ja:"母に、早く<strong>帰ってくれと言われた</strong>。", id:"Ibu memintaku untuk pulang lebih awal." },
+      { ja:"彼女に、もう連絡しない<strong>でくれと言われた</strong>。", id:"Dia memintaku untuk tidak menghubunginya lagi." }
+    ]
+  },
+  { pattern:"〜させられる（使役受身）", badge:"V使役受身形",
+    meaning:"〜することを強制される", meaningId:"Dipaksa untuk... / Terpaksa harus... (dipaksa orang lain melakukan sesuatu)",
+    examples:[
+      { ja:"ずいぶん<strong>待たされた</strong>。", id:"Aku disuruh menunggu cukup lama." },
+      { ja:"子どものころ、毎日ピアノを<strong>練習させられた</strong>。", id:"Waktu kecil, setiap hari dipaksa berlatih piano." },
+      { ja:"上司に残業を<strong>させられた</strong>。", id:"Dipaksa lembur oleh atasan." }
+    ]
+  },
+  { pattern:"〜てくる / 〜ていく", badge:"Vて＋くる/いく",
+    meaning:"①移動の方向　②変化の方向", meaningId:"① Arah gerakan (datang/pergi sambil melakukan) ② Perubahan yang terus berlanjut",
+    examples:[
+      { ja:"コンビニに行って、お弁当を<strong>買ってきた</strong>。", id:"Pergi ke konbini dan kembali setelah membeli bento." },
+      { ja:"これからも日本語を<strong>勉強していく</strong>つもりです。", id:"Saya berencana untuk terus belajar bahasa Jepang ke depannya." },
+      { ja:"最近、物価が<strong>上がってきた</strong>。", id:"Belakangan ini harga-harga mulai naik." }
+    ]
+  },
+  { pattern:"〜てたまらない / 〜でたまらない", badge:"Vて/A くて＋たまらない",
+    meaning:"非常に〜で、我慢できない", meaningId:"Tidak tertahankan... / Sangat... sampai tidak bisa ditahan (perasaan yang sangat kuat)",
+    examples:[
+      { ja:"合格の知らせを聞いて、<strong>うれしくてたまらない</strong>。", id:"Setelah mendengar kabar kelulusan, senangnya tidak tertahankan." },
+      { ja:"昨日から歯が<strong>痛くてたまらない</strong>。", id:"Dari kemarin gigi sakit sekali, tidak tertahankan." },
+      { ja:"のどが<strong>かわいてたまらない</strong>。", id:"Tenggorokan haus sekali, tidak tertahankan." }
+    ]
+  },
+  { pattern:"〜てならない", badge:"Vて/A くて＋ならない",
+    meaning:"自然に〜という気持ちになる", meaningId:"Tidak bisa tidak merasa... (perasaan yang muncul secara alami)",
+    examples:[
+      { ja:"故郷のことが<strong>思い出されてならない</strong>。", id:"Kampung halaman terus-terusan terbayang, tidak bisa tidak." },
+      { ja:"彼が<strong>心配でならない</strong>。", id:"Aku tidak bisa tidak khawatir soal dia." },
+      { ja:"試験の結果が<strong>気になってならない</strong>。", id:"Aku tidak bisa berhenti memikirkan hasil ujian." }
+    ]
+  },
+  { pattern:"どうせ〜", badge:"どうせ＋文",
+    meaning:"結果がわかっていて、あきらめている", meaningId:"Toh... / Memang sudah... (pasrah atau pesimis karena sudah tahu hasilnya)",
+    examples:[
+      { ja:"<strong>どうせ</strong>、うまくいかないよ。", id:"Toh pasti tidak berhasil kok." },
+      { ja:"<strong>どうせ</strong>やるなら、もっといいものを作ろう。", id:"Kalau toh dikerjakan, mari buat yang lebih bagus." },
+      { ja:"<strong>どうせ</strong>無理だと思っていた。", id:"Toh memang kupikir mustahil." }
+    ]
+  },
+  { pattern:"どうりで〜", badge:"どうりで＋文",
+    meaning:"なるほど〜のはずだ（納得）", meaningId:"Pantas saja... / Makanya... (menyadari alasan)",
+    examples:[
+      { ja:"<strong>どうりで</strong>おかしいと思った。彼、昨日から熱があったんだ。", id:"Pantas saja aku merasa aneh. Ternyata dia demam dari kemarin." },
+      { ja:"<strong>どうりで</strong>静かだと思ったら、みんな出かけていたんだ。", id:"Pantas saja terasa sepi, ternyata semua sudah pergi." }
+    ]
+  },
+  { pattern:"やっと〜 / ようやく〜", badge:"副詞",
+    meaning:"長い時間や努力の後に、ついに〜", meaningId:"Akhirnya... (setelah usaha atau waktu yang lama)",
+    examples:[
+      { ja:"<strong>やっと</strong>日本語に慣れてきました。", id:"Akhirnya mulai terbiasa dengan bahasa Jepang." },
+      { ja:"<strong>ようやく</strong>合格できた。", id:"Dengan susah payah akhirnya berhasil lulus." }
+    ]
+  },
+  { pattern:"なかなか〜ない", badge:"なかなか＋Vない",
+    meaning:"期待しているのに、なかなか〜しない", meaningId:"Tidak kunjung... (yang diharapkan belum terjadi juga)",
+    examples:[
+      { ja:"日本語が<strong>なかなか</strong>上手に<strong>なれない</strong>。", id:"Bahasa Jepang tidak kunjung jadi bagus." },
+      { ja:"バスが<strong>なかなか来ない</strong>。", id:"Bus tidak kunjung datang." }
+    ]
+  },
+  { pattern:"〜までに", badge:"N/Vる＋までに",
+    meaning:"〜する期限・締め切り", meaningId:"Paling lambat sampai... (batas waktu)",
+    examples:[
+      { ja:"3時<strong>までに</strong>来てください。", id:"Tolong datang paling lambat jam 3." },
+      { ja:"明日<strong>までに</strong>レポートを出さなければならない。", id:"Laporan harus dikumpulkan paling lambat besok." }
+    ]
+  },
+  { pattern:"〜すぎる", badge:"V/A＋すぎる",
+    meaning:"程度が必要以上に大きい", meaningId:"Terlalu... (melampaui batas wajar)",
+    examples:[
+      { ja:"食べ<strong>すぎて</strong>、おなかが痛い。", id:"Terlalu banyak makan sampai sakit perut." },
+      { ja:"この問題は難し<strong>すぎる</strong>。", id:"Soal ini terlalu sulit." }
+    ]
+  },
+  { pattern:"あまりにも〜", badge:"あまりにも",
+    meaning:"程度が非常に大きい", meaningId:"Terlalu... / Sangat berlebihan...",
+    examples:[
+      { ja:"この服は<strong>あまりにも</strong>高すぎる。", id:"Baju ini terlalu mahal." },
+      { ja:"<strong>あまりにも</strong>暑くて、外に出られない。", id:"Terlalu panas sampai tidak bisa keluar." }
+    ]
+  },
+  { pattern:"〜てからでないと / 〜てからでなければ", badge:"Vて＋からでないと",
+    meaning:"〜してからでなければ〜できない", meaningId:"Harus setelah... dulu baru bisa... (tidak bisa dilakukan sebelum hal lain selesai)",
+    examples:[
+      { ja:"実物を<strong>見てからでないと</strong>、決められない。", id:"Tidak bisa memutuskan sebelum melihat barang aslinya dulu." },
+      { ja:"内容を確認し<strong>てからでなければ</strong>、サインできません。", id:"Tidak bisa tanda tangan sebelum mengecek isinya dulu." }
+    ]
+  },
+  { pattern:"〜としても / 〜だとしても", badge:"文＋としても",
+    meaning:"〜という条件でも（譲歩）", meaningId:"Sekalipun... / Meskipun... (mengakui kondisi tapi ada konsekuensi berbeda)",
+    examples:[
+      { ja:"合格した<strong>としても</strong>、入学金が払えない。", id:"Sekalipun lulus, tidak bisa membayar uang masuk." },
+      { ja:"たとえ失敗した<strong>としても</strong>、後悔しない。", id:"Sekalipun gagal, aku tidak akan menyesal." }
+    ]
+  },
+  { pattern:"〜あげく（に）", badge:"Vた/N の＋あげく",
+    meaning:"長い過程の末、（否定的な）結果になった", meaningId:"Ujung-ujungnya... (hasil negatif setelah proses panjang)",
+    examples:[
+      { ja:"さんざん迷った<strong>あげく</strong>、やめることにした。", id:"Setelah berlama-lama bingung, ujung-ujungnya memutuskan untuk berhenti." },
+      { ja:"長い議論の<strong>あげく</strong>、結論が出なかった。", id:"Setelah perdebatan panjang, ujung-ujungnya tidak ada kesimpulan." }
+    ]
+  },
+  { pattern:"〜にしろ / 〜にせよ / 〜にしても", badge:"文＋にしろ",
+    meaning:"どんな場合でも〜", meaningId:"Apapun... / Bagaimanapun... (apapun kondisinya, kesimpulan tetap sama)",
+    examples:[
+      { ja:"行く<strong>にしろ</strong>行かない<strong>にしろ</strong>、早く決めてください。", id:"Apakah mau pergi atau tidak, tolong segera putuskan." },
+      { ja:"冗談<strong>にしろ</strong>、言っていいことと悪いことがある。", id:"Sekalipun bercanda, ada hal yang boleh dan tidak boleh dikatakan." }
+    ]
+  },
+  { pattern:"〜どころか", badge:"V/A/N どころか",
+    meaning:"〜は全然なくて、むしろその反対", meaningId:"Bukannya... malah... / Jangankan... bahkan... (keadaan jauh berbeda dari perkiraan)",
+    examples:[
+      { ja:"やめる<strong>どころか</strong>、もっとがんばるつもりだ。", id:"Bukannya berhenti, malah semakin berniat semangat." },
+      { ja:"上手になる<strong>どころか</strong>、もっと下手になった。", id:"Bukannya mahir, malah semakin tidak bisa." }
+    ]
+  },
+  { pattern:"〜どころではない / 〜どころじゃない", badge:"V/N どころではない",
+    meaning:"〜する状況ではまったくない", meaningId:"Bukan saatnya... / Tidak sempat untuk... (situasi tidak memungkinkan sama sekali)",
+    examples:[
+      { ja:"忙しくて、旅行<strong>どころではない</strong>。", id:"Sangat sibuk, bukan saatnya untuk jalan-jalan." },
+      { ja:"体調が悪くて、食事<strong>どころじゃない</strong>。", id:"Kondisi badan sedang buruk, tidak sempat untuk makan." }
     ]
   }
 ];
@@ -1210,6 +1694,73 @@ function renderHome() {
       <div class="mini-label">${daysDone}/${wk.days.length} selesai</div>`;
     grid.appendChild(c);
   });
+  // 追加文法カード
+  const ec = document.createElement('div');
+  ec.className = 'week-card extra-card';
+  ec.onclick = () => showAdditionalGrammar();
+  ec.innerHTML = `<div class="week-num">📚 追加文法</div>
+    <div class="week-title">本にない文法</div>
+    <div class="week-title-id">Tata Bahasa Tambahan</div>
+    <div class="mini-label" style="margin-top:10px">${ADDITIONAL_GRAMMAR.length} 文法 / pola</div>`;
+  grid.appendChild(ec);
+}
+
+// ── 追加文法（本にない文法）──
+function showAdditionalGrammar() {
+  let html = `<div class="lesson-header">
+    <div class="breadcrumb">📚 追加文法</div>
+    <h2>本にない文法 / Tata Bahasa Tambahan</h2>
+    <div class="lesson-sub">教科書には載っていないが、N3で役立つ文法</div>
+  </div>`;
+  ADDITIONAL_GRAMMAR.forEach((g, gi) => {
+    const extras = EXTRA_EXAMPLES[g.pattern] || [];
+    const cardId = `ec-${gi}`;
+    const vfData = VERBFORMS[g.badge] || null;
+    const vfId = `evf-${gi}`;
+    html += `<div class="grammar-card">
+      <div class="grammar-pattern">${g.pattern}<span class="pattern-badge">${g.badge}</span></div>
+      <div class="meaning-ja">${g.meaning}</div>
+      <div class="meaning-id">${g.meaningId}</div>`;
+    if (vfData) {
+      html += `<button class="verbform-toggle" onclick="toggleVerbForm('${vfId}', this)">▼ 接続の仕方・動詞の形 / Cara pembentukan</button>
+      <div class="verbform-section" id="${vfId}">
+        <h5>${vfData.title}</h5>`;
+      vfData.rows.forEach(r => {
+        html += `<div class="verbform-row">
+          <span class="vf-label">${r.label}</span>
+          <span class="vf-body">${r.body}
+            <span class="vf-id">${r.id}</span>
+            ${r.ex ? `<span class="vf-ex">例: ${r.ex}</span>` : ''}
+          </span>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `<div class="ex-label">Contoh Kalimat / 例文</div>`;
+    g.examples.forEach(ex => {
+      html += `<div class="example">
+        <div class="ja">${addFurigana(ex.ja)}</div>
+        <div class="romaji">${getRomaji(ex.ja)}</div>
+        <div class="id">${ex.id}</div>
+      </div>`;
+    });
+    if (extras.length > 0) {
+      html += `<button class="extra-toggle" onclick="toggleExtra('${cardId}', this)">＋ 追加例文を見る / Lihat contoh tambahan (${extras.length})</button>
+      <div class="extra-section" id="${cardId}">
+        <div class="extra-label">追加例文 / Contoh Tambahan</div>`;
+      extras.forEach(ex => {
+        html += `<div class="extra-example">
+          <div class="ja">${addFurigana(ex.ja)}</div>
+          <div class="romaji">${getRomaji(ex.ja)}</div>
+          <div class="id">${ex.id}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+  document.getElementById('extra-content').innerHTML = html;
+  showScreen('screen-extra');
 }
 
 // ── WEEK ──
@@ -1542,11 +2093,25 @@ const REARRANGE_QUESTIONS = [
 ];
 
 function buildRearrangeItems() {
-  return shuffle(REARRANGE_QUESTIONS).slice(0, 12).map(q => {
-    // chipPool: shuffled parts (this is what's shown to user)
-    const chipPool = shuffle([...q.parts]);
-    return { ...q, chipPool };
-  });
+  // ① 手作りの問題
+  const handCrafted = [...REARRANGE_QUESTIONS];
+  // ② 全例文から自動生成（autoSplitExample は startDayRearrangeQuiz より上に定義されている前提）
+  const autoGenerated = [];
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => {
+    g.examples.forEach(ex => {
+      const auto = autoSplitExample(ex.ja, g.pattern);
+      if (auto) {
+        auto.meaningId = ex.id;
+        autoGenerated.push(auto);
+      }
+    });
+  })));
+  // 全体プール（手作り＋自動生成）
+  const pool = [...handCrafted, ...autoGenerated];
+  return shuffle(pool).slice(0, 15).map(q => ({
+    ...q,
+    chipPool: shuffle([...q.parts])
+  }));
 }
 
 function showRearrangeQuiz() {
@@ -1787,12 +2352,13 @@ function buildSynonymItems() {
   });
 
   const items = [];
+
+  // ① SYNONYM_GROUPS から生成
   SYNONYM_GROUPS.forEach((g, gIdx) => {
     if (g.forms.length < 2) return;
     g.forms.forEach((prompt, pIdx) => {
       const candidates = g.forms.filter((_, i) => i !== pIdx);
       const correct = shuffle(candidates)[0];
-      // 別グループからディストラクター3つ
       const distractors = shuffle(
         allForms.filter(f => f.group !== gIdx)
       ).slice(0, 3).map(f => f.form);
@@ -1805,7 +2371,32 @@ function buildSynonymItems() {
       });
     });
   });
-  return shuffle(items).slice(0, 18);
+
+  // ② 全ての文法の meaning フィールドから自動抽出
+  const allPatterns = [];
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => {
+    const p = g.pattern.split(/[／/]/)[0].trim();
+    allPatterns.push(p);
+  })));
+  WEEKS.forEach(wk => wk.days.forEach(d => d.grammar.forEach(g => {
+    const synonym = extractSynonymFromMeaning(g.meaning);
+    if (!synonym) return;
+    const promptForm = g.pattern.split(/[／/]/)[0].trim();
+    if (synonym === promptForm) return;
+    // ディストラクター：他の文法パターン＋同義表現フォーム
+    const distractorPool = [...allPatterns.filter(p => p !== promptForm && p !== synonym),
+                           ...allForms.map(f => f.form)];
+    const distractors = shuffle([...new Set(distractorPool)]).slice(0, 3);
+    items.push({
+      promptForm,
+      correct: synonym,
+      options: shuffle([synonym, ...distractors]),
+      meaningJa: g.meaning,
+      meaningId: g.meaningId,
+    });
+  })));
+
+  return shuffle(items).slice(0, 20);
 }
 
 function showSynonymQuiz() {
@@ -2430,6 +3021,564 @@ function replayQuiz() {
 
 // ── VERB FORM EXPLANATIONS ──
 const VERBFORMS = {
+  // ── 追加文法の接続 ──
+  "N/Vさえ ＋ば": {
+    title: "〜さえ〜ば の接続",
+    rows: [
+      { label: "名詞", body: "N＋さえ＋（V ば形／なら）", id: "N + さえ + (bentuk -ば / なら)", ex: "お金さえあれば　天気さえよければ" },
+      { label: "動詞", body: "V ます形（ますを取る）＋さえすれば", id: "V ます (hapus ます) + さえすれば", ex: "薬を飲みさえすれば" },
+      { label: "意味", body: "〜という条件だけで十分だ", id: "Asal... saja sudah cukup (syarat minimal)", ex: "" },
+    ]
+  },
+  "N/Vる＋までに": {
+    title: "〜までに の接続",
+    rows: [
+      { label: "形", body: "N（時）／V 辞書形＋までに", id: "N (waktu) / V kamus + までに", ex: "3時までに　帰るまでに" },
+      { label: "まで との違い", body: "までに＝期限（その時点より前に）、まで＝継続", id: "までに = batas waktu (sebelum titik itu) / まで = berlanjut sampai", ex: "5時までに来て（期限）" },
+    ]
+  },
+  "文＋としても": {
+    title: "〜としても / だとしても の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋としても（な／N は だ＋としても）", id: "Bentuk biasa + としても (な/N + だ + としても)", ex: "合格したとしても　失敗したとしても" },
+      { label: "意味", body: "〜という条件・場合でも（譲歩）", id: "Sekalipun... / Meskipun... (pengandaian + konsekuensi)", ex: "" },
+    ]
+  },
+  "Vた/N の＋あげく": {
+    title: "〜あげく（に）の接続",
+    rows: [
+      { label: "形", body: "V た形＋あげく（に）／N の＋あげく", id: "Bentuk -た + あげく(に) / N の + あげく", ex: "迷ったあげく　議論のあげく" },
+      { label: "意味", body: "長い過程の末、（多くは否定的な）結果になった", id: "Ujung-ujungnya... (hasil, sering negatif, setelah proses panjang)", ex: "" },
+    ]
+  },
+  "文＋にしろ": {
+    title: "〜にしろ / にせよ / にしても の接続",
+    rows: [
+      { label: "形", body: "文の普通形・N＋にしろ／にせよ", id: "Bentuk biasa / N + にしろ / にせよ", ex: "行くにしろ行かないにしろ　冗談にしろ" },
+      { label: "意味", body: "どんな場合でも結論は同じ", id: "Apapun kondisinya, kesimpulannya tetap sama", ex: "" },
+    ]
+  },
+  // ── 第6週の接続 ──
+  "もし＋Vた(なら)": {
+    title: "もし〜なら / もし〜たら の接続",
+    rows: [
+      { label: "形", body: "もし＋（V た・A かった・な／N だった）＋（なら）", id: "もし + (Vた / Aかった / な・Nだった) + (なら)", ex: "もし受けていたなら　もし社長だったなら" },
+      { label: "意味", body: "現実と反対のことを仮定する（〜だったら…）", id: "Mengandaikan hal yang berlawanan dengan kenyataan", ex: "" },
+    ]
+  },
+  "もし＋文としても": {
+    title: "もし〜としても の接続",
+    rows: [
+      { label: "形", body: "もし＋文の普通形＋としても", id: "もし + bentuk biasa + としても", ex: "もし休みが取れたとしても　もしあったとしても" },
+      { label: "意味", body: "もし〜という場合でも（可能性が低い仮定）", id: "Seandainya pun... (kemungkinan rendah)", ex: "" },
+    ]
+  },
+  "もしも＋文": {
+    title: "もしも〜なら / ても の接続",
+    rows: [
+      { label: "形", body: "もしも＋（普通形）＋なら／たら／ても", id: "もしも + (bentuk biasa) + なら / たら / ても", ex: "もしも生まれ変われるなら　もしも地震が起きても" },
+      { label: "意味", body: "「もし」を強調した言い方", id: "Penekanan dari もし (seandainya)", ex: "" },
+    ]
+  },
+  "Vる/ない＋ことにする": {
+    title: "〜ことにする / ことにしている の接続",
+    rows: [
+      { label: "形", body: "V 辞書形／V ない形＋ことにする／ことにしている", id: "V kamus / V ない + ことにする / ことにしている", ex: "やめることにした　毎日走ることにしている" },
+      { label: "意味", body: "自分の意志で決める（ている＝習慣にしている）", id: "Memutuskan sendiri (ている = membiasakan diri)", ex: "" },
+    ]
+  },
+  "Vる/ない＋ことになる": {
+    title: "〜ことになる / ことになっている の接続",
+    rows: [
+      { label: "形", body: "V 辞書形／V ない形＋ことになる／ことになっている", id: "V kamus / V ない + ことになる / ことになっている", ex: "転勤することになった　行われることになっている" },
+      { label: "意味", body: "自分の意志でなく、状況・規則・他者の決定で決まる", id: "Diputuskan oleh situasi, aturan, atau pihak lain (bukan kemauan sendiri)", ex: "" },
+    ]
+  },
+  "Vることは Vるが": {
+    title: "〜ことは〜が の接続",
+    rows: [
+      { label: "形", body: "同じ語をくり返す：V ることは V る／A いことは A い＋が（けれど）", id: "Mengulang kata yang sama: Vることは Vる / Aいことは Aい + が(けれど)", ex: "弾けることは弾けるが　高いことは高いけれど" },
+      { label: "意味", body: "〜なのは確かだが、十分ではない（限定）", id: "...nya sih..., tapi tidak sepenuhnya (mengakui sebagian)", ex: "" },
+    ]
+  },
+  "Vない＋ことはない": {
+    title: "〜ないことはない の接続",
+    rows: [
+      { label: "形", body: "V ない形／A くない・なではない＋ことはない", id: "V ない / A くない・な ではない + ことはない", ex: "食べないことはない　間に合わないことはない" },
+      { label: "意味", body: "〜しないわけではない（実は〜できる・する）", id: "Bukannya tidak... (sebenarnya bisa/melakukan)", ex: "" },
+    ]
+  },
+  "もう少しで＋Vるところだった": {
+    title: "もう少しで〜ところだった の接続",
+    rows: [
+      { label: "形", body: "もう少しで／あと少しで＋V 辞書形＋ところだった", id: "もう少しで/あと少しで + bentuk kamus + ところだった", ex: "もう少しで遅刻するところだった" },
+      { label: "意味", body: "危ない状況が起きそうだったが、実際は起きなかった", id: "Situasi berbahaya hampir terjadi, tapi akhirnya tidak", ex: "" },
+    ]
+  },
+  "Vている/ない・Aい＋うちに": {
+    title: "〜うちに の接続",
+    rows: [
+      { label: "形", body: "V ている／V ない・A い・な＋な・N＋の＋うちに", id: "V ている / V ない / A-i / な-na / N の + うちに", ex: "明るいうちに　忘れないうちに　日本にいるうちに" },
+      { label: "意味", body: "〜の間に／〜する前に（その状態が続く間に）", id: "Selama / Sebelum... (mumpung masih dalam keadaan itu)", ex: "" },
+    ]
+  },
+  "文＋わけだ": {
+    title: "〜わけだ の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋わけだ（な形容詞・名詞は な／という）", id: "Bentuk biasa + わけだ (な-adj/N + な/という)", ex: "暑いわけだ　元気がないわけだ" },
+      { label: "意味", body: "〜のは当然だ・なるほど〜だ（納得）", id: "Pantas saja... / Wajar saja... (menyadari alasan)", ex: "" },
+    ]
+  },
+  "文＋わけではない": {
+    title: "〜わけではない の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋わけではない", id: "Bentuk biasa + わけではない", ex: "嫌いなわけではない　見ないわけではない" },
+      { label: "意味", body: "〜というのは正しくない（部分否定）", id: "Bukan berarti... (menyangkal sebagian)", ex: "" },
+    ]
+  },
+  "文＋わけがない": {
+    title: "〜わけがない の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋わけがない", id: "Bentuk biasa + わけがない", ex: "勝てるわけがない　古いわけがない" },
+      { label: "意味", body: "絶対に〜ない（強い否定・ありえない）", id: "Mustahil... / Tidak mungkin... (penyangkalan kuat)", ex: "" },
+    ]
+  },
+  "Vる＋わけにはいかない": {
+    title: "〜わけにはいかない の接続",
+    rows: [
+      { label: "形", body: "V 辞書形／V ない形＋わけにはいかない", id: "V kamus / V ない + わけにはいかない", ex: "休むわけにはいかない　従わないわけにはいかない" },
+      { label: "意味", body: "（事情があって）〜することはできない", id: "Tidak bisa... (karena ada keadaan/alasan tertentu)", ex: "" },
+    ]
+  },
+  // ── 第5週の接続 ──
+  "N は＋もちろん": {
+    title: "〜はもちろん の接続",
+    rows: [
+      { label: "形", body: "N＋はもちろん（＋N も）／〜のはもちろん", id: "N + はもちろん (+ N も) / 〜のはもちろん", ex: "勉強はもちろんスポーツも　炒めるのはもちろん" },
+      { label: "意味", body: "〜は当然のこととして、さらに〜も", id: "Tentu saja... dan juga...", ex: "" },
+    ]
+  },
+  "V/A/な/N の＋ばかりか": {
+    title: "〜ばかりか / ばかりでなく の接続",
+    rows: [
+      { label: "形", body: "V／A 普通形・な＋な・N＋の＋ばかりか／ばかりでなく", id: "V/A bentuk biasa, な-adj + な, N + の + ばかりか/ばかりでなく", ex: "味が悪いばかりか　漢字ばかりか" },
+      { label: "意味", body: "〜だけでなく、さらに（程度が上の）〜も", id: "Tidak hanya... bahkan juga...", ex: "" },
+    ]
+  },
+  "N に＋比べて": {
+    title: "〜に比べて の接続",
+    rows: [
+      { label: "形", body: "N＋に比べて／に比べると", id: "N + に比べて / に比べると", ex: "昨年に比べて　都会に比べて" },
+      { label: "意味", body: "〜と比較すると", id: "Dibandingkan dengan...", ex: "" },
+    ]
+  },
+  "N に＋対して": {
+    title: "〜に対して の接続",
+    rows: [
+      { label: "形", body: "N＋に対して／に対する＋N", id: "N + に対して / に対する + N", ex: "生徒に対して　質問に対して" },
+      { label: "意味", body: "①〜に向かって（対象）②〜とは反対に（対比）", id: "① Terhadap... (sasaran) ② Berbeda dengan... (kontras)", ex: "長男に対して、次男は…" },
+    ]
+  },
+  "Vます＋上げる": {
+    title: "〜上げる の接続",
+    rows: [
+      { label: "形", body: "V ます形（ますを取る）＋上げる／上がる", id: "Bentuk ます (hapus ます) + 上げる / 上がる", ex: "書き上げる　焼き上がる　作り上げる" },
+      { label: "意味", body: "完全に〜し終わる", id: "Selesai sepenuhnya / Menyelesaikan sampai tuntas", ex: "" },
+    ]
+  },
+  "Vます＋切る/切れない": {
+    title: "〜切る / 切れない の接続",
+    rows: [
+      { label: "形", body: "V ます形（ますを取る）＋切る／切れる／切れない", id: "Bentuk ます (hapus ます) + 切る / 切れる / 切れない", ex: "読み切る　食べ切れない　数え切れない" },
+      { label: "意味", body: "全部〜する／全部は〜できない", id: "Melakukan sepenuhnya / Tidak bisa habis sepenuhnya", ex: "" },
+    ]
+  },
+  "Vます＋かけ": {
+    title: "〜かけ / かけの の接続",
+    rows: [
+      { label: "形", body: "V ます形（ますを取る）＋かけ／かけの＋N／かける", id: "Bentuk ます (hapus ます) + かけ / かけの + N / かける", ex: "読みかけ　飲みかけのコーヒー　入りかけた" },
+      { label: "意味", body: "〜している途中だ／〜しようとした", id: "Setengah jalan / Hendak melakukan", ex: "" },
+    ]
+  },
+  "Vます＋たて": {
+    title: "〜たて の接続",
+    rows: [
+      { label: "形", body: "V ます形（ますを取る）＋たて／たての＋N", id: "Bentuk ます (hapus ます) + たて / たての + N", ex: "焼きたてのパン　とりたての野菜　でき立て" },
+      { label: "意味", body: "〜したばかり（できて間もない）", id: "Baru saja (dibuat/dikerjakan)", ex: "" },
+    ]
+  },
+  "文＋といい(なあ)": {
+    title: "〜といい / たらいい の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋といい（なあ）／たらいい／ばいい", id: "Bentuk biasa + といい(なあ) / たらいい / ばいい", ex: "話せるといいなあ　降らないといいなあ" },
+      { label: "意味", body: "〜であることを願う（願望）", id: "Semoga... / Andai saja... (harapan)", ex: "" },
+    ]
+  },
+  "Vば＋よかった": {
+    title: "〜ばよかった の接続",
+    rows: [
+      { label: "形", body: "V ば形＋よかった（しなかったことを後悔）", id: "Bentuk -ば kata kerja + よかった", ex: "勉強すればよかった　言わなければよかった" },
+      { label: "ば形の作り方", body: "グループ1：語尾を え段＋ば　グループ2：る→れば", id: "Grup 1: akhiran ke え段 + ば / Grup 2: る → れば", ex: "行く→行けば　食べる→食べれば" },
+    ]
+  },
+  "Vば＋よかったのに": {
+    title: "〜ばよかったのに の接続",
+    rows: [
+      { label: "形", body: "V ば形＋よかったのに", id: "Bentuk -ば kata kerja + よかったのに", ex: "君も行けばよかったのに　買えばよかったのに" },
+      { label: "意味", body: "〜したほうがよかった（相手への残念な気持ち）", id: "Harusnya kamu... (menyesalkan tindakan orang lain)", ex: "" },
+    ]
+  },
+  "文＋かなあ": {
+    title: "〜ないかなあ / かなあ の接続",
+    rows: [
+      { label: "形", body: "V る形／V ない形＋かなあ", id: "Bentuk kamus / bentuk ない + かなあ", ex: "早く来ないかなあ　見えるかなあ" },
+      { label: "意味", body: "願望（〜してほしい）や疑問を表す", id: "Harapan (semoga...) atau keraguan (kira-kira... ya)", ex: "" },
+    ]
+  },
+  "Vる＋まで": {
+    title: "〜まで（〜するまで）の接続",
+    rows: [
+      { label: "形", body: "V 辞書形＋まで", id: "Bentuk kamus kata kerja + まで", ex: "始まるまで　あるまで" },
+      { label: "意味", body: "〜が続く時点まで（ずっと）", id: "Sampai... (suatu keadaan berlanjut)", ex: "" },
+    ]
+  },
+  "N まで": {
+    title: "〜まで（強調）の接続",
+    rows: [
+      { label: "形", body: "N＋まで", id: "N + まで", ex: "骨まで食べられる　あなたまで" },
+      { label: "意味", body: "意外なものも含めて〜（「そこまで」という驚き）", id: "Bahkan... pun (penekanan, contoh ekstrem yang mengejutkan)", ex: "" },
+    ]
+  },
+  "N に＋おいて": {
+    title: "〜において の接続",
+    rows: [
+      { label: "形", body: "N（場所・場面・時）＋において／における＋N", id: "N (tempat/situasi/waktu) + において / における + N", ex: "大阪において　現代社会において" },
+      { label: "意味", body: "〜で（「で」より硬い・書き言葉）", id: "Di / Dalam... (lebih formal dari で)", ex: "" },
+    ]
+  },
+  "たとえ＋Vても": {
+    title: "たとえ〜ても の接続",
+    rows: [
+      { label: "形", body: "たとえ＋（V ても・A くても・な／N でも）", id: "たとえ + (Vても / Aくても / な・Nでも)", ex: "たとえ反対されても　たとえ子どもでも" },
+      { label: "意味", body: "もし〜という場合でも（仮定の譲歩）", id: "Sekalipun... / Seandainya pun...", ex: "" },
+    ]
+  },
+  "もしかすると〜かも": {
+    title: "もしかすると〜かもしれない の接続",
+    rows: [
+      { label: "形", body: "もしかすると／もしかしたら＋（普通形）＋かもしれない", id: "もしかすると/もしかしたら + (bentuk biasa) + かもしれない", ex: "もしかするとうそかもしれない" },
+      { label: "意味", body: "〜の可能性がある（低い可能性の推量）", id: "Mungkin saja... (dugaan kemungkinan rendah)", ex: "" },
+    ]
+  },
+  "必ずしも〜とは限らない": {
+    title: "必ずしも〜とは限らない の接続",
+    rows: [
+      { label: "形", body: "必ずしも＋（普通形）＋とは限らない", id: "必ずしも + (bentuk biasa) + とは限らない", ex: "必ずしも幸福だとは限らない" },
+      { label: "意味", body: "必ず〜とは言えない（例外がある）", id: "Belum tentu... / Tidak selalu... (ada pengecualian)", ex: "" },
+    ]
+  },
+  "まるで〜よう": {
+    title: "まるで〜よう / みたい の接続",
+    rows: [
+      { label: "形", body: "まるで＋N の／V ている＋よう／みたい", id: "まるで + N の / V ている + よう / みたい", ex: "まるで夢のよう　まるで話しているみたい" },
+      { label: "意味", body: "ちょうど〜のようだ（比喩・たとえ）", id: "Seolah-olah... / Persis seperti... (perumpamaan)", ex: "" },
+    ]
+  },
+  // ── 第4週の接続 ──
+  "N にとって": {
+    title: "〜にとって の接続",
+    rows: [
+      { label: "形", body: "N＋にとって／にとっては／にとっても", id: "N + にとって / にとっては / にとっても", ex: "私にとって　子どもにとっては" },
+      { label: "意味", body: "〜の立場・視点から見ると", id: "Dari sudut pandang... / Bagi...", ex: "" },
+    ]
+  },
+  "V/A/な/N の＋わりに": {
+    title: "〜わりに / わりには の接続",
+    rows: [
+      { label: "形", body: "V／A 普通形・な＋な・N＋の＋わりに（は）", id: "V/A bentuk biasa, な-adj + な, N + の + わりに(は)", ex: "年のわりには　高いわりに　便利なわりに" },
+      { label: "意味", body: "〜から予想されることと違って（意外）", id: "Berbeda dari yang diperkirakan (di luar dugaan)", ex: "" },
+    ]
+  },
+  "V/A/な/N の＋くせに": {
+    title: "〜くせに の接続",
+    rows: [
+      { label: "形", body: "V／A 普通形・な＋な・N＋の＋くせに", id: "V/A bentuk biasa, な-adj + な, N + の + くせに", ex: "知っているくせに　子どものくせに" },
+      { label: "意味", body: "〜のに（非難・不満の気持ち）", id: "Padahal... (dengan nada mencela/menyalahkan)", ex: "" },
+    ]
+  },
+  "N ＋なんか/なんて": {
+    title: "〜なんか / なんて の接続",
+    rows: [
+      { label: "形", body: "N＋なんか／なんて／など", id: "N + なんか / なんて / など", ex: "お化粧なんか　納豆なんて" },
+      { label: "意味", body: "軽視や意外・否定の気持ちを強調する", id: "Menekankan kesan meremehkan, terkejut, atau negatif", ex: "" },
+    ]
+  },
+  "V/A/な/N の＋おかげで": {
+    title: "〜おかげで の接続",
+    rows: [
+      { label: "形", body: "V／A 普通形・な＋な・N＋の＋おかげで", id: "V/A bentuk biasa, な-adj + な, N + の + おかげで", ex: "先生のおかげで　来たおかげで" },
+      { label: "意味", body: "〜のために（よい結果）", id: "Berkat... (menghasilkan akibat yang baik)", ex: "" },
+    ]
+  },
+  "V/A/な/N の＋せいで": {
+    title: "〜せいで / せいか の接続",
+    rows: [
+      { label: "形", body: "V／A 普通形・な＋な・N＋の＋せいで／せいか", id: "V/A bentuk biasa, な-adj + な, N + の + せいで/せいか", ex: "遅れたせいで　疲れたせいか" },
+      { label: "意味", body: "〜のために（悪い結果）。せいか＝理由が不確か", id: "Gara-gara... (akibat buruk). せいか = sebab yang belum pasti", ex: "" },
+    ]
+  },
+  "V/A/な/N の＋かわりに": {
+    title: "〜かわりに の接続",
+    rows: [
+      { label: "形", body: "V／A 普通形・な＋な・N＋の＋かわりに", id: "V/A bentuk biasa, な-adj + な, N + の + かわりに", ex: "ビールのかわりに　働いたかわりに" },
+      { label: "意味", body: "〜の代わりに・〜ではなく別のもの", id: "Sebagai ganti... / Bukan... melainkan...", ex: "" },
+    ]
+  },
+  "N に＋かわって": {
+    title: "〜にかわって / にかわり の接続",
+    rows: [
+      { label: "形", body: "N＋にかわって／にかわり", id: "N + にかわって / にかわり", ex: "部長にかわって　野球にかわり" },
+      { label: "意味", body: "〜の代理として・〜から交代して", id: "Menggantikan... / Atas nama...", ex: "" },
+    ]
+  },
+  "N/V/A＋くらい/ほど": {
+    title: "〜くらい / ほど（程度）の接続",
+    rows: [
+      { label: "形", body: "N・V 辞書形・A い＋くらい／ほど", id: "N / V kamus / A-i + くらい / ほど", ex: "米粒くらい　おもしろいほど　泣きたいくらい" },
+      { label: "意味", body: "〜と同じ程度・〜という程度（例で示す）", id: "Sampai... / Kira-kira... (menyatakan derajat dengan contoh)", ex: "" },
+    ]
+  },
+  "A/な＋ほど": {
+    title: "〜ほど（比較）の接続",
+    rows: [
+      { label: "形", body: "A い・な＋な・V 辞書形＋ほど", id: "A-i / な-adj + な / V kamus + ほど", ex: "若い人ほど　古いほど" },
+      { label: "意味", body: "〜のほうがますます〜（程度の比較）", id: "Semakin... (perbandingan derajat)", ex: "" },
+    ]
+  },
+  "Vば Vるほど": {
+    title: "〜ば〜ほど の接続",
+    rows: [
+      { label: "動詞", body: "V ば形＋同じV 辞書形＋ほど", id: "Bentuk -ば + kata kerja yang sama (kamus) + ほど", ex: "読めば読むほど　すればするほど" },
+      { label: "形容詞", body: "A ければ＋同じA ＋ほど", id: "Bentuk -ければ + kata sifat yang sama + ほど", ex: "早ければ早いほど　少なければ少ないほど" },
+      { label: "意味", body: "〜するにつれて、さらに〜（比例）", id: "Semakin... semakin... (berbanding lurus)", ex: "" },
+    ]
+  },
+  "N くらい〜はない": {
+    title: "〜くらい〜はない / ほど〜はない の接続",
+    rows: [
+      { label: "形", body: "N＋くらい／ほど＋（〜は）〜はない", id: "N + くらい/ほど + ... はない", ex: "彼女くらい親切な人はいない　今年ほど〜はなかった" },
+      { label: "意味", body: "〜がいちばんだ（最上級の表現）", id: "Tidak ada yang se... (menyatakan paling/superlatif)", ex: "" },
+    ]
+  },
+  "Vる＋ことはない": {
+    title: "〜ことはない の接続",
+    rows: [
+      { label: "形", body: "V 辞書形＋ことはない", id: "V kamus + ことはない", ex: "あやまることはない　来ることはない" },
+      { label: "意味", body: "〜しなくてもいい（必要ない）", id: "Tidak perlu... (tidak ada keharusan)", ex: "" },
+    ]
+  },
+  "文＋ということだ": {
+    title: "〜ということだ の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋ということだ", id: "Bentuk biasa kalimat + ということだ", ex: "遅れるということだ　合格ということだ" },
+      { label: "意味", body: "①〜という意味だ　②〜だそうだ（伝聞）", id: "① Berarti... ② Katanya... (informasi dari orang lain)", ex: "" },
+    ]
+  },
+  "Vる/ない＋ことだ": {
+    title: "〜ことだ（忠告）の接続",
+    rows: [
+      { label: "形", body: "V 辞書形／V ない形＋ことだ", id: "V kamus / V ない + ことだ", ex: "休むことだ　無理をしないことだ" },
+      { label: "意味", body: "〜したほうがいい（忠告・提案）", id: "Sebaiknya... (memberi saran atau nasihat)", ex: "" },
+    ]
+  },
+  "どんなに〜ことか": {
+    title: "〜ことか の接続",
+    rows: [
+      { label: "形", body: "どんなに／どれだけ／何度＋（A い・な＋な・V）＋ことか", id: "どんなに/どれだけ/何度 + (A-i / な-na / V) + ことか", ex: "どんなにうれしいことか　何度注意したことか" },
+      { label: "意味", body: "とても〜だ（強い感情・感嘆の強調）", id: "Betapa...! (menekankan perasaan yang kuat)", ex: "" },
+    ]
+  },
+  "文＋っけ": {
+    title: "〜だっけ / っけ の接続",
+    rows: [
+      { label: "動詞・形容詞", body: "普通形＋っけ", id: "Bentuk biasa + っけ", ex: "来るんだっけ？　行ったっけ？" },
+      { label: "名詞・な形容詞", body: "N／A な＋だっけ", id: "N / Kata sifat -na + だっけ", ex: "来週だっけ？　元気だっけ？" },
+      { label: "場面", body: "忘れたことを確認・思い出そうとする（口語）", id: "Mengkonfirmasi/mengingat sesuatu (informal)", ex: "" },
+    ]
+  },
+  "Vる＋しかない": {
+    title: "〜しかない の接続",
+    rows: [
+      { label: "形", body: "V 辞書形＋しかない", id: "Bentuk kamus kata kerja + しかない", ex: "やるしかない　買うしかない" },
+      { label: "意味", body: "他に選択肢がない（諦め・決意）", id: "Tidak ada pilihan lain (pasrah atau tekad)", ex: "" },
+    ]
+  },
+  "文＋んだって": {
+    title: "〜んだって / だって の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋んだって（＝〜んだそうだ）", id: "Bentuk biasa + んだって = katanya... (informal)", ex: "結婚したんだって　行くんだって" },
+      { label: "名詞・な形容詞", body: "N／A な＋なんだって／だって", id: "N / Kata sifat -na + なんだって / だって", ex: "休みだって　元気なんだって" },
+    ]
+  },
+  "文＋だもん": {
+    title: "〜だもん / もん の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋（ん）だもん／もん", id: "Bentuk biasa + (ん)だもん / もん", ex: "まずいんだもん　しなかったんだもん" },
+      { label: "意味", body: "〜だから（理由を言い訳のように言う・口語）", id: "Habis... sih / Soalnya... (menyatakan alasan, informal)", ex: "" },
+    ]
+  },
+  // ── 第3週の接続 ──
+  "Vて/Aくて＋も": {
+    title: "〜ても の接続",
+    rows: [
+      { label: "動詞", body: "V て形＋も（て→ても、で→でも）", id: "Bentuk て kata kerja + も", ex: "調べても　飲んでも" },
+      { label: "い形容詞", body: "語尾の い を取って＋くても", id: "Hapus い lalu tambah くても", ex: "高い → 高くても" },
+      { label: "な形容詞・名詞", body: "な／N＋でも", id: "な-adjektiva / N + でも", ex: "便利でも　子どもでも　黒じゃなくても" },
+    ]
+  },
+  "どんなに〜ても": {
+    title: "どんなに〜ても / いくら〜ても の接続",
+    rows: [
+      { label: "形", body: "どんなに／いくら＋（Vても・Aくても・なでも）", id: "どんなに/いくら + (Vても / Aくても / なでも)", ex: "どんなに練習しても　いくら飲んでも" },
+      { label: "意味", body: "程度を強調し「何回・どれだけ〜しても結果は同じ」", id: "Menekankan derajat: tidak peduli seberapa... hasilnya sama", ex: "" },
+    ]
+  },
+  "N/文 にしても": {
+    title: "〜にしても の接続",
+    rows: [
+      { label: "形", body: "N／文の普通形＋にしても＝〜であっても（譲歩）", id: "N / bentuk biasa + にしても = sekalipun...", ex: "冗談にしても　100円にしても" },
+      { label: "〜にしても〜にしても", body: "A にしても B にしても＝AでもBでもどちらでも", id: "A にしても B にしても = apakah A atau B, keduanya...", ex: "行くにしても行かないにしても" },
+    ]
+  },
+  "文 としたら": {
+    title: "〜としたら / とすれば の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋としたら／とすれば／とすると", id: "Bentuk biasa + としたら/とすれば = kalau seandainya...", ex: "本当だとしたら　行くとすれば" },
+      { label: "意味", body: "仮定・仮想の状況を設定して話す", id: "Menetapkan kondisi hipotetis untuk membicarakan sesuatu", ex: "" },
+    ]
+  },
+  "V る/ない＋つもりだった": {
+    title: "〜つもりだった の接続",
+    rows: [
+      { label: "形", body: "V る形／V ない形＋つもりだった", id: "Bentuk kamus / bentuk ない + つもりだった", ex: "行くつもりだった　食べないつもりだった" },
+      { label: "意味", body: "〜する予定だったが、実際は違った", id: "Tadinya berniat... tapi kenyataannya tidak terlaksana", ex: "勉強するつもりだったが、寝てしまった" },
+    ]
+  },
+  "V る/た・N の＋ついでに": {
+    title: "〜ついでに の接続",
+    rows: [
+      { label: "形", body: "V る形／V た形＋ついでに　N の＋ついでに", id: "Bentuk kamus/た + ついでに / N の + ついでに", ex: "行くついでに　行ったついでに　散歩のついでに" },
+      { label: "意味", body: "主な行動のついでに、別の行動もする", id: "Melakukan tindakan lain sambil/setelah tindakan utama", ex: "" },
+    ]
+  },
+  "Vた＋とたん": {
+    title: "〜たとたん の接続",
+    rows: [
+      { label: "形", body: "V た形＋とたん（に）", id: "Bentuk -た kata kerja + とたん(に)", ex: "開けたとたん　飲んだとたん" },
+      { label: "意味", body: "〜した瞬間に、すぐ次のことが起きた", id: "Tepat saat... langsung terjadi... (kejadian beruntun cepat)", ex: "" },
+    ]
+  },
+  "N の・Vている＋最中に": {
+    title: "〜最中に の接続",
+    rows: [
+      { label: "形", body: "N の＋最中に　V ている＋最中に", id: "N の + 最中に / V ている + 最中に", ex: "食事の最中に　会議をしている最中に" },
+      { label: "意味", body: "ちょうど〜しているそのとき", id: "Tepat saat sedang melakukan sesuatu", ex: "" },
+    ]
+  },
+  "V る/た・N の＋とおり": {
+    title: "〜とおり / のとおり の接続",
+    rows: [
+      { label: "形", body: "V る形／V た形＋とおり　N の＋とおり／N＋どおり", id: "Bentuk kamus/た + とおり / N の + とおり / N + どおり", ex: "言ったとおり　地図のとおり　予報どおり" },
+      { label: "意味", body: "〜と完全に同じように・〜に従って", id: "Persis sesuai dengan... / Mengikuti... apa adanya", ex: "" },
+    ]
+  },
+  "N ＋きり": {
+    title: "〜きり の接続",
+    rows: [
+      { label: "形", body: "N（数量・回数）＋きり／っきり", id: "N (jumlah/frekuensi) + きり / っきり", ex: "二人きり　1回きり" },
+      { label: "意味", body: "〜だけ（少ない数量・それ以降ない）", id: "Hanya... (jumlah sedikit, atau tidak ada lagi setelahnya)", ex: "一度会ったきり" },
+    ]
+  },
+  // ── 第2週の接続 ──
+  "N だけしか〜ない": {
+    title: "〜だけしか〜ない の接続",
+    rows: [
+      { label: "形", body: "N＋だけしか＋（動詞の否定）", id: "N + だけしか + (kata kerja negatif)", ex: "会員だけしか入れない　一人だけしか来なかった" },
+      { label: "意味", body: "「だけ」を「しか〜ない」で強調＝〜のみ", id: "Menggabungkan だけ dan しか〜ない untuk menekankan 'hanya'", ex: "" },
+    ]
+  },
+  "N について": {
+    title: "〜について の接続",
+    rows: [
+      { label: "形", body: "N＋について／についての＋N／についても", id: "N + について / についての + N / についても", ex: "日本文化について　受験についての注意" },
+      { label: "意味", body: "〜を話題・テーマとして取り上げる", id: "Menyatakan topik atau tema pembicaraan", ex: "" },
+    ]
+  },
+  "A/なA ＋さ": {
+    title: "〜さ（名詞化）の接続",
+    rows: [
+      { label: "い形容詞", body: "語尾の い を取って＋さ", id: "Hapus い lalu tambah さ", ex: "大きい → 大きさ　高い → 高さ　よい → よさ" },
+      { label: "な形容詞", body: "な を取って＋さ", id: "Hapus な lalu tambah さ", ex: "便利（な）→ 便利さ　大切（な）→ 大切さ" },
+      { label: "意味", body: "性質や程度を表す名詞をつくる", id: "Membentuk nomina yang menyatakan sifat/derajat", ex: "" },
+    ]
+  },
+  "A/なA ＋み": {
+    title: "〜み（名詞化）の接続",
+    rows: [
+      { label: "い形容詞", body: "語尾の い を取って＋み", id: "Hapus い lalu tambah み", ex: "苦しい → 苦しみ　痛い → 痛み　強い → 強み" },
+      { label: "さ との違い", body: "「み」は状態・感じ、「さ」は程度を表す", id: "み = keadaan/kesan, さ = derajat (lebih objektif)", ex: "深み（感じ）／深さ（程度）" },
+    ]
+  },
+  "文 ＋こと": {
+    title: "〜こと（名詞化）の接続",
+    rows: [
+      { label: "形", body: "動詞・文の普通形＋こと", id: "Bentuk biasa kata kerja/kalimat + こと", ex: "勉強すること　入院したこと" },
+      { label: "意味", body: "動詞や文を名詞にする（事実・内容）", id: "Menominakan kata kerja atau kalimat (fakta/isi)", ex: "" },
+    ]
+  },
+  "文 ＋の": {
+    title: "〜の（名詞化）の接続",
+    rows: [
+      { label: "形", body: "動詞・文の普通形＋の（＋を／が／は）", id: "Bentuk biasa + の (+ partikel を/が/は)", ex: "電話するのを忘れた　弾くのが好きだ" },
+      { label: "こと との違い", body: "知覚・感覚の動詞（見る・聞く等）の前は「の」", id: "Sebelum verba persepsi (見る/聞く dll.) gunakan の", ex: "彼が歌うのを聞いた" },
+    ]
+  },
+  "N というのは": {
+    title: "〜というのは（意味）の接続",
+    rows: [
+      { label: "形", body: "N＋というのは＋（説明・意味）", id: "N + というのは + (penjelasan/arti)", ex: "「デジカメ」というのは…" },
+      { label: "意味", body: "〜の意味は・〜とは（言葉の定義）", id: "Arti dari... / Yang dimaksud dengan... (mendefinisikan)", ex: "" },
+    ]
+  },
+  "文 というのは": {
+    title: "〜ということ / というのは（文の名詞化）の接続",
+    rows: [
+      { label: "形", body: "文の普通形＋ということ／というのは／というのを", id: "Bentuk biasa kalimat + ということ / というのは", ex: "帰国するということ　医者だというのを" },
+      { label: "意味", body: "文を名詞にして「〜という事実・話」を表す", id: "Menominakan kalimat = fakta bahwa...", ex: "" },
+    ]
+  },
+  "文 というより": {
+    title: "〜というより の接続",
+    rows: [
+      { label: "形", body: "N／A／な／V の普通形＋というより（も）", id: "N/A/な/V bentuk biasa + というより(も)", ex: "走るというより　涼しいというより" },
+      { label: "意味", body: "前より後のほうが正確だ（言い直し）", id: "Lebih tepat yang belakang daripada yang depan", ex: "" },
+    ]
+  },
+  "N/文 といっても": {
+    title: "〜といっても の接続",
+    rows: [
+      { label: "形", body: "N／文の普通形＋といっても", id: "N / bentuk biasa kalimat + といっても", ex: "旅行といっても　忙しいといっても" },
+      { label: "意味", body: "〜と言うが、実際はそれほどでもない", id: "Meski dikatakan..., kenyataannya tidak seperti itu", ex: "" },
+    ]
+  },
+  "命令・禁止＋と": {
+    title: "〜なと言われた / 命令形と言われた の接続",
+    rows: [
+      { label: "禁止", body: "V る形＋な＋と言われた（〜してはいけない）", id: "V kamus + な + と言われた = dilarang...", ex: "飲むなと言われた" },
+      { label: "命令", body: "V命令形＋と言われた／注意された", id: "V bentuk perintah + と言われた / 注意された", ex: "勉強しろと言われた　早く帰れと注意された" },
+      { label: "意味", body: "命令や禁止のことばをそのまま引用する", id: "Mengutip perintah atau larangan secara langsung", ex: "" },
+    ]
+  },
   "V受身形": {
     title: "受身形の作り方 / Cara Membuat Bentuk Pasif",
     rows: [
@@ -3149,10 +4298,15 @@ const EXTRA_EXAMPLES = {
     { ja:"彼は文句を言って<strong>ばかりいる</strong>。", id:"Dia terus-terusan mengeluh saja." },
     { ja:"このクラスは宿題<strong>ばかり</strong>で、楽しくない。", id:"Di kelas ini hanya PR saja, tidak menyenangkan." }
   ],
-  "〜さえ / 〜さえ〜ば": [
-    { ja:"地図<strong>さえあれば</strong>、どこでも行ける。", id:"Asal ada peta, ke mana pun bisa pergi." },
+  "〜だけしか〜ない": [
+    { ja:"財布には<strong>百円だけしか</strong>残っていない。", id:"Di dompet hanya tersisa seratus yen saja." },
+    { ja:"この教室には<strong>三人だけしか</strong>いません。", id:"Di ruang kelas ini hanya ada tiga orang saja." },
+    { ja:"その店は<strong>週末だけしか</strong>開いていない。", id:"Toko itu hanya buka pada akhir pekan saja." }
+  ],
+  "〜さえ": [
     { ja:"彼は挨拶<strong>さえ</strong>しない。礼儀がない。", id:"Bahkan menyapa pun dia tidak mau. Tidak punya sopan santun." },
-    { ja:"練習<strong>さえすれば</strong>、誰でも上手になれる。", id:"Asal mau berlatih, siapa pun bisa menjadi mahir." }
+    { ja:"忙しくて、食事をする時間<strong>さえ</strong>ない。", id:"Begitu sibuk sampai waktu makan pun tidak ada." },
+    { ja:"その本は、専門家で<strong>さえ</strong>読むのが難しい。", id:"Buku itu, bahkan para ahli pun sulit membacanya." }
   ],
   "〜こそ": [
     { ja:"今年<strong>こそ</strong>、N3に合格してみせる！", id:"Tahun ini pasti aku akan lulus N3!" },
@@ -3164,17 +4318,37 @@ const EXTRA_EXAMPLES = {
     { ja:"このアンケートは学習方法<strong>に関する</strong>調査です。", id:"Kuesioner ini adalah survei berkaitan dengan metode belajar." },
     { ja:"詳しい内容<strong>に関しては</strong>、後ほどご連絡します。", id:"Mengenai detail isinya, kami akan menghubungi Anda nanti." }
   ],
+  "〜について": [
+    { ja:"将来の夢<strong>について</strong>、作文を書いた。", id:"Saya menulis karangan tentang cita-cita masa depan." },
+    { ja:"この映画<strong>について</strong>どう思いますか。", id:"Bagaimana pendapatmu tentang film ini?" },
+    { ja:"日本の歴史<strong>についての</strong>本を探しています。", id:"Saya sedang mencari buku tentang sejarah Jepang." }
+  ],
   "〜によれば / 〜によると": [
     { ja:"彼女の話<strong>によると</strong>、二人はもう別れたらしい。", id:"Menurut ceritanya, keduanya katanya sudah putus." },
     { ja:"この本<strong>によれば</strong>、睡眠は健康にとても大切だ。", id:"Menurut buku ini, tidur sangat penting bagi kesehatan." },
     { ja:"先生の話<strong>によると</strong>、来週テストがあるそうだ。", id:"Menurut penjelasan guru, katanya minggu depan ada ujian." }
   ],
-  "〜によって / 〜により": [
+  "〜によって / 〜により / 〜による": [
     { ja:"この絵はピカソ<strong>によって</strong>描かれた。", id:"Lukisan ini dilukis oleh Picasso." },
     { ja:"結果は努力<strong>によって</strong>変わる。", id:"Hasilnya berubah tergantung usaha." },
-    { ja:"規則は国<strong>によって</strong>違います。", id:"Peraturan berbeda-beda tergantung negaranya." }
+    { ja:"大雨<strong>による</strong>被害が広がっている。", id:"Kerusakan akibat hujan deras semakin meluas." }
   ],
-  "〜のを / 〜のが / 〜のは（名詞化）": [
+  "〜さ（名詞化）": [
+    { ja:"この山の<strong>高さ</strong>は3000メートルもある。", id:"Tinggi gunung ini mencapai 3000 meter." },
+    { ja:"荷物の<strong>重さ</strong>を量ってください。", id:"Tolong timbang berat barangnya." },
+    { ja:"彼女の<strong>優しさ</strong>に感動した。", id:"Saya terharu dengan kebaikan hatinya." }
+  ],
+  "〜み（名詞化）": [
+    { ja:"足の<strong>痛み</strong>がなかなか取れない。", id:"Rasa sakit di kaki sulit hilang." },
+    { ja:"このスープには<strong>深み</strong>のある味がある。", id:"Sup ini punya rasa yang mendalam." },
+    { ja:"経験から生まれる言葉には<strong>重み</strong>がある。", id:"Kata-kata yang lahir dari pengalaman punya bobot." }
+  ],
+  "〜こと（名詞化）": [
+    { ja:"日本語を勉強する<strong>こと</strong>は楽しい。", id:"Belajar bahasa Jepang itu menyenangkan." },
+    { ja:"彼が結婚した<strong>こと</strong>を知らなかった。", id:"Saya tidak tahu bahwa dia sudah menikah." },
+    { ja:"約束を守る<strong>こと</strong>は大切だ。", id:"Menepati janji itu penting." }
+  ],
+  "〜の（名詞化）": [
     { ja:"音楽を聴く<strong>のが</strong>大好きです。", id:"Saya sangat suka mendengarkan musik." },
     { ja:"彼が泳ぐ<strong>のを</strong>見たことがありますか？", id:"Pernahkah Anda melihat dia berenang?" },
     { ja:"早起きする<strong>のは</strong>、体にいいですよ。", id:"Bangun pagi itu bagus untuk kesehatan." }
@@ -3184,20 +4358,25 @@ const EXTRA_EXAMPLES = {
     { ja:"「ありがとう」<strong>という言葉</strong>は日本語でよく使います。", id:"Kata 'arigatou' sering digunakan dalam bahasa Jepang." },
     { ja:"山田<strong>という名前</strong>の学生が来ました。", id:"Datang seorang siswa yang bernama Yamada." }
   ],
-  "〜ということ / 〜というのは": [
-    { ja:"N3に合格した<strong>ということは</strong>、かなり日本語が上手だということだ。", id:"Lulus N3 berarti bahasa Jepangnya sudah cukup bagus." },
+  "〜というのは（意味）": [
     { ja:"「根性」<strong>というのは</strong>、どういう意味ですか？", id:"Apa artinya kata 'konjou'?" },
-    { ja:"彼が辞める<strong>というのは</strong>、本当に残念だ。", id:"Sungguh disayangkan bahwa dia akan berhenti." }
+    { ja:"「エコ」<strong>というのは</strong>、環境にやさしいという意味です。", id:"Yang dimaksud 'eco' adalah ramah lingkungan." },
+    { ja:"「徹夜」<strong>というのは</strong>、一晩中寝ないことです。", id:"Yang dimaksud 'tetsuya' adalah tidak tidur semalaman." }
+  ],
+  "〜ということ / 〜というのは（文）": [
+    { ja:"N3に合格した<strong>ということは</strong>、かなり日本語が上手だということだ。", id:"Lulus N3 berarti bahasa Jepangnya sudah cukup bagus." },
+    { ja:"彼が辞める<strong>というのは</strong>、本当に残念だ。", id:"Sungguh disayangkan bahwa dia akan berhenti." },
+    { ja:"時間を守る<strong>ということ</strong>は、とても大切だ。", id:"Menepati waktu itu sangat penting." }
   ],
   "〜というより": [
     { ja:"これは教室<strong>というより</strong>、図書館みたいだ。", id:"Ini lebih seperti perpustakaan daripada ruang kelas." },
     { ja:"彼女は怒っている<strong>というより</strong>、悲しんでいるようだ。", id:"Dia lebih terlihat sedih daripada marah." },
     { ja:"この仕事は難しい<strong>というより</strong>、面倒くさい。", id:"Pekerjaan ini bukan sulit, lebih tepatnya merepotkan." }
   ],
-  "〜というと / 〜といえば": [
+  "〜というと / 〜といえば / 〜といったら": [
     { ja:"夏休み<strong>といえば</strong>、海水浴ですね。", id:"Ngomong-ngomong soal liburan musim panas, renang di laut ya." },
     { ja:"インドネシア<strong>というと</strong>、バリ島が有名ですね。", id:"Kalau bicara soal Indonesia, Pulau Bali yang terkenal ya." },
-    { ja:"日本のスポーツ<strong>といえば</strong>、野球とサッカーですね。", id:"Berbicara tentang olahraga Jepang, baseball dan sepak bola ya." }
+    { ja:"冬の食べ物<strong>といったら</strong>、やっぱり鍋だね。", id:"Kalau bicara makanan musim dingin, ya nabe (hot pot)." }
   ],
   "〜といっても": [
     { ja:"スポーツが得意<strong>といっても</strong>、走るのは苦手だ。", id:"Meski dikatakan pandai olahraga, sebenarnya tidak suka berlari." },
@@ -3214,17 +4393,22 @@ const EXTRA_EXAMPLES = {
     { ja:"友達に、秘密にする<strong>ように頼んだ</strong>。", id:"Aku meminta teman agar merahasiakannya." },
     { ja:"上司に、報告書を明日までに出す<strong>ように言われた</strong>。", id:"Atasan menyuruhku agar mengumpulkan laporan paling lambat besok." }
   ],
-  "〜てくれと頼まれた": [
-    { ja:"後輩に、一緒に練習し<strong>てくれと頼まれた</strong>。", id:"Junior memintaku untuk berlatih bersama." },
-    { ja:"母に、早く帰っ<strong>てくれと言われた</strong>。", id:"Ibu memintaku untuk pulang lebih awal." },
-    { ja:"彼女に、もう連絡しない<strong>でくれと言われた</strong>。", id:"Dia memintaku untuk tidak menghubunginya lagi." }
+  "〜なと言われた / 命令形と言われた": [
+    { ja:"母に、夜遅くまで<strong>起きているなと言われた</strong>。", id:"Ibu menyuruhku jangan begadang sampai larut malam." },
+    { ja:"コーチに、もっと速く<strong>走れと言われた</strong>。", id:"Pelatih menyuruhku berlari lebih cepat." },
+    { ja:"先輩に、勝手なことを<strong>するなとしかられた</strong>。", id:"Senior memarahiku agar tidak bertindak seenaknya." }
   ],
-  "〜ても / どんなに〜ても": [
-    { ja:"何度<strong>説明しても</strong>、わかってもらえない。", id:"Berapa kali pun dijelaskan, tidak bisa dimengerti." },
+  "〜ても": [
     { ja:"雨が降っ<strong>ても</strong>、試合は続く。", id:"Meski hujan, pertandingan tetap berlanjut." },
-    { ja:"<strong>どんなに忙しくても</strong>、家族との時間は大切にしている。", id:"Seberapa pun sibuknya, aku tetap menghargai waktu bersama keluarga." }
+    { ja:"何度<strong>説明しても</strong>、わかってもらえない。", id:"Berapa kali pun dijelaskan, tetap tidak bisa dimengerti." },
+    { ja:"値段が<strong>高くても</strong>、いい物なら買います。", id:"Meski harganya mahal, kalau barangnya bagus akan kubeli." }
   ],
-  "〜ずに / 〜ないで": [
+  "どんなに〜ても / いくら〜ても": [
+    { ja:"<strong>どんなに忙しくても</strong>、家族との時間は大切にしている。", id:"Seberapa pun sibuknya, aku tetap menghargai waktu bersama keluarga." },
+    { ja:"<strong>いくら呼んでも</strong>、彼は返事をしなかった。", id:"Seberapa pun dipanggil, dia tidak menjawab." },
+    { ja:"<strong>どんなに考えても</strong>、答えがわからない。", id:"Seberapa pun dipikirkan, tetap tidak tahu jawabannya." }
+  ],
+  "〜ずに": [
     { ja:"朝食を食べ<strong>ずに</strong>、学校へ行った。", id:"Pergi ke sekolah tanpa sarapan." },
     { ja:"傘を持た<strong>ずに</strong>出かけたら、雨に降られた。", id:"Pergi keluar tanpa membawa payung, lalu kehujanan." },
     { ja:"誰にも言わ<strong>ずに</strong>、一人で決めた。", id:"Tanpa memberi tahu siapa pun, memutuskan sendiri." }
@@ -3249,7 +4433,7 @@ const EXTRA_EXAMPLES = {
     { ja:"彼が本当のことを話している<strong>とすれば</strong>、問題は深刻だ。", id:"Jika seandainya dia berbicara jujur, masalahnya serius." },
     { ja:"それが本当<strong>だとしたら</strong>、すぐ対応しなければならない。", id:"Kalau itu memang benar, harus segera ditangani." }
   ],
-  "〜つもりだ / 〜つもりだった": [
+  "〜つもりだった": [
     { ja:"将来は医者になる<strong>つもりです</strong>。", id:"Saya berniat untuk menjadi dokter di masa depan." },
     { ja:"早く起きる<strong>つもりだったのに</strong>、寝坊してしまった。", id:"Tadinya berniat bangun pagi, tapi malah kesiangan." },
     { ja:"冗談のつもりで言ったのに、本気にされてしまった。", id:"Tadinya bilang bercanda, tapi malah dianggap serius." }
@@ -3274,20 +4458,25 @@ const EXTRA_EXAMPLES = {
     { ja:"買い物の<strong>ついでに</strong>、銀行にも寄った。", id:"Sambil belanja, sekalian mampir ke bank." },
     { ja:"旅行する<strong>ついでに</strong>、友達のところにも顔を出した。", id:"Sambil berwisata, sekalian mampir ke rumah teman." }
   ],
-  "〜たびに / 〜のたびに": [
+  "〜たびに": [
     { ja:"彼女に会う<strong>たびに</strong>、どきどきする。", id:"Setiap kali bertemu dia, jantung selalu berdebar." },
     { ja:"この場所を通る<strong>たびに</strong>、昔の思い出がよみがえる。", id:"Setiap kali melewati tempat ini, kenangan lama selalu muncul kembali." },
     { ja:"試験の<strong>たびに</strong>、緊張してしまう。", id:"Setiap kali ada ujian, selalu gugup." }
   ],
-  "〜たとたん（に）": [
-    { ja:"名前を呼ばれた<strong>とたんに</strong>、心臓がドキドキした。", id:"Begitu namaku dipanggil, jantungku langsung berdebar." },
+  "〜たとたん": [
+    { ja:"名前を呼ばれた<strong>とたん</strong>、心臓がドキドキした。", id:"Begitu namaku dipanggil, jantungku langsung berdebar." },
     { ja:"バスに乗った<strong>とたん</strong>、雨が降り始めた。", id:"Tepat saat naik bus, hujan mulai turun." },
-    { ja:"布団に入った<strong>とたんに</strong>、眠ってしまった。", id:"Tepat saat masuk ke kasur, langsung tertidur." }
+    { ja:"布団に入った<strong>とたん</strong>、眠ってしまった。", id:"Tepat saat masuk ke kasur, langsung tertidur." }
   ],
-  "〜とおりに / 〜のとおりに": [
-    { ja:"レシピ<strong>のとおりに</strong>作ったが、うまくできなかった。", id:"Sudah membuat sesuai resep, tapi hasilnya tidak bagus." },
-    { ja:"彼の予想<strong>のとおりに</strong>、試合の結果はなった。", id:"Hasil pertandingan menjadi sesuai perkiraannya." },
-    { ja:"計画<strong>のとおりに</strong>進めば、来月には完成する。", id:"Jika berjalan sesuai rencana, bulan depan akan selesai." }
+  "〜最中に": [
+    { ja:"電話している<strong>最中に</strong>、来客があった。", id:"Saat sedang menelepon, ada tamu datang." },
+    { ja:"試験の<strong>最中に</strong>、おなかが痛くなった。", id:"Saat sedang ujian, perut jadi sakit." },
+    { ja:"発表の<strong>最中に</strong>、急に停電した。", id:"Saat sedang presentasi, tiba-tiba mati listrik." }
+  ],
+  "〜とおり / 〜のとおり": [
+    { ja:"レシピ<strong>のとおり</strong>に作ったが、うまくできなかった。", id:"Sudah membuat sesuai resep, tapi hasilnya tidak bagus." },
+    { ja:"彼の予想<strong>のとおり</strong>、試合の結果はなった。", id:"Hasil pertandingan menjadi sesuai perkiraannya." },
+    { ja:"計画<strong>のとおり</strong>に進めば、来月には完成する。", id:"Jika berjalan sesuai rencana, bulan depan akan selesai." }
   ],
   "〜たまま / 〜ないまま": [
     { ja:"財布を家に忘れた<strong>まま</strong>、出かけてしまった。", id:"Pergi keluar dengan dompet yang terlupakan di rumah." },
@@ -3295,9 +4484,14 @@ const EXTRA_EXAMPLES = {
     { ja:"コートを着た<strong>まま</strong>、部屋に入らないでください。", id:"Tolong jangan masuk ke kamar sambil tetap memakai mantel." }
   ],
   "〜っぱなし": [
-    { ja:"水を出し<strong>っぱなし</strong>にしないでください。", id:"Tolong jangan biarkan air terus mengalir." },
+    { ja:"電気を<strong>つけっぱなし</strong>にしないでください。", id:"Tolong jangan biarkan lampu terus menyala." },
     { ja:"一日中テレビを<strong>つけっぱなし</strong>にしていた。", id:"Seharian membiarkan TV terus menyala." },
     { ja:"引き出しを開け<strong>っぱなし</strong>にしないで。", id:"Jangan biarkan laci terus terbuka." }
+  ],
+  "〜きり": [
+    { ja:"祖母とは10年前に一度会った<strong>きり</strong>です。", id:"Dengan nenek, saya hanya bertemu satu kali sepuluh tahun lalu." },
+    { ja:"彼とは<strong>二人きり</strong>で話したことがない。", id:"Saya tidak pernah berbicara berdua saja dengannya." },
+    { ja:"今日は朝、パンを<strong>一つ食べたきり</strong>で、何も食べていない。", id:"Hari ini hanya makan satu roti tadi pagi, tidak makan apa-apa lagi." }
   ],
   "〜てほしい / 〜てもらいたい": [
     { ja:"君にはもっと自信を持って<strong>ほしい</strong>。", id:"Aku ingin kamu lebih percaya diri." },
@@ -3314,12 +4508,112 @@ const EXTRA_EXAMPLES = {
     { ja:"財布を忘れたふりを<strong>して</strong>、払わなかった。", id:"Berpura-pura lupa dompet, lalu tidak membayar." },
     { ja:"平気なふりを<strong>していた</strong>が、本当は悲しかった。", id:"Berpura-pura baik-baik saja, padahal sebenarnya sedih." }
   ],
-  "〜だっけ？ / 〜っけ？": [
+  "〜にとって": [
+    { ja:"留学生<strong>にとって</strong>、漢字を覚えるのは大変だ。", id:"Bagi pelajar asing, menghafal kanji itu sulit." },
+    { ja:"私<strong>にとって</strong>、家族がいちばん大切だ。", id:"Bagi saya, keluarga adalah yang paling penting." },
+    { ja:"子ども<strong>にとっては</strong>、遊ぶことが勉強だ。", id:"Bagi anak-anak, bermain adalah belajar." }
+  ],
+  "〜わりに / 〜わりには": [
+    { ja:"この店は、値段の<strong>わりに</strong>量が多い。", id:"Restoran ini, untuk harganya porsinya banyak." },
+    { ja:"彼はたくさん食べる<strong>わりに</strong>、太らない。", id:"Padahal dia makan banyak, tapi tidak gemuk." },
+    { ja:"この仕事は、大変な<strong>わりには</strong>給料が安い。", id:"Pekerjaan ini, untuk beratnya gajinya murah." }
+  ],
+  "〜くせに": [
+    { ja:"自分でできない<strong>くせに</strong>、文句ばかり言う。", id:"Padahal sendiri tidak bisa, tapi mengeluh terus." },
+    { ja:"本当は知らない<strong>くせに</strong>、知ったかぶりをする。", id:"Padahal sebenarnya tidak tahu, tapi pura-pura tahu." },
+    { ja:"子ども<strong>のくせに</strong>、大人のような口をきく。", id:"Padahal masih anak-anak, tapi bicara seperti orang dewasa." }
+  ],
+  "〜なんか / 〜なんて": [
+    { ja:"宿題<strong>なんか</strong>、やりたくない。", id:"Aku tidak mau mengerjakan PR segala." },
+    { ja:"あの人が嘘をつく<strong>なんて</strong>、信じられない。", id:"Tidak percaya kalau orang itu berbohong." },
+    { ja:"私<strong>なんか</strong>には、とてもできません。", id:"Untuk orang seperti saya, sama sekali tidak bisa." }
+  ],
+  "〜おかげで": [
+    { ja:"友達が手伝ってくれた<strong>おかげで</strong>、早く終わった。", id:"Berkat teman yang membantu, cepat selesai." },
+    { ja:"薬を飲んだ<strong>おかげで</strong>、熱が下がった。", id:"Berkat minum obat, demamnya turun." },
+    { ja:"いい天気の<strong>おかげで</strong>、洗濯物がよく乾いた。", id:"Berkat cuaca cerah, cucian cepat kering." }
+  ],
+  "〜せいで / 〜せいか": [
+    { ja:"渋滞の<strong>せいで</strong>、会議に遅れた。", id:"Gara-gara macet, terlambat rapat." },
+    { ja:"食べすぎた<strong>せいで</strong>、お腹が痛い。", id:"Gara-gara makan berlebihan, perut sakit." },
+    { ja:"年の<strong>せいか</strong>、最近疲れやすい。", id:"Entah karena usia, belakangan ini mudah lelah." }
+  ],
+  "〜かわりに": [
+    { ja:"今日は私が父の<strong>かわりに</strong>料理を作った。", id:"Hari ini saya memasak menggantikan ayah." },
+    { ja:"手伝ってもらった<strong>かわりに</strong>、ごはんをおごった。", id:"Sebagai ganti dibantu, aku mentraktir makan." },
+    { ja:"電話の<strong>かわりに</strong>、メールで連絡した。", id:"Sebagai ganti telepon, aku menghubungi lewat email." }
+  ],
+  "〜にかわって / 〜にかわり": [
+    { ja:"社長<strong>にかわって</strong>、副社長があいさつをした。", id:"Menggantikan direktur, wakil direktur memberi sambutan." },
+    { ja:"病気の母<strong>にかわって</strong>、私が家事をしている。", id:"Menggantikan ibu yang sakit, saya mengurus rumah." },
+    { ja:"手紙<strong>にかわり</strong>、メールが主流になった。", id:"Menggantikan surat, email menjadi arus utama." }
+  ],
+  "〜くらい / 〜ほど": [
+    { ja:"今日は、歩けない<strong>くらい</strong>足が痛い。", id:"Hari ini kaki sakit sampai tidak bisa berjalan." },
+    { ja:"涙が出る<strong>ほど</strong>笑った。", id:"Tertawa sampai keluar air mata." },
+    { ja:"死ぬ<strong>ほど</strong>つらい経験をした。", id:"Mengalami hal yang menyakitkan setengah mati." }
+  ],
+  "〜ほど（比較）": [
+    { ja:"上手な人<strong>ほど</strong>、練習を続けている。", id:"Justru orang yang mahir, semakin terus berlatih." },
+    { ja:"高い物<strong>ほど</strong>、品質がいいとは限らない。", id:"Barang yang mahal belum tentu kualitasnya bagus." },
+    { ja:"大きい地震<strong>ほど</strong>、被害が大きくなる。", id:"Semakin besar gempa, semakin besar kerusakannya." }
+  ],
+  "〜くらい〜はない / 〜ほど〜はない": [
+    { ja:"母の手料理<strong>ほど</strong>おいしいものは<strong>ない</strong>。", id:"Tidak ada yang seenak masakan ibu." },
+    { ja:"今日<strong>くらい</strong>疲れた日は<strong>ない</strong>。", id:"Tidak ada hari yang selelah hari ini." },
+    { ja:"健康<strong>ほど</strong>大切なものは<strong>ない</strong>。", id:"Tidak ada yang sepenting kesehatan." }
+  ],
+  "〜ことはない": [
+    { ja:"失敗しても、気にする<strong>ことはない</strong>。", id:"Meski gagal, tidak perlu dipikirkan." },
+    { ja:"急ぐ<strong>ことはない</strong>。ゆっくりでいい。", id:"Tidak perlu buru-buru. Pelan-pelan saja." },
+    { ja:"一人で悩む<strong>ことはない</strong>よ。相談して。", id:"Tidak perlu memikirkannya sendirian. Mari bicara." }
+  ],
+  "〜ということだ": [
+    { ja:"社長は来月退職する<strong>ということだ</strong>。", id:"Katanya direktur akan pensiun bulan depan." },
+    { ja:"連絡がない<strong>ということは</strong>、問題ないということだ。", id:"Tidak ada kabar berarti tidak ada masalah." },
+    { ja:"会議は中止<strong>ということです</strong>。", id:"Katanya rapatnya dibatalkan." }
+  ],
+  "〜ことだ（忠告）": [
+    { ja:"上手になりたければ、毎日練習する<strong>ことだ</strong>。", id:"Kalau ingin jadi mahir, sebaiknya berlatih setiap hari." },
+    { ja:"健康のためには、よく寝る<strong>ことだ</strong>。", id:"Demi kesehatan, sebaiknya tidur yang cukup." },
+    { ja:"心配なら、本人に直接聞く<strong>ことだ</strong>。", id:"Kalau khawatir, sebaiknya tanya langsung ke orangnya." }
+  ],
+  "〜ことか": [
+    { ja:"この日をどんなに待っていた<strong>ことか</strong>。", id:"Betapa aku menantikan hari ini!" },
+    { ja:"あなたに会えて、どれだけうれしい<strong>ことか</strong>。", id:"Betapa senangnya bisa bertemu denganmu!" },
+    { ja:"何度同じ失敗をした<strong>ことか</strong>。", id:"Sudah berapa kali aku melakukan kesalahan yang sama!" }
+  ],
+  "〜だもん / 〜もん": [
+    { ja:"「どうして泣いてるの？」「だって、怖かった<strong>んだもん</strong>。」", id:"'Kenapa menangis?' 'Habis, tadi takut sih.'" },
+    { ja:"行きたくない。<strong>つまらないんだもん</strong>。", id:"Tidak mau pergi. Soalnya membosankan sih." },
+    { ja:"もう食べられない。お腹いっぱい<strong>だもん</strong>。", id:"Sudah tidak bisa makan lagi. Habis kenyang sih." }
+  ],
+  "つまり": [
+    { ja:"彼は母の妹の息子、<strong>つまり</strong>私のいとこだ。", id:"Dia anak adik perempuan ibu, dengan kata lain sepupuku." },
+    { ja:"明日は祝日だ。<strong>つまり</strong>学校は休みだ。", id:"Besok hari libur nasional. Singkatnya sekolah libur." },
+    { ja:"返事がない。<strong>つまり</strong>、断られたということだ。", id:"Tidak ada jawaban. Dengan kata lain, berarti ditolak." }
+  ],
+  "そのため(に)": [
+    { ja:"大雪が降った。<strong>そのため</strong>、電車が止まった。", id:"Turun salju lebat. Karena itu, kereta berhenti." },
+    { ja:"健康になりたい。<strong>そのために</strong>、毎朝走っている。", id:"Saya ingin sehat. Untuk itu, saya lari setiap pagi." },
+    { ja:"道が混んでいた。<strong>そのために</strong>遅刻した。", id:"Jalanan macet. Karena itu saya terlambat." }
+  ],
+  "その結果": [
+    { ja:"毎日復習した。<strong>その結果</strong>、テストでいい点が取れた。", id:"Setiap hari mengulang pelajaran. Hasilnya, dapat nilai bagus di ujian." },
+    { ja:"よく話し合った。<strong>その結果</strong>、問題が解決した。", id:"Banyak berdiskusi. Hasilnya, masalah terpecahkan." },
+    { ja:"練習を重ねた。<strong>その結果</strong>、大会で優勝した。", id:"Berlatih berulang kali. Hasilnya, menang di kompetisi." }
+  ],
+  "なぜなら〜から": [
+    { ja:"今日は早く帰ります。<strong>なぜなら</strong>、母が来る<strong>からです</strong>。", id:"Hari ini saya pulang cepat. Alasannya, karena ibu akan datang." },
+    { ja:"その案には反対だ。<strong>なぜなら</strong>、費用がかかりすぎる<strong>からだ</strong>。", id:"Saya menentang usulan itu. Alasannya, karena biayanya terlalu besar." },
+    { ja:"彼を信じている。<strong>なぜかというと</strong>、いつも正直だ<strong>からだ</strong>。", id:"Saya memercayainya. Alasannya, karena dia selalu jujur." }
+  ],
+  "〜だっけ / 〜っけ": [
     { ja:"彼女の誕生日、今月<strong>だっけ</strong>？確認しなきゃ。", id:"Ulang tahunnya bulan ini ya? Harus dicek." },
     { ja:"あれ、鍵どこに置い<strong>たっけ</strong>？", id:"Eh, kunci tadi aku taruh di mana ya?" },
     { ja:"この映画、もう<strong>見たっけ</strong>？内容を忘れた。", id:"Film ini, sudah pernah kutonton ya? Aku lupa isinya." }
   ],
-  "〜しかない / 〜するしかない": [
+  "〜しかない": [
     { ja:"終電を逃したから、タクシーで帰る<strong>しかない</strong>。", id:"Karena ketinggalan kereta terakhir, tidak ada pilihan selain pulang naik taksi." },
     { ja:"わからないことがあったら、先生に聞く<strong>しかない</strong>。", id:"Kalau ada yang tidak mengerti, tidak ada pilihan selain bertanya ke guru." },
     { ja:"失敗しても、また挑戦する<strong>しかない</strong>。", id:"Meski gagal, tidak ada pilihan selain mencoba lagi." }
@@ -3349,7 +4643,7 @@ const EXTRA_EXAMPLES = {
     { ja:"なぜかその映画が気になって<strong>ならない</strong>。", id:"Entah kenapa film itu selalu mengusikku." },
     { ja:"彼の言葉が嬉しくて<strong>ならなかった</strong>。", id:"Kata-katanya membuatku senang tidak tertahankan." }
   ],
-  "〜さえ〜ば / 〜さえ〜たら": [
+  "〜さえ〜ば": [
     { ja:"健康で<strong>さえあれば</strong>、他には何もいらない。", id:"Asal sehat, tidak perlu yang lain." },
     { ja:"もう少し時間<strong>さえあれば</strong>、できたのに。", id:"Andai saja ada sedikit lebih banyak waktu, pasti bisa." },
     { ja:"彼女が来て<strong>さえくれれば</strong>、パーティーは成功する。", id:"Asal dia mau datang, pesta akan sukses." }
@@ -3359,10 +4653,200 @@ const EXTRA_EXAMPLES = {
     { ja:"<strong>どうせ</strong>やるなら、最初から全力でやろう。", id:"Toh kalau memang harus dilakukan, lakukan saja dengan sepenuh tenaga dari awal." },
     { ja:"<strong>どうせ</strong>変わらないと思っていたが、変わった。", id:"Toh kupikir tidak akan berubah, ternyata berubah." }
   ],
-  "〜わけだ / 〜わけがない": [
+  "〜わけだ": [
     { ja:"毎日練習しているから、上手になる<strong>わけだ</strong>。", id:"Pantas saja mahir, karena berlatih setiap hari." },
+    { ja:"これだけ食べたら、お腹いっぱいになる<strong>わけだ</strong>。", id:"Pantas saja kenyang, karena sudah makan sebanyak ini." },
+    { ja:"窓が開いている。<strong>寒いわけだ</strong>。", id:"Jendelanya terbuka. Pantas saja dingin." }
+  ],
+  "〜わけではない": [
+    { ja:"嫌いな<strong>わけではない</strong>が、あまり食べたくない。", id:"Bukan berarti benci, tapi tidak terlalu ingin makan." },
+    { ja:"全部わかった<strong>わけではない</strong>。", id:"Bukan berarti aku mengerti semuanya." },
+    { ja:"いつも忙しい<strong>わけではない</strong>。", id:"Bukan berarti selalu sibuk." }
+  ],
+  "〜わけがない": [
     { ja:"彼がそんな失礼なことをする<strong>わけがない</strong>。", id:"Tidak mungkin dia melakukan hal yang tidak sopan seperti itu." },
-    { ja:"これだけ食べたら、お腹いっぱいになる<strong>わけだ</strong>。", id:"Pantas saja kenyang, karena sudah makan sebanyak ini." }
+    { ja:"あんな高い物が売れる<strong>わけがない</strong>。", id:"Mustahil barang semahal itu laku." },
+    { ja:"練習していないのに、勝てる<strong>わけがない</strong>。", id:"Tidak latihan, mustahil bisa menang." }
+  ],
+  "〜わけにはいかない": [
+    { ja:"明日は試験だから、遊ぶ<strong>わけにはいかない</strong>。", id:"Besok ujian, jadi tidak bisa main-main." },
+    { ja:"約束したから、行かない<strong>わけにはいかない</strong>。", id:"Sudah berjanji, jadi tidak bisa tidak pergi." },
+    { ja:"みんなが待っているから、休む<strong>わけにはいかない</strong>。", id:"Semua sedang menunggu, jadi tidak bisa libur." }
+  ],
+  "もし〜なら / もし〜たら": [
+    { ja:"<strong>もし</strong>宝くじが当たった<strong>なら</strong>、家を買いたい。", id:"Seandainya menang lotre, aku ingin beli rumah." },
+    { ja:"<strong>もし</strong>あのとき謝っていた<strong>なら</strong>、許してもらえたかもしれない。", id:"Seandainya waktu itu minta maaf, mungkin sudah dimaafkan." },
+    { ja:"<strong>もし</strong>君が来なかった<strong>ら</strong>、一人でやるしかなかった。", id:"Seandainya kamu tidak datang, terpaksa aku kerjakan sendiri." }
+  ],
+  "もし〜としても": [
+    { ja:"<strong>もし</strong>雨が降った<strong>としても</strong>、試合は行われます。", id:"Seandainya pun hujan, pertandingan tetap dilangsungkan." },
+    { ja:"<strong>もし</strong>失敗した<strong>としても</strong>、また挑戦すればいい。", id:"Seandainya pun gagal, tinggal coba lagi." },
+    { ja:"<strong>もし</strong>反対された<strong>としても</strong>、私の気持ちは変わらない。", id:"Seandainya pun ditentang, perasaanku tidak berubah." }
+  ],
+  "もしも〜なら / もしも〜ても": [
+    { ja:"<strong>もしも</strong>願いがかなう<strong>なら</strong>、世界を旅したい。", id:"Seandainya permohonan terkabul, aku ingin keliling dunia." },
+    { ja:"<strong>もしも</strong>のことがあったら、この番号に電話してください。", id:"Kalau-kalau terjadi sesuatu, tolong telepon nomor ini." },
+    { ja:"<strong>もしも</strong>道に迷っ<strong>ても</strong>、地図があるから大丈夫。", id:"Seandainya pun tersesat, ada peta jadi tidak apa-apa." }
+  ],
+  "〜ことにする / 〜ことにしている": [
+    { ja:"健康のために、毎日歩く<strong>ことにしている</strong>。", id:"Demi kesehatan, aku membiasakan diri berjalan setiap hari." },
+    { ja:"今年からタバコをやめる<strong>ことにした</strong>。", id:"Mulai tahun ini aku memutuskan berhenti merokok." },
+    { ja:"夜は11時までに寝る<strong>ことにしています</strong>。", id:"Aku membiasakan tidur sebelum jam 11 malam." }
+  ],
+  "〜ことになる / 〜ことになっている": [
+    { ja:"来月、結婚する<strong>ことになりました</strong>。", id:"Bulan depan, saya jadi akan menikah." },
+    { ja:"会議は3時から始まる<strong>ことになっている</strong>。", id:"Rapat sudah diatur mulai jam 3." },
+    { ja:"留学生は寮に住む<strong>ことになっている</strong>。", id:"Pelajar asing sudah diatur untuk tinggal di asrama." }
+  ],
+  "〜ことは〜が": [
+    { ja:"泳げる<strong>ことは泳げますが</strong>、あまり速くない。", id:"Bisa berenang sih bisa, tapi tidak terlalu cepat." },
+    { ja:"その店は安い<strong>ことは安いが</strong>、品質はよくない。", id:"Toko itu murah sih murah, tapi kualitasnya tidak bagus." },
+    { ja:"読んだ<strong>ことは読んだが</strong>、内容は覚えていない。", id:"Sudah dibaca sih, tapi isinya tidak diingat." }
+  ],
+  "〜ないことはない": [
+    { ja:"辛いものも、食べ<strong>られないことはない</strong>。", id:"Makanan pedas pun, bukannya tidak bisa kumakan." },
+    { ja:"急げば、終電に間に合わ<strong>ないことはない</strong>。", id:"Kalau buru-buru, bukannya tidak keburu kereta terakhir." },
+    { ja:"難しい<strong>ことはない</strong>が、時間はかかる。", id:"Bukannya sulit, tapi makan waktu." }
+  ],
+  "〜うちに": [
+    { ja:"温かい<strong>うちに</strong>、召し上がってください。", id:"Silakan dinikmati selagi hangat." },
+    { ja:"日本にいる<strong>うちに</strong>、いろいろな所へ行きたい。", id:"Selagi di Jepang, aku ingin pergi ke berbagai tempat." },
+    { ja:"若い<strong>うちに</strong>、たくさん勉強しておこう。", id:"Selagi muda, mari belajar banyak-banyak." }
+  ],
+  "決して〜ない": [
+    { ja:"その約束は<strong>決して</strong>忘れ<strong>ない</strong>。", id:"Janji itu tidak akan pernah kulupakan." },
+    { ja:"彼は<strong>決して</strong>うそをつか<strong>ない</strong>人だ。", id:"Dia orang yang tidak akan pernah berbohong." },
+    { ja:"<strong>決して</strong>あきらめ<strong>ない</strong>でください。", id:"Tolong jangan pernah menyerah." }
+  ],
+  "まったく〜ない": [
+    { ja:"その話は<strong>まったく</strong>知ら<strong>なかった</strong>。", id:"Aku sama sekali tidak tahu soal itu." },
+    { ja:"彼の気持ちが<strong>まったく</strong>理解でき<strong>ない</strong>。", id:"Aku sama sekali tidak bisa memahami perasaannya." },
+    { ja:"お金が<strong>まったく</strong>残ってい<strong>ない</strong>。", id:"Uang sama sekali tidak tersisa." }
+  ],
+  "めったに〜ない": [
+    { ja:"父は<strong>めったに</strong>怒ら<strong>ない</strong>。", id:"Ayah jarang sekali marah." },
+    { ja:"こんな立派な作品は<strong>めったに</strong>見られ<strong>ない</strong>。", id:"Karya sehebat ini jarang sekali bisa dilihat." },
+    { ja:"彼は<strong>めったに</strong>遅刻し<strong>ない</strong>。", id:"Dia jarang sekali terlambat." }
+  ],
+  "少しも〜ない / ちっとも〜ない": [
+    { ja:"薬を飲んだのに、<strong>少しも</strong>よくなら<strong>ない</strong>。", id:"Padahal sudah minum obat, sedikit pun tidak membaik." },
+    { ja:"彼は<strong>ちっとも</strong>反省してい<strong>ない</strong>。", id:"Dia sedikit pun tidak menyesal." },
+    { ja:"勉強しても<strong>ちっとも</strong>覚えられ<strong>ない</strong>。", id:"Meski belajar, sedikit pun tidak bisa diingat." }
+  ],
+  "それと / あと": [
+    { ja:"パンと牛乳、<strong>それと</strong>卵も買ってきて。", id:"Tolong belikan roti dan susu, dan juga telur." },
+    { ja:"宿題は終わった。<strong>あと</strong>、掃除をすればいい。", id:"PR sudah selesai. Lalu, tinggal bersih-bersih." },
+    { ja:"資料は配りました。<strong>それと</strong>、明日の予定も伝えます。", id:"Materi sudah dibagikan. Dan juga, akan saya sampaikan jadwal besok." }
+  ],
+  "それとも": [
+    { ja:"歩いて行きますか。<strong>それとも</strong>バスにしますか。", id:"Mau jalan kaki? Atau naik bus?" },
+    { ja:"これにしますか、<strong>それとも</strong>あちらにしますか。", id:"Mau yang ini, atau yang itu?" },
+    { ja:"今日やる？<strong>それとも</strong>明日にする？", id:"Mau dikerjakan hari ini? Atau besok saja?" }
+  ],
+  "その上": [
+    { ja:"彼は親切だ。<strong>その上</strong>、よく気がつく。", id:"Dia baik hati. Lagi pula, peka terhadap sekitar." },
+    { ja:"この部屋は広い。<strong>その上</strong>、日当たりもいい。", id:"Kamar ini luas. Lagi pula, pencahayaannya bagus." },
+    { ja:"道に迷った。<strong>その上</strong>、雨まで降ってきた。", id:"Tersesat. Lagi pula, hujan pun mulai turun." }
+  ],
+  "〜はもちろん": [
+    { ja:"この町は、夏<strong>はもちろん</strong>冬も観光客が多い。", id:"Kota ini, musim panas tentu, musim dingin pun banyak turis." },
+    { ja:"彼は英語<strong>はもちろん</strong>、中国語も話せる。", id:"Dia jangankan bahasa Inggris, bahasa Mandarin pun bisa." },
+    { ja:"締め切り<strong>はもちろん</strong>、内容もきちんと守ってください。", id:"Jangankan tenggat waktu, isinya pun tolong dipatuhi." }
+  ],
+  "〜ばかりか / 〜ばかりでなく": [
+    { ja:"彼は遅刻した<strong>ばかりか</strong>、あやまりもしなかった。", id:"Dia jangankan terlambat, minta maaf pun tidak." },
+    { ja:"この薬は効かない<strong>ばかりか</strong>、体に悪い。", id:"Obat ini jangankan manjur, malah buruk untuk tubuh." },
+    { ja:"彼女は美人な<strong>ばかりでなく</strong>、心も優しい。", id:"Dia tidak hanya cantik, hatinya pun baik." }
+  ],
+  "〜に比べて": [
+    { ja:"今年は去年<strong>に比べて</strong>、雨が多い。", id:"Tahun ini hujannya lebih banyak dibanding tahun lalu." },
+    { ja:"兄<strong>に比べて</strong>、弟はおとなしい。", id:"Dibanding kakak, adiknya lebih pendiam." },
+    { ja:"都会<strong>に比べて</strong>、田舎は物価が安い。", id:"Dibanding kota, harga di desa lebih murah." }
+  ],
+  "〜に対して": [
+    { ja:"お客様<strong>に対して</strong>、ていねいな言葉を使う。", id:"Terhadap pelanggan, gunakan bahasa yang sopan." },
+    { ja:"その質問<strong>に対して</strong>、彼は何も答えなかった。", id:"Terhadap pertanyaan itu, dia tidak menjawab apa pun." },
+    { ja:"姉が社交的なの<strong>に対して</strong>、妹は内気だ。", id:"Berbeda dengan kakak yang supel, adik perempuannya pemalu." }
+  ],
+  "〜上げる": [
+    { ja:"3年かかって、ついに作品を<strong>作り上げた</strong>。", id:"Setelah 3 tahun, akhirnya menyelesaikan karya itu." },
+    { ja:"職人が時間をかけて<strong>仕上げた</strong>家具だ。", id:"Furnitur yang diselesaikan pengrajin dengan waktu yang lama." },
+    { ja:"みんなで力を合わせて、ビルを<strong>建て上げた</strong>。", id:"Bersama-sama menyelesaikan pembangunan gedung." }
+  ],
+  "〜切れない / 〜切る": [
+    { ja:"買い物が多すぎて、一人では<strong>持ち切れない</strong>。", id:"Belanjaannya terlalu banyak, sendiri tidak bisa membawa semua." },
+    { ja:"マラソンを最後まで<strong>走り切った</strong>。", id:"Berlari maraton sampai habis hingga garis akhir." },
+    { ja:"数え<strong>切れない</strong>ほどの星が見える。", id:"Terlihat bintang yang tak terhitung jumlahnya." }
+  ],
+  "〜かけ / 〜かけの": [
+    { ja:"飲み<strong>かけの</strong>コーヒーがテーブルにある。", id:"Ada kopi yang baru diminum setengah di meja." },
+    { ja:"言い<strong>かけて</strong>、やめた。", id:"Hendak mengatakan sesuatu, lalu mengurungkannya." },
+    { ja:"食べ<strong>かけの</strong>パンを置いて出かけた。", id:"Meninggalkan roti yang baru dimakan sebagian lalu pergi." }
+  ],
+  "〜たて": [
+    { ja:"<strong>でき立て</strong>の料理を出す。", id:"Menyajikan masakan yang baru jadi." },
+    { ja:"ペンキの<strong>塗りたて</strong>に注意。", id:"Hati-hati, cat baru saja dioleskan." },
+    { ja:"<strong>入社したて</strong>のころは、毎日緊張していた。", id:"Saat baru masuk perusahaan, setiap hari tegang." }
+  ],
+  "〜といい / 〜たらいい": [
+    { ja:"早く元気になる<strong>といいですね</strong>。", id:"Semoga cepat sembuh ya." },
+    { ja:"いい天気だ<strong>といいなあ</strong>、明日の遠足。", id:"Semoga cuaca bagus, untuk piknik besok." },
+    { ja:"どこか静かな所に住め<strong>たらいいなあ</strong>。", id:"Andai saja bisa tinggal di tempat yang tenang." }
+  ],
+  "〜ばよかったのに": [
+    { ja:"おいしかったよ。あなたも食べ<strong>ればよかったのに</strong>。", id:"Tadi enak lho. Sayang kamu tidak ikut makan." },
+    { ja:"困っていたなら、相談して<strong>くれればよかったのに</strong>。", id:"Kalau kesulitan, harusnya kamu cerita dong." },
+    { ja:"近くまで来たなら、寄って<strong>くれればよかったのに</strong>。", id:"Kalau sudah sampai dekat, harusnya kamu mampir." }
+  ],
+  "〜ないかなあ / 〜かなあ": [
+    { ja:"夏休み、<strong>早く来ないかなあ</strong>。", id:"Semoga libur musim panas cepat datang." },
+    { ja:"この問題、<strong>解けるかなあ</strong>。", id:"Apa soal ini bisa kupecahkan ya?" },
+    { ja:"彼、<strong>許してくれないかなあ</strong>。", id:"Semoga dia mau memaafkanku." }
+  ],
+  "〜において": [
+    { ja:"オリンピックは東京<strong>において</strong>開催された。", id:"Olimpiade diselenggarakan di Tokyo." },
+    { ja:"現代社会<strong>において</strong>、スマホは欠かせない。", id:"Dalam masyarakat modern, ponsel pintar tak tergantikan." },
+    { ja:"卒業式は体育館<strong>において</strong>行われます。", id:"Upacara kelulusan diadakan di aula olahraga." }
+  ],
+  "たとえ〜ても": [
+    { ja:"<strong>たとえ</strong>失敗し<strong>ても</strong>、後悔はしない。", id:"Sekalipun gagal, aku tidak akan menyesal." },
+    { ja:"<strong>たとえ</strong>どんなに忙しく<strong>ても</strong>、運動は続ける。", id:"Sekalipun seberapa sibuk, aku tetap berolahraga." },
+    { ja:"<strong>たとえ</strong>子ども<strong>でも</strong>、約束は守るべきだ。", id:"Sekalipun anak kecil, harus menepati janji." }
+  ],
+  "もしかすると〜かもしれない": [
+    { ja:"<strong>もしかすると</strong>、もう家を出た<strong>かもしれない</strong>。", id:"Mungkin saja dia sudah keluar rumah." },
+    { ja:"<strong>もしかしたら</strong>、これは本物<strong>かもしれない</strong>。", id:"Mungkin saja ini asli." },
+    { ja:"<strong>もしかすると</strong>、彼は来ない<strong>かもしれない</strong>。", id:"Mungkin saja dia tidak datang." }
+  ],
+  "必ずしも〜とは限らない": [
+    { ja:"値段が高いものが<strong>必ずしも</strong>いい<strong>とは限らない</strong>。", id:"Barang yang mahal belum tentu bagus." },
+    { ja:"努力すれば<strong>必ずしも</strong>成功する<strong>とは限らない</strong>。", id:"Berusaha belum tentu selalu berhasil." },
+    { ja:"有名な店が<strong>必ずしも</strong>おいしい<strong>とは限らない</strong>。", id:"Restoran terkenal belum tentu enak." }
+  ],
+  "まるで〜よう / まるで〜みたい": [
+    { ja:"その景色は<strong>まるで</strong>絵の<strong>ようだ</strong>。", id:"Pemandangan itu seolah-olah seperti lukisan." },
+    { ja:"彼は<strong>まるで</strong>何も知らない<strong>みたいな</strong>顔をしている。", id:"Dia memasang wajah seolah-olah tidak tahu apa-apa." },
+    { ja:"今日は寒くて、<strong>まるで</strong>冬<strong>みたいだ</strong>。", id:"Hari ini dingin, seolah-olah seperti musim dingin." }
+  ],
+  "だけど": [
+    { ja:"行きたい。<strong>だけど</strong>、お金がない。", id:"Ingin pergi. Tapi tidak punya uang." },
+    { ja:"あの店は安い。<strong>だけど</strong>、あまりおいしくない。", id:"Toko itu murah. Tapi tidak begitu enak." },
+    { ja:"頑張った。<strong>だけど</strong>、結果はだめだった。", id:"Sudah berusaha. Tapi hasilnya gagal." }
+  ],
+  "ですから": [
+    { ja:"今日は祝日です。<strong>ですから</strong>、銀行は休みです。", id:"Hari ini hari libur. Karena itu, bank tutup." },
+    { ja:"道が混んでいました。<strong>ですから</strong>、遅れてしまいました。", id:"Jalanan macet. Karena itu, saya terlambat." },
+    { ja:"彼は外国人です。<strong>ですから</strong>、漢字が読めません。", id:"Dia orang asing. Karena itu, tidak bisa membaca kanji." }
+  ],
+  "ところが": [
+    { ja:"晴れると思っていた。<strong>ところが</strong>、雨が降ってきた。", id:"Kukira akan cerah. Namun ternyata, hujan turun." },
+    { ja:"簡単だと思った。<strong>ところが</strong>、とても難しかった。", id:"Kukira mudah. Namun ternyata, sangat sulit." },
+    { ja:"留守だと思った。<strong>ところが</strong>、彼は家にいた。", id:"Kukira tidak ada di rumah. Namun ternyata, dia ada." }
+  ],
+  "ところで": [
+    { ja:"いい天気ですね。<strong>ところで</strong>、お仕事はどうですか。", id:"Cuaca bagus ya. Ngomong-ngomong, bagaimana pekerjaannya?" },
+    { ja:"そろそろ帰ります。<strong>ところで</strong>、明日は何時に集合ですか。", id:"Saya hampir pulang. Ngomong-ngomong, besok kumpul jam berapa?" },
+    { ja:"久しぶりだね。<strong>ところで</strong>、田中さんは元気？", id:"Lama tak jumpa. Ngomong-ngomong, Tanaka-san apa kabar?" }
   ],
   "〜ばよかった": [
     { ja:"もっと早く病院に行け<strong>ばよかった</strong>。", id:"Seharusnya dulu pergi ke rumah sakit lebih awal." },
@@ -3384,12 +4868,17 @@ const EXTRA_EXAMPLES = {
     { ja:"頼んでいた荷物が<strong>なかなか届かない</strong>。", id:"Paket yang dipesan tidak kunjung datang." },
     { ja:"<strong>なかなか</strong>いい仕事が<strong>見つからない</strong>。", id:"Pekerjaan yang bagus tidak kunjung ketemu." }
   ],
-  "〜まで / 〜までに": [
+  "〜まで": [
     { ja:"雨が止む<strong>まで</strong>、ここで待ちましょう。", id:"Mari menunggu di sini sampai hujan berhenti." },
-    { ja:"試験<strong>までに</strong>、この本を全部読まなければならない。", id:"Paling lambat sebelum ujian, harus membaca seluruh buku ini." },
-    { ja:"卒業する<strong>までに</strong>、N2に合格したい。", id:"Sebelum lulus, ingin lulus N2." }
+    { ja:"信号が青になる<strong>まで</strong>、待ってください。", id:"Tolong tunggu sampai lampu menjadi hijau." },
+    { ja:"子どもが寝る<strong>まで</strong>、そばにいてあげた。", id:"Aku menemaninya sampai anak itu tidur." }
   ],
-  "〜にかけて / 〜から〜にかけて": [
+  "〜までに": [
+    { ja:"試験<strong>までに</strong>、この本を全部読まなければならない。", id:"Paling lambat sebelum ujian, harus membaca seluruh buku ini." },
+    { ja:"卒業する<strong>までに</strong>、N2に合格したい。", id:"Sebelum lulus, ingin lulus N2." },
+    { ja:"5時<strong>までに</strong>駅に着けば間に合う。", id:"Kalau sampai di stasiun sebelum jam 5, masih keburu." }
+  ],
+  "〜から〜にかけて": [
     { ja:"来週から再来週<strong>にかけて</strong>、出張があります。", id:"Dari minggu depan hingga minggu berikutnya, ada perjalanan dinas." },
     { ja:"北海道から東北<strong>にかけて</strong>、大雪が降っている。", id:"Dari Hokkaido hingga Tohoku, turun salju lebat." },
     { ja:"夕方から夜<strong>にかけて</strong>、気温が下がるでしょう。", id:"Dari sore hingga malam, suhu akan turun." }
@@ -3409,7 +4898,7 @@ const EXTRA_EXAMPLES = {
     { ja:"日本語を使え<strong>ば使うほど</strong>、上手になる。", id:"Semakin sering menggunakan bahasa Jepang, semakin mahir." },
     { ja:"人は年をとれ<strong>ばとるほど</strong>、健康が大切になる。", id:"Semakin tua seseorang, kesehatan semakin menjadi penting." }
   ],
-  "〜まで（も）〔強調〕": [
+  "〜まで（強調）": [
     { ja:"親友<strong>まで</strong>私を裏切るとは思わなかった。", id:"Aku tidak menyangka bahkan sahabat terbaiku pun akan mengkhianatiku." },
     { ja:"彼の誕生日を先生<strong>まで</strong>覚えていた。", id:"Bahkan guru pun mengingat ulang tahunnya." },
     { ja:"子ども<strong>まで</strong>知っている有名な話だ。", id:"Ini cerita terkenal yang bahkan anak-anak pun tahu." }
@@ -3429,10 +4918,10 @@ const EXTRA_EXAMPLES = {
     { ja:"彼に相談し<strong>てからでなければ</strong>、決められない。", id:"Tidak bisa memutuskan sebelum berkonsultasi dengannya dulu." },
     { ja:"データをバックアップし<strong>てからでないと</strong>、削除できない。", id:"Tidak bisa menghapus sebelum mem-backup data dulu." }
   ],
-  "〜たところ（だ）": [
+  "〜たところ": [
     { ja:"電話し<strong>たところ</strong>、留守だった。", id:"Setelah menelepon, ternyata tidak ada orang di rumah." },
     { ja:"試してみた<strong>ところ</strong>、思ったより簡単だった。", id:"Setelah dicoba, ternyata lebih mudah dari yang dibayangkan." },
-    { ja:"ちょうど今、着い<strong>たところです</strong>。", id:"Saya baru saja tiba sekarang." }
+    { ja:"店に行っ<strong>たところ</strong>、もう閉まっていた。", id:"Ketika pergi ke toko, ternyata sudah tutup." }
   ],
   "もう少しで〜ところだった": [
     { ja:"もう少しで転んで怪我をする<strong>ところだった</strong>。", id:"Hampir saja terjatuh dan cedera." },
