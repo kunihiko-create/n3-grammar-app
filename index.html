@@ -474,7 +474,7 @@ const WEEKS = [
             meaning:"〜という状態になるために", meaningId:"Agar bisa... / Supaya... (menyatakan tujuan dari suatu tindakan)",
             examples:[
               { ja:"みんなに<strong>聞こえるように</strong>もっと大きな声で話してください。", id:"Tolong bicara lebih keras agar semua orang bisa mendengar." },
-              { ja:"忘れないように、手帳に書いておこう。", id:"Agar tidak lupa, aku tulis di agenda." }
+              { ja:"忘れない<strong>ように</strong>、手帳に書いておこう。", id:"Agar tidak lupa, aku tulis di agenda." }
             ]
           },
           { pattern:"〜ようになる", badge:"V る/ない＋ようになる",
@@ -1940,7 +1940,7 @@ function buildBlankQuizItems(dayObjs) {
       return n;
     }
 
-    const candidates = allForms
+    const scored = allForms
       .filter(e => e.pattern !== correctPattern && e.form !== correctForm)
       .map(e => {
         let score = 0;
@@ -1964,6 +1964,15 @@ function buildBlankQuizItems(dayObjs) {
         return { form: e.form, score };
       })
       .sort((a, b) => b.score - a.score);
+
+    // 同じ表記の候補を排除（重複した選択肢を防ぐ）
+    const candidates = [];
+    const seen = new Set();
+    for (const c of scored) {
+      if (seen.has(c.form)) continue;
+      seen.add(c.form);
+      candidates.push(c);
+    }
 
     // 上位6件に絞ってランダムに3つ（より紛らわしい候補だけから選ぶ）
     return shuffle(candidates.slice(0, 6)).slice(0, 3).map(e => e.form);
@@ -2359,15 +2368,28 @@ function buildSynonymItems() {
 
   const items = [];
 
+  // 選択肢が重複しないよう、除外語を避けて distinct な誤答を選ぶ
+  function pickUnique(pool, exclude, n) {
+    const out = [], seen = new Set(exclude);
+    for (const f of shuffle(pool)) {
+      if (seen.has(f)) continue;
+      seen.add(f);
+      out.push(f);
+      if (out.length >= n) break;
+    }
+    return out;
+  }
+
   // ① SYNONYM_GROUPS から生成
   SYNONYM_GROUPS.forEach((g, gIdx) => {
     if (g.forms.length < 2) return;
     g.forms.forEach((prompt, pIdx) => {
       const candidates = g.forms.filter((_, i) => i !== pIdx);
       const correct = shuffle(candidates)[0];
-      const distractors = shuffle(
-        allForms.filter(f => f.group !== gIdx)
-      ).slice(0, 3).map(f => f.form);
+      const distractors = pickUnique(
+        allForms.filter(f => f.group !== gIdx).map(f => f.form),
+        [prompt, correct], 3
+      );
       items.push({
         promptForm: prompt,
         correct: correct,
@@ -2389,10 +2411,9 @@ function buildSynonymItems() {
     if (!synonym) return;
     const promptForm = g.pattern.split(/[／/]/)[0].trim();
     if (synonym === promptForm) return;
-    // ディストラクター：他の文法パターン＋同義表現フォーム
-    const distractorPool = [...allPatterns.filter(p => p !== promptForm && p !== synonym),
-                           ...allForms.map(f => f.form)];
-    const distractors = shuffle([...new Set(distractorPool)]).slice(0, 3);
+    // ディストラクター：他の文法パターン＋同義表現フォーム（正解・問題と重複しない）
+    const distractorPool = [...allPatterns, ...allForms.map(f => f.form)];
+    const distractors = pickUnique(distractorPool, [promptForm, synonym], 3);
     items.push({
       promptForm,
       correct: synonym,
@@ -2683,6 +2704,18 @@ function startDaySynonymQuiz(wNum, dNum) {
 
   const items = [];
 
+  // 選択肢が重複しないよう、除外語を避けて distinct な誤答を選ぶ
+  function pickUnique(pool, exclude, n) {
+    const out = [], seen = new Set(exclude);
+    for (const f of shuffle(pool)) {
+      if (seen.has(f)) continue;
+      seen.add(f);
+      out.push(f);
+      if (out.length >= n) break;
+    }
+    return out;
+  }
+
   // ① SYNONYM_GROUPS マッチを使う
   matchedGroups.forEach(g => {
     if (g.forms.length < 2) return;
@@ -2690,7 +2723,10 @@ function startDaySynonymQuiz(wNum, dNum) {
       const candidates = g.forms.filter((_, i) => i !== pIdx);
       const correct = shuffle(candidates)[0];
       const gIdx = SYNONYM_GROUPS.indexOf(g);
-      const distractors = shuffle(allForms.filter(f => f.group !== gIdx)).slice(0, 3).map(f => f.form);
+      const distractors = pickUnique(
+        allForms.filter(f => f.group !== gIdx).map(f => f.form),
+        [prompt, correct], 3
+      );
       items.push({
         promptForm: prompt,
         correct,
@@ -2718,7 +2754,7 @@ function startDaySynonymQuiz(wNum, dNum) {
       if (p !== synonym && p !== promptForm) otherPatterns.push(p);
     })));
     const distractorPool = [...otherPatterns, ...allForms.map(f => f.form)];
-    const distractors = shuffle([...new Set(distractorPool)]).slice(0, 3);
+    const distractors = pickUnique(distractorPool, [promptForm, synonym], 3);
     items.push({
       promptForm,
       correct: synonym,
@@ -2922,7 +2958,14 @@ function startExtraBlankQuiz() {
       if (!match) return;
       const correctForm = match[1];
       const blankHtml = ex.ja.replace(/<strong>[^<]*<\/strong>/, '<span class="blank-box">＿＿＿＿＿</span>');
-      const distractors = shuffle(allForms.filter(e => e.pattern !== g.pattern && e.form !== correctForm)).slice(0, 3).map(e => e.form);
+      const distractors = [];
+      const seen = new Set([correctForm]);
+      for (const e of shuffle(allForms.filter(e => e.pattern !== g.pattern))) {
+        if (seen.has(e.form)) continue;
+        seen.add(e.form);
+        distractors.push(e.form);
+        if (distractors.length >= 3) break;
+      }
       items.push({
         questionBlankHtml: blankHtml,
         questionId: ex.id,
@@ -2972,8 +3015,8 @@ function startExtraSynonymQuiz() {
     if (!synonym) return;
     const promptForm = g.pattern.split(/[／/]/)[0].trim();
     if (synonym === promptForm) return;
-    const distractorPool = [...allPat.filter(p => p !== promptForm && p !== synonym), ...allForms.map(f => f.form)];
-    const distractors = shuffle([...new Set(distractorPool)]).slice(0, 3);
+    const distractorPool = [...allPat, ...allForms.map(f => f.form)];
+    const distractors = shuffle([...new Set(distractorPool)].filter(p => p !== promptForm && p !== synonym)).slice(0, 3);
     items.push({
       promptForm,
       correct: synonym,
@@ -4742,8 +4785,8 @@ const EXTRA_EXAMPLES = {
   ],
   "〜させられる（使役受身）": [
     { ja:"子どものころ、嫌いな食べ物を食べ<strong>させられた</strong>。", id:"Waktu kecil, dipaksa makan makanan yang tidak disukai." },
-    { ja:"会社で毎週報告書を書か<strong>させられる</strong>。", id:"Di perusahaan dipaksa menulis laporan setiap minggu." },
-    { ja:"友達に長い時間、待た<strong>させられた</strong>。", id:"Dipaksa menunggu lama oleh teman." }
+    { ja:"毎日、漢字をたくさん覚え<strong>させられる</strong>。", id:"Setiap hari dipaksa menghafal banyak kanji." },
+    { ja:"会社で、毎週日曜日も残業<strong>させられた</strong>。", id:"Di perusahaan, dipaksa lembur bahkan setiap hari Minggu." }
   ],
   "〜てくる / 〜ていく": [
     { ja:"冬が近づいて<strong>きた</strong>。寒くなってきた。", id:"Musim dingin semakin mendekat. Mulai terasa dingin." },
@@ -5212,6 +5255,50 @@ const READINGS = {
   "温泉":"おんせん","神社":"じんじゃ","寺":"てら","城":"しろ",
   "海水浴":"かいすいよく","登山":"とざん","花見":"はなみ",
   "女優":"じょゆう","男優":"だんゆう","俳優":"はいゆう",
+  "震度":"しんど","各停":"かくてい","各駅":"かくえき","停車":"ていしゃ","教科書":"きょうかしょ",
+  "時代":"じだい","最中":"さいちゅう","携帯電話":"けいたいでんわ","携帯":"けいたい","部長":"ぶちょう",
+  "通信販売":"つうしんはんばい","販売":"はんばい","長男":"ちょうなん","次男":"じなん","新鮮":"しんせん",
+  "富士山":"ふじさん","昨年":"さくねん","午後":"ごご","正月":"しょうがつ","副社長":"ふくしゃちょう",
+  "社長":"しゃちょう","今度":"こんど","帰国":"きこく","楽器":"がっき","速報":"そくほう",
+  "受験":"じゅけん","郵送":"ゆうそう","会員":"かいいん","愛情":"あいじょう","農業":"のうぎょう",
+  "論文":"ろんぶん","屋根":"やね","戦争":"せんそう","質問":"しつもん","尺八":"しゃくはち",
+  "必需品":"ひつじゅひん","化粧":"けしょう","納豆":"なっとう","洗剤":"せんざい","伝統的":"でんとうてき",
+  "伯父":"おじ","店員":"てんいん","欠点":"けってん","生徒":"せいと","幸福":"こうふく",
+  "丈夫":"じょうぶ","企画":"きかく","鶏肉":"とりにく","命令":"めいれい","紅茶":"こうちゃ",
+  "入学金":"にゅうがくきん","専門家":"せんもんか","歴史":"れきし","大雨":"おおあめ","被害":"ひがい",
+  "来客":"らいきゃく","停電":"ていでん","留学生":"りゅうがくせい","渋滞":"じゅうたい","主流":"しゅりゅう",
+  "退職":"たいしょく","中止":"ちゅうし","祝日":"しゅくじつ","復習":"ふくしゅう","大会":"たいかい",
+  "優勝":"ゆうしょう","費用":"ひよう","立派":"りっぱ","牛乳":"ぎゅうにゅう","観光客":"かんこうきゃく",
+  "美人":"びじん","都会":"とかい","田舎":"いなか","社交的":"しゃこうてき","内気":"うちき",
+  "職人":"しょくにん","家具":"かぐ","入社":"にゅうしゃ","遠足":"えんそく","現代社会":"げんだいしゃかい",
+  "現代":"げんだい","体育館":"たいいくかん","景色":"けしき","予報":"よほう","独身":"どくしん",
+  "国語":"こくご","手伝":"てつだ","本物":"ほんもの","飛行機":"ひこうき",
+  "汚れ":"よごれ","急ご":"いそご","急げ":"いそげ","急ぐ":"いそぐ","急に":"きゅうに",
+  "従わ":"したがわ","申し":"もうし","治る":"なおる","残っ":"のこっ","乾い":"かわい",
+  "悩む":"なやむ","断ら":"ことわら","許し":"ゆるし","塗り":"ぬり","効か":"きか",
+  "締め":"しめ","召し":"めし","盛ん":"さかん","炒め":"いため","厳し":"きびし",
+  "疑う":"うたがう","倒れ":"たおれ","弾け":"ひけ","配り":"くばり","伝え":"つたえ",
+  "涼し":"すずし","数え":"かぞえ","晴れ":"はれ","飛ば":"とば","生ま":"うま","生":"なま",
+  "通っ":"かよっ","通る":"とおる","来な":"こな","来る":"くる","来ま":"きま","来た":"きた","来て":"きて",
+  "家事":"かじ","何時":"なんじ","下が":"さが",
+  "着替え":"きがえ","着た":"きた","着け":"つけ","重さ":"おもさ","重み":"おもみ","重ね":"かさね",
+  "量っ":"はかっ","易し":"やさし","対し":"たいし","苦し":"くるし","取り":"とり","取れ":"とれ",
+  "少な":"すくな","少し":"すこし","ご飯":"ごはん","骨":"ほね","暇":"ひま","歳":"さい",
+  "客":"きゃく","妻":"つま","命":"いのち","回":"かい","個":"こ","寮":"りょう","辛い":"からい",
+  "卵":"たまご","町":"まち","星":"ほし","点":"てん","案":"あん","温か":"あたたか","所":"ところ","限ら":"かぎら",
+  "様":"さま","大きさ":"おおきさ","大阪":"おおさか","車":"くるま","気":"き","粒":"つぶ","隣":"となり",
+  "何度":"なんど","何倍":"なんばい","何です":"なんです","何で":"なんで","何":"なに",
+  "量":"りょう","降っ":"ふっ","降ら":"ふら","降られ":"ふられ","安全":"あんぜん","安い":"やすい","安か":"やすか",
+  "明日":"あした","去年":"きょねん","去っ":"さっ","百":"ひゃく","三":"さん",
+  "来週":"らいしゅう","今週":"こんしゅう","先週":"せんしゅう","文化":"ぶんか","文句":"もんく","作文":"さくぶん",
+  "一晩中":"ひとばんちゅう","一晩":"ひとばん","一人":"ひとり","一度":"いちど","一緒":"いっしょ","一番":"いちばん",
+  "鍋":"なべ","答え":"こたえ","仕事":"しごと","仕上げ":"しあげ","食事":"しょくじ","事故":"じこ","事":"こと",
+  "涙":"なみだ","死":"し","会社":"かいしゃ","会っ":"あっ","会い":"あい","会え":"あえ","会う":"あう",
+  "旅":"たび","守っ":"まもっ","守り":"まもり","住む":"すむ","住め":"すめ","住ん":"すん","住み":"すみ",
+  "欠か":"かか","欠かせ":"かかせ","明る":"あかる","週末":"しゅうまつ","一つ":"ひとつ",
+  "視点":"してん","観点":"かんてん","数量":"すうりょう","推量":"すいりょう","提案":"ていあん",
+  "事情":"じじょう","回数":"かいすう","決定":"けってい","他者":"たしゃ","行為者":"こういしゃ",
+  "行為":"こうい","第三者":"だいさんしゃ","第三":"だいさん","初心者":"しょしんしゃ",
   "女性":"じょせい","男性":"だんせい","若者":"わかもの",
   "老人":"ろうじん","両親":"りょうしん","親":"おや","兄":"あに",
   "姉":"あね","弟":"おとうと","妹":"いもうと","祖父":"そふ","祖母":"そぼ",
@@ -5287,7 +5374,7 @@ const READINGS = {
   "出":"で","行":"い","子":"こ",
   "前":"まえ","後":"あと","中":"なか","上":"うえ","下":"した",
   "外":"そと","右":"みぎ","左":"ひだり","横":"よこ","奥":"おく",
-  "男":"おとこ","女":"おんな","方":"かた","頃":"ごろ","度":"たび",
+  "男":"おとこ","女":"おんな","方":"かた","頃":"ごろ","度":"ど",
 
   // ── 形容詞語幹（音読みなし・安全）──
   "新":"あたら","古":"ふる","高":"たか","低":"ひく","多":"おお",
@@ -5553,7 +5640,7 @@ const READINGS = {
   "末":"すえ",
   "至った":"いたった","至る":"いたる",
   "届かない":"とどかない","届か":"とどか",
-  "止む":"やむ","止ま":"とどま","雨が止":"あめがや",
+  "止む":"やむ","止ま":"とま","雨が止":"あめがや",
   "夕方":"ゆうがた",
   "解ける":"とける","解けな":"とけな","解け":"とけ",
   "裏切る":"うらぎる","裏切っ":"うらぎっ","裏切り":"うらぎり",
