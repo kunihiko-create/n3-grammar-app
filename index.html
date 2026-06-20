@@ -2799,6 +2799,7 @@ function autoSplitExample(jaWithStrong, pattern) {
   // 安全な助詞（長いものから優先）— 単語内に出にくいものに限定
   const SAFE_PARTICLES = ['までに','からは','までは','には','では','とは','にも','でも',
                            'は','を','から','まで','より','へ','が'];
+  const isHiragana = ch => ch >= '぀' && ch <= 'ゟ';
 
   function splitChunks(text) {
     if (!text) return [];
@@ -2809,7 +2810,14 @@ function autoSplitExample(jaWithStrong, pattern) {
       let matched = null;
       if (cur.length > 0) {
         for (const p of SAFE_PARTICLES) {
-          if (text.substring(i, i + p.length) === p) { matched = p; break; }
+          if (text.substring(i, i + p.length) !== p) continue;
+          // 1文字の助詞（は・が・を・へ）は、直後がひらがなだと
+          // 単語の内部（例：「はが▸き」）の可能性があるので区切らない
+          if (p.length === 1) {
+            const next = text[i + 1];
+            if (next !== undefined && isHiragana(next)) continue;
+          }
+          matched = p; break;
         }
       }
       if (matched) {
