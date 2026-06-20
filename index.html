@@ -129,9 +129,9 @@
   .btn-secondary:hover { background: #ddd; }
 
   .quiz-header { background: var(--blue); color: white; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
-  .quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .quiz-meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
   .quiz-title { font-size: 1rem; font-weight: bold; }
-  .quiz-score-disp { font-size: 0.85rem; color: var(--light); }
+  .quiz-score-disp { font-size: 0.85rem; color: var(--light); white-space: nowrap; flex-shrink: 0; }
   .quiz-progress { background: rgba(255,255,255,.2); border-radius: 4px; height: 6px; overflow: hidden; }
   .quiz-progress-fill { height: 100%; background: var(--warning); border-radius: 4px; transition: width .4s; }
 
@@ -193,6 +193,7 @@
   .rearrange-slot.wrong { border-color: var(--danger); background: #fde8df; color: var(--danger); border-style: solid; }
   .rearrange-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
   .rearrange-chip { background: white; border: 2px solid var(--light-blue); border-radius: 8px; padding: 9px 14px; cursor: pointer; font-size: 0.95rem; color: var(--blue); transition: all .2s; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  .rearrange-suffix { margin-left: 2px; }
   .rearrange-chip:hover { background: var(--cream); }
   .rearrange-chip.used { background: #f0f0f0; color: #ccc; border-color: #ddd; cursor: default; box-shadow: none; }
   .rearrange-btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
@@ -285,6 +286,17 @@
     .quiz-options { grid-template-columns: 1fr; gap: 8px; }
     .quiz-opt { font-size: 0.85rem; padding: 13px 10px; text-align: left; }
     .quiz-next-btn { font-size: 0.9rem; padding: 13px; }
+
+    /* ── 並べ替えクイズ（スマホ） ── */
+    .rearrange-sentence { font-size: 0.95rem; line-height: 2.1; padding: 14px 12px; }
+    .rearrange-slot { min-width: 50px; min-height: 30px; margin: 3px 3px; padding: 3px 7px; font-size: 0.9rem; vertical-align: middle; }
+    .rearrange-slot.empty { font-size: 0.8rem; }
+    .rearrange-slot.star.empty { font-size: 0.9rem; }
+    .rearrange-chips { gap: 6px; }
+    .rearrange-chip { padding: 9px 13px; font-size: 0.92rem; }
+    .rearrange-btn-row { gap: 6px; }
+    .rearrange-check-btn { padding: 13px 8px; font-size: 0.88rem; }
+    .rearrange-reset-btn { padding: 13px 8px; font-size: 0.85rem; }
 
     /* ── 結果画面 ── */
     .result-score { font-size: 2.4rem; }
@@ -2158,7 +2170,8 @@ function renderRearrangeQ() {
     const inner = filled ? addFurigana(q.chipPool[chipIdx]) : (isStar ? '★' : (i+1));
     slotsHtml += `<span class="${cls}" onclick="clearRearrangeSlot(${i})">${inner}</span>`;
   }
-  const sentenceHtml = `${addFurigana(q.prefix)} ${slotsHtml} ${addFurigana(q.suffix)}`;
+  // 接尾辞（。など）は直前のスロットにくっつける（句点が単独で折り返さないように）
+  const sentenceHtml = `${addFurigana(q.prefix)}${q.prefix ? ' ' : ''}${slotsHtml}<span class="rearrange-suffix">${addFurigana(q.suffix)}</span>`;
 
   // Build chips
   const chipsHtml = q.chipPool.map((part, idx) => {
@@ -2794,7 +2807,9 @@ function autoSplitExample(jaWithStrong, pattern) {
   const punctMatch = after.match(/[。！？]+$/);
   const trailPunct = punctMatch ? punctMatch[0] : '';
   if (punctMatch) after = after.substring(0, after.length - punctMatch[0].length);
-  after = after.replace(/^[、]/, ''); // 先頭の読点を削除
+  // 読点（、・，）はチップにしない（単独の「、」チップを防ぐ）
+  before = before.replace(/[、，]/g, '');
+  after = after.replace(/[、，]/g, '');
 
   // 安全な助詞（長いものから優先）— 単語内に出にくいものに限定
   const SAFE_PARTICLES = ['までに','からは','までは','には','では','とは','にも','でも',
@@ -2811,12 +2826,10 @@ function autoSplitExample(jaWithStrong, pattern) {
       if (cur.length > 0) {
         for (const p of SAFE_PARTICLES) {
           if (text.substring(i, i + p.length) !== p) continue;
-          // 1文字の助詞（は・が・を・へ）は、直後がひらがなだと
-          // 単語の内部（例：「はが▸き」）の可能性があるので区切らない
-          if (p.length === 1) {
-            const next = text[i + 1];
-            if (next !== undefined && isHiragana(next)) continue;
-          }
+          // 助詞の直後がひらがなだと、単語の内部の可能性があるので区切らない
+          // 例：「はが▸き」（が）、「わ▸から▸ない」（から）
+          const next = text[i + p.length];
+          if (next !== undefined && isHiragana(next)) continue;
           matched = p; break;
         }
       }
