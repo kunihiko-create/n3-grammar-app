@@ -2117,6 +2117,36 @@ const REARRANGE_QUESTIONS = [
     meaningId:"Kalau PR sudah selesai, saya akan pergi bermain dengan teman.", pattern:"〜たら" },
   { prefix:"駅まで", parts:["歩いて","20分","ぐらい","かかります"], starIdx:2, suffix:"。",
     meaningId:"Sampai stasiun memakan waktu sekitar 20 menit jalan kaki.", pattern:"〜ぐらい" },
+  // ── 第2週6日目 ──
+  { prefix:"わからなければ、", parts:["この字を","声に出して","読んで","ごらん"], starIdx:3, suffix:"。",
+    meaningId:"Kalau tidak mengerti, coba baca huruf ini dengan suara keras.", pattern:"〜てごらん" },
+  { prefix:"母は", parts:["私に","部屋を","そうじする","ように言った"], starIdx:3, suffix:"。",
+    meaningId:"Ibu menyuruhku agar membersihkan kamar.", pattern:"〜ように言う" },
+  // ── 第4週2日目 ──
+  { prefix:"先生の", parts:["ていねいな","説明の","おかげで","よく分かった"], starIdx:2, suffix:"。",
+    meaningId:"Berkat penjelasan guru yang teliti, saya jadi paham.", pattern:"〜おかげで" },
+  { prefix:"事故の", parts:["せいで","電車が","一時間も","遅れた"], starIdx:0, suffix:"。",
+    meaningId:"Gara-gara kecelakaan, kereta terlambat sampai satu jam.", pattern:"〜せいで / 〜せいか" },
+  // ── 第4週4日目 ──
+  { prefix:"まだ時間がある。", parts:["そんなに","急ぐ","ことはない","よ"], starIdx:2, suffix:"。",
+    meaningId:"Masih ada waktu. Tidak perlu seterburu itu.", pattern:"〜ことはない" },
+  { prefix:"上手になりたければ、", parts:["毎日","少しずつ","練習する","ことだ"], starIdx:3, suffix:"。",
+    meaningId:"Kalau ingin pandai, sebaiknya berlatih sedikit demi sedikit setiap hari.", pattern:"〜ことだ（忠告）" },
+  // ── 第4週5日目 ──
+  { prefix:"終電が行ってしまった。", parts:["家まで","歩いて","帰る","しかない"], starIdx:3, suffix:"。",
+    meaningId:"Kereta terakhir sudah pergi. Mau tidak mau harus pulang jalan kaki.", pattern:"〜しかない" },
+  { prefix:"あれ、", parts:["明日の","会議は","何時","だっけ"], starIdx:3, suffix:"？",
+    meaningId:"Eh, rapat besok jam berapa ya?", pattern:"〜だっけ / 〜っけ" },
+  // ── 第5週3日目 ──
+  { prefix:"安かったのだから、", parts:["あのとき","買って","おけば","よかった"], starIdx:3, suffix:"。",
+    meaningId:"Karena murah, andai waktu itu kubeli.", pattern:"〜ばよかった" },
+  { prefix:"テストが", parts:["早く","終わら","ないかなあ","と思う"], starIdx:2, suffix:"。",
+    meaningId:"Aku berharap tesnya cepat selesai.", pattern:"〜ないかなあ / 〜かなあ" },
+  // ── 第5週4日目 ──
+  { prefix:"この地方では、", parts:["夏から","秋に","かけて","雨が多い"], starIdx:2, suffix:"。",
+    meaningId:"Di daerah ini, dari musim panas hingga musim gugur banyak hujan.", pattern:"〜から〜にかけて" },
+  { prefix:"会議は", parts:["東京に","おいて","行われる","予定だ"], starIdx:1, suffix:"。",
+    meaningId:"Rapat akan diadakan di Tokyo.", pattern:"〜において" },
 ];
 
 function buildRearrangeItems() {
@@ -2289,6 +2319,20 @@ function nextRearrange() {
 let isSynonymQuiz = false;
 
 const SYNONYM_GROUPS = [
+  // 第6週1日目（仮定）
+  { forms:["もし〜なら","もし〜たら","もしも〜なら"],
+    meaningJa:"〜という場合は（仮定）", meaningId:"Kalau / Seandainya (pengandaian)" },
+  { forms:["もし〜としても","もし〜だとしても"],
+    meaningJa:"もし〜という場合でも", meaningId:"Bahkan seandainya / Walaupun misalnya" },
+  // 第6週5日目（否定の副詞）
+  { forms:["決して〜ない","絶対に〜ない"],
+    meaningJa:"絶対に〜ない（強い否定）", meaningId:"Sama sekali tidak / Pasti tidak" },
+  { forms:["まったく〜ない","全然〜ない"],
+    meaningJa:"少しも〜ない（完全否定）", meaningId:"Sama sekali tidak" },
+  { forms:["めったに〜ない","ほとんど〜ない"],
+    meaningJa:"回数が非常に少ない", meaningId:"Jarang sekali / Hampir tidak pernah" },
+  { forms:["少しも〜ない","ちっとも〜ない"],
+    meaningJa:"全然〜ない（否定の強調）", meaningId:"Sedikit pun tidak" },
   { forms:["〜なくちゃ","〜なきゃ","〜ないといけない","〜なければならない"],
     meaningJa:"〜する必要がある（義務）", meaningId:"Harus melakukan sesuatu (kewajiban)" },
   { forms:["〜らしい","〜そうだ（伝聞）","〜と聞いた"],
@@ -2694,19 +2738,16 @@ function startDaySynonymQuiz(wNum, dNum) {
   // パターンを正規化（厳密マッチ：括弧内容も削除）
   const cleanParens = s => s.replace(/[（(][^）)]*[）)]/g, '').trim();
   const stripAll = s => cleanParens(s).replace(/[（）()／\/\s〜～。、]+/g, '');
+  // 厳密一致のみ：同義語グループの語が、その日の文法パターンと完全一致する場合だけ採用する。
+  // （部分一致だと「〜といっても」が「〜ても」グループに、「〜ばかりに」が「〜ばかり」に
+  //   紛れ込むなど、その日の内容でない問題が混ざるため）
   const matchedGroups = SYNONYM_GROUPS.filter(g => {
     return g.forms.some(form => {
       const fNorm = stripAll(form);
       if (fNorm.length < 2) return false;
       return dayPatterns.some(dp => {
         const forms = dp.split(/[／/]/).map(s => stripAll(s));
-        return forms.some(pf => {
-          if (pf.length < 2) return false;
-          if (fNorm === pf) return true;
-          if (fNorm.includes(pf) && (fNorm.length - pf.length) <= 3) return true;
-          if (pf.includes(fNorm) && (pf.length - fNorm.length) <= 3) return true;
-          return false;
-        });
+        return forms.some(pf => pf.length >= 2 && fNorm === pf);
       });
     });
   });
@@ -2885,37 +2926,30 @@ function startDayRearrangeQuiz(wNum, dNum) {
   // パターン文字列を正規化（括弧の中身も削除して核だけ取り出す）
   const cleanParens = s => s.replace(/[（(][^）)]*[）)]/g, '').trim();
   const stripAll = s => cleanParens(s).replace(/[（）()／\/\s〜～。、]+/g, '');
-  // 厳密マッチ：パターンの「核」が完全一致、または最大3文字差以内で含まれる
+  // 厳密一致のみ：手作り問題の文法核が、その日の文法パターンと完全一致する場合だけ採用する。
+  // （部分一致だと「〜ばかり」が「〜ばかりか」の日に、「〜みたい」が「まるで〜みたい」の日に
+  //   紛れ込むなど、その日の内容でない問題が混ざるため）
   const matches = REARRANGE_QUESTIONS.filter(rq => {
     const rNorm = stripAll(rq.pattern);
     if (rNorm.length < 3) return false;
     return dayPatterns.some(dp => {
       const forms = dp.split(/[／/]/).map(s => stripAll(s));
-      return forms.some(f => {
-        if (f.length < 3) return false;
-        if (rNorm === f) return true;
-        if (rNorm.includes(f) && (rNorm.length - f.length) <= 3) return true;
-        if (f.includes(rNorm) && (f.length - rNorm.length) <= 3) return true;
-        return false;
-      });
+      return forms.some(f => f.length >= 3 && rNorm === f);
     });
   });
 
-  // マッチがなければ、その日の例文から自動生成を試みる
-  let pool = matches;
-  if (pool.length === 0) {
-    const autoGenerated = [];
-    d.grammar.forEach(g => {
-      g.examples.forEach(ex => {
-        const auto = autoSplitExample(ex.ja, g.pattern);
-        if (auto) {
-          auto.meaningId = ex.id;
-          autoGenerated.push(auto);
-        }
-      });
+  // その日の例文からの自動生成（常にその日の内容）。手作り問題と必ず併用する。
+  const autoGenerated = [];
+  d.grammar.forEach(g => {
+    g.examples.forEach(ex => {
+      const auto = autoSplitExample(ex.ja, g.pattern);
+      if (auto) {
+        auto.meaningId = ex.id;
+        autoGenerated.push(auto);
+      }
     });
-    pool = autoGenerated;
-  }
+  });
+  const pool = [...matches, ...autoGenerated];
 
   if (pool.length === 0) {
     isRearrange = false;
@@ -4472,7 +4506,7 @@ const EXTRA_EXAMPLES = {
   "〜ようとしない": [
     { ja:"息子は全然勉強しよう<strong>としない</strong>。", id:"Putraku sama sekali tidak mau mencoba belajar." },
     { ja:"彼は自分の失敗を認めよう<strong>としない</strong>。", id:"Dia tidak mau mengakui kegagalannya sendiri." },
-    { ja:"その猫は近づこう<strong>としても</strong>、逃げてしまう。", id:"Kucing itu meski didekati selalu kabur." }
+    { ja:"うちの犬は、知らない人に近づこう<strong>としない</strong>。", id:"Anjingku tidak mau mendekati orang yang tidak dikenal." }
   ],
   "〜ばかり / 〜てばかりいる": [
     { ja:"最近、甘いものを食べて<strong>ばかりいる</strong>。太りそう。", id:"Belakangan ini terus-terusan makan yang manis. Sepertinya akan gemuk." },
@@ -4620,9 +4654,9 @@ const EXTRA_EXAMPLES = {
     { ja:"それが本当<strong>だとしたら</strong>、すぐ対応しなければならない。", id:"Kalau itu memang benar, harus segera ditangani." }
   ],
   "〜つもりだった": [
-    { ja:"将来は医者になる<strong>つもりです</strong>。", id:"Saya berniat untuk menjadi dokter di masa depan." },
+    { ja:"来週、旅行に行く<strong>つもりだったが</strong>、仕事で行けなくなった。", id:"Tadinya berniat pergi berlibur minggu depan, tapi jadi tidak bisa karena pekerjaan." },
     { ja:"早く起きる<strong>つもりだったのに</strong>、寝坊してしまった。", id:"Tadinya berniat bangun pagi, tapi malah kesiangan." },
-    { ja:"冗談のつもりで言ったのに、本気にされてしまった。", id:"Tadinya bilang bercanda, tapi malah dianggap serius." }
+    { ja:"彼に電話する<strong>つもりだったが</strong>、忘れてしまった。", id:"Tadinya berniat menelepon dia, tapi malah lupa." }
   ],
   "〜はずだ / 〜はずがない": [
     { ja:"彼はもう大学を卒業している<strong>はずだ</strong>。", id:"Dia seharusnya sudah lulus universitas." },
@@ -4892,7 +4926,7 @@ const EXTRA_EXAMPLES = {
   "〜ないことはない": [
     { ja:"辛いものも、食べ<strong>られないことはない</strong>。", id:"Makanan pedas pun, bukannya tidak bisa kumakan." },
     { ja:"急げば、終電に間に合わ<strong>ないことはない</strong>。", id:"Kalau buru-buru, bukannya tidak keburu kereta terakhir." },
-    { ja:"難しい<strong>ことはない</strong>が、時間はかかる。", id:"Bukannya sulit, tapi makan waktu." }
+    { ja:"彼の気持ちも、わから<strong>ないことはない</strong>。", id:"Bukan berarti aku tidak mengerti perasaannya." }
   ],
   "〜うちに": [
     { ja:"温かい<strong>うちに</strong>、召し上がってください。", id:"Silakan dinikmati selagi hangat." },
@@ -5325,6 +5359,7 @@ const READINGS = {
   "視点":"してん","観点":"かんてん","数量":"すうりょう","推量":"すいりょう","提案":"ていあん",
   "事情":"じじょう","回数":"かいすう","決定":"けってい","他者":"たしゃ","行為者":"こういしゃ",
   "行為":"こうい","第三者":"だいさんしゃ","第三":"だいさん","初心者":"しょしんしゃ",
+  "秋":"あき","付い":"つい","付け":"つけ","付く":"つく",
   "女性":"じょせい","男性":"だんせい","若者":"わかもの",
   "老人":"ろうじん","両親":"りょうしん","親":"おや","兄":"あに",
   "姉":"あね","弟":"おとうと","妹":"いもうと","祖父":"そふ","祖母":"そぼ",
