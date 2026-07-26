@@ -122,6 +122,13 @@
   .btn-rearrange { background: var(--success); color: white; }
   .btn-rearrange:hover { background: #1b4332; }
   .btn-synonym { background: #6c5ce7; color: white; }
+  .btn-book { background: #b7791f; color:#fff; }
+  .btn-book:hover { background: #8c5e12; }
+  .btn-matome { background: #1a237e; color:#fff; }
+  .btn-matome:hover { background: #131c66; }
+  .day-card-matome { border-left: 4px solid #b7791f; }
+  .day-card-matome .day-badge { background: #b7791f; color:#fff; }
+  .book-id-line { margin-top:6px; font-style: italic; }
   .btn-synonym:hover { background: #5a4cc9; }
   .lesson-nav-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
   .lesson-nav-row button { flex: 1; min-width: 80px; padding: 12px 6px; border: none; border-radius: 10px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all .2s; }
@@ -399,8 +406,8 @@ const WEEKS = [
     days:[
       { day:1, title:"ぼくにもやらせて", titleId:"Biarkan aku juga melakukannya",
         grammar:[
-          { pattern:"〜られている / 〜れている", badge:"V受身形",
-            meaning:"（誰かが）〜する", meaningId:"Bentuk pasif — sesuatu dilakukan/dikatakan (tanpa subjek jelas)",
+          { pattern:"〜れる / 〜られる（受身）", badge:"V受身形",
+            meaning:"主語を言わずに事実を述べる（＝だれかが〜する）", meaningId:"Bentuk pasif — menyatakan fakta tanpa menyebut pelakunya",
             examples:[
               { ja:"この本には、くわしい説明が<strong>書かれていません</strong>。", id:"Dalam buku ini tidak ada penjelasan yang detail." },
               { ja:"入学式は、このホールで<strong>行われます</strong>。", id:"Upacara penerimaan mahasiswa baru akan diadakan di aula ini." },
@@ -414,7 +421,7 @@ const WEEKS = [
               { ja:"雨に<strong>降られて</strong>、服がぬれてしまった。", id:"Hujan turun (merepotkanku) dan pakaianku basah." }
             ]
           },
-          { pattern:"〜させてください", badge:"V使役形＋ください",
+          { pattern:"〜させてください / 〜させてもらえませんか", badge:"V使役形＋ください／もらえませんか",
             meaning:"〜することを許してください", meaningId:"Tolong izinkan saya melakukan... (meminta izin dengan sopan)",
             examples:[
               { ja:"気分が悪いので、早く<strong>帰らせてください</strong>。", id:"Karena saya tidak enak badan, tolong izinkan saya pulang lebih awal." },
@@ -432,7 +439,7 @@ const WEEKS = [
               { ja:"田中さんにメールの返信を<strong>しなくちゃ</strong>。", id:"Aku harus membalas email Tanaka-san." }
             ]
           },
-          { pattern:"〜ちゃった / 〜じゃった", badge:"Vてしまう→口語",
+          { pattern:"〜ちゃう / 〜じゃう", badge:"Vてしまう→口語",
             meaning:"〜してしまった（後悔・意外）", meaningId:"Sudah terlanjur... / Tidak sengaja... (menyesal atau kaget)",
             examples:[
               { ja:"「あれ？ここにあったチョコレートは？」「あ、<strong>食べちゃった</strong>。」", id:"'Eh, cokelat yang ada di sini mana?' 'Ah, sudah aku makan.'" },
@@ -450,7 +457,7 @@ const WEEKS = [
       },
       { day:3, title:"女らしい", titleId:"Seperti wanita",
         grammar:[
-          { pattern:"〜みたいだ", badge:"N/V/A みたいだ",
+          { pattern:"〜みたいだ", badge:"N/V/A/na みたいだ",
             meaning:"〜のようだ（比喩・推測）", meaningId:"Seperti... / Kelihatannya... (perbandingan atau dugaan, gaya percakapan)",
             examples:[
               { ja:"彼の話し方は、<strong>女みたいだ</strong>。", id:"Cara berbicara dia seperti perempuan." },
@@ -475,7 +482,7 @@ const WEEKS = [
       },
       { day:4, title:"できるようになった！", titleId:"Sudah bisa!",
         grammar:[
-          { pattern:"〜ないようにする", badge:"Vない＋ようにする",
+          { pattern:"〜ようにする", badge:"V る/ない＋ようにする",
             meaning:"〜しないように努力する", meaningId:"Berusaha agar tidak... (menunjukkan usaha atau niat)",
             examples:[
               { ja:"忘れ物を<strong>しないようにしましょう</strong>。", id:"Mari berusaha agar tidak lupa membawa barang." },
@@ -504,7 +511,7 @@ const WEEKS = [
             meaning:"〜と同じように（例示・引用）", meaningId:"Seperti yang... / Sebagaimana... (mengutip atau memberi contoh)",
             examples:[
               { ja:"皆さん<strong>ご存じのように</strong>、試験の内容が変わります。", id:"Seperti yang Anda semua ketahui, isi ujian akan berubah." },
-              { ja:"前にお話した<strong>ように</strong>、来年から授業料が値上がりします。", id:"Seperti yang telah saya sampaikan, uang kuliah akan naik mulai tahun depan." }
+              { ja:"前にお話しした<strong>ように</strong>、来年から授業料が値上がりします。", id:"Seperti yang telah saya sampaikan, uang kuliah akan naik mulai tahun depan." }
             ]
           },
           { pattern:"〜ように〔指示〕", badge:"V る/ない＋ように",
@@ -514,7 +521,7 @@ const WEEKS = [
               { ja:"ここで、たばこを吸わない<strong>ように</strong>。", id:"Tolong jangan merokok di sini." }
             ]
           },
-          { pattern:"〜ように。〔願望〕", badge:"V＋ように。",
+          { pattern:"〜ように。〔願望〕", badge:"Vます＋ように。",
             meaning:"〜してほしいと願う", meaningId:"Semoga... / Mudah-mudahan... (harapan atau doa)",
             examples:[
               { ja:"試験に<strong>合格しますように</strong>。", id:"Semoga lulus ujian." },
@@ -570,14 +577,14 @@ const WEEKS = [
               { ja:"今日はお客様が<strong>一人だけしか</strong>来ませんでした。", id:"Hari ini hanya satu pelanggan saja yang datang." }
             ]
           },
-          { pattern:"〜さえ", badge:"N さえ",
+          { pattern:"〜さえ", badge:"N/Nに/Nで＋さえ",
             meaning:"〜も（極端な例を挙げる）", meaningId:"Bahkan... pun (memberi contoh ekstrem)",
             examples:[
               { ja:"<strong>ひらがなさえ</strong>書けないんですから、漢字なんて書けません。", id:"Bahkan hiragana saja tidak bisa menulis, apalagi kanji." },
               { ja:"そんなこと、<strong>子どもでさえ</strong>知っている。", id:"Hal seperti itu, bahkan anak kecil pun tahu." }
             ]
           },
-          { pattern:"〜こそ", badge:"N こそ",
+          { pattern:"〜こそ / 〜からこそ", badge:"N こそ／〜からこそ",
             meaning:"強調「まさに〜」", meaningId:"Justru... / Pasti... (penekanan kuat)",
             examples:[
               { ja:"<strong>明日こそ</strong>勉強するぞ！", id:"Besok pasti aku belajar!" },
@@ -622,7 +629,7 @@ const WEEKS = [
       { day:3, title:"あなたのこと", titleId:"Tentang dirimu",
         grammar:[
           { pattern:"〜さ（名詞化）", badge:"A/なA ＋さ",
-            meaning:"形容詞を名詞にする（性質・程度）", meaningId:"Menominakan kata sifat (sifat / tingkat / derajat)",
+            meaning:"形容詞を名詞にする（性質・程度）※よい→よさ", meaningId:"Menominakan kata sifat (sifat / tingkat / derajat). Perhatikan: よい → よさ",
             examples:[
               { ja:"<strong>大きさ</strong>は違うが、君と同じかばんを持っているよ。", id:"Ukurannya berbeda, tapi aku punya tas yang sama denganmu." },
               { ja:"子どもに命の<strong>大切さ</strong>を教えなければならない。", id:"Kita harus mengajarkan pentingnya kehidupan kepada anak-anak." }
@@ -651,7 +658,7 @@ const WEEKS = [
           }
         ]
       },
-      { day:4, title:"「デジカメ」というのは…", titleId:"Yang disebut 'Dejikame'...",
+      { day:4, title:"省エネというのは…", titleId:"Yang disebut 'sho-ene' itu...",
         grammar:[
           { pattern:"〜という〜", badge:"N という N",
             meaning:"〜と呼ばれる〜（名前・定義）", meaningId:"... yang disebut... / yang bernama... (memperkenalkan nama)",
@@ -678,9 +685,9 @@ const WEEKS = [
           }
         ]
       },
-      { day:5, title:"美人というより", titleId:"Lebih dari sekadar cantik",
+      { day:5, title:"美人というより", titleId:"Bukan cantik, tapi lebih ke manis",
         grammar:[
-          { pattern:"〜というより", badge:"文 というより",
+          { pattern:"〜というより / 〜というか", badge:"文 というより",
             meaning:"〜と言うのは正確ではなく、むしろ〜", meaningId:"Lebih tepat dikatakan... daripada... (koreksi atau klarifikasi)",
             examples:[
               { ja:"前の車は遅すぎて、<strong>走るというより</strong>はっているようだ。", id:"Mobil di depan terlalu lambat, lebih seperti merayap daripada berjalan." },
@@ -714,7 +721,7 @@ const WEEKS = [
               { ja:"もう一度<strong>やってごらんなさい</strong>。", id:"Coba kerjakan sekali lagi." }
             ]
           },
-          { pattern:"〜ように言う / 〜ように頼む", badge:"V＋ように言う",
+          { pattern:"〜ように言う / 〜ように頼む", badge:"V る/ない＋ように言う",
             meaning:"〜してほしいと伝える（間接話法）", meaningId:"Menyuruh / meminta seseorang agar... (perintah tidak langsung)",
             examples:[
               { ja:"田中さんに、私の部屋に<strong>来るように言って</strong>ください。", id:"Tolong suruh Tanaka-san datang ke kamar saya." },
@@ -729,7 +736,7 @@ const WEEKS = [
               { ja:"父に、もっと早く<strong>帰れと注意された</strong>。", id:"Ayah menegurku agar pulang lebih awal." }
             ]
           },
-          { pattern:"〜てくれと頼まれた", badge:"Vて＋くれと",
+          { pattern:"〜てくれと頼まれた", badge:"Vて/ないで＋くれと",
             meaning:"「〜てくれ」と言われた（依頼の引用）", meaningId:"Diminta untuk... (mengutip permintaan orang lain)",
             examples:[
               { ja:"友達に、田中さんの電話番号を<strong>教えてくれと頼まれた</strong>。", id:"Teman memintaku untuk memberitahu nomor telepon Tanaka-san." },
@@ -746,7 +753,7 @@ const WEEKS = [
     days:[
       { day:1, title:"いくら安くても", titleId:"Tidak peduli seberapa murah",
         grammar:[
-          { pattern:"〜ても", badge:"Vて/Aくて＋も",
+          { pattern:"〜ても", badge:"Vても/Aくても/na・Nでも",
             meaning:"〜という条件でも、結果は変わらない", meaningId:"Meski... / Walaupun... (kondisi yang tidak mengubah hasil)",
             examples:[
               { ja:"<strong>調べても</strong>わからなかったので、先生に聞いた。", id:"Karena meski sudah dicari tetap tidak mengerti, aku bertanya ke guru." },
@@ -776,7 +783,7 @@ const WEEKS = [
             meaning:"〜という立場・役割で", meaningId:"Sebagai... / Dalam kapasitas sebagai... (menyatakan peran atau kedudukan)",
             examples:[
               { ja:"彼は外国人だが、<strong>日本代表として</strong>試合に出る。", id:"Dia orang asing, tapi bertanding sebagai wakil Jepang." },
-              { ja:"彼女は女優<strong>としては</strong>最高だが、妻<strong>としては</strong>どうだろう。", id:"Sebagai aktris dia terbaik, tapi sebagai istri bagaimana ya." }
+              { ja:"彼女は女性<strong>としても</strong>女優<strong>としても</strong>最高だが、妻<strong>としては</strong>どうだろう。", id:"Sebagai perempuan maupun sebagai aktris dia yang terbaik, tapi sebagai istri bagaimana ya." }
             ]
           },
           { pattern:"〜にしては", badge:"N/V にしては",
@@ -811,7 +818,7 @@ const WEEKS = [
               { ja:"お菓子を食べない<strong>つもりでしたが</strong>、つい食べてしまいました。", id:"Tadinya berniat tidak makan kue, tapi tanpa sadar sudah termakan juga." }
             ]
           },
-          { pattern:"〜はずだ / 〜はずがない", badge:"V/A/N はずだ",
+          { pattern:"〜はずだ / 〜はずがない", badge:"V/A/na/N はずだ",
             meaning:"当然〜だと思う（根拠のある推測）", meaningId:"Seharusnya... / Pasti... (dugaan berdasarkan alasan logis)",
             examples:[
               { ja:"田中さんは今、旅行中だから、<strong>家にいないはずだ</strong>。", id:"Karena Tanaka-san sedang dalam perjalanan, seharusnya tidak ada di rumah." },
@@ -911,7 +918,7 @@ const WEEKS = [
             meaning:"〜してくれることを望む", meaningId:"Ingin agar (kamu)... / Minta tolong... (keinginan atas tindakan orang lain)",
             examples:[
               { ja:"あのう、教科書を<strong>見せてほしい</strong>んですが……。", id:"Anu, saya ingin kamu memperlihatkan buku pelajarannya..." },
-              { ja:"もっと静かに<strong>してほしい</strong>。", id:"Saya ingin (kamu) lebih tenang." }
+              { ja:"あなたに<strong>教えてもらいたい</strong>ことがあります。", id:"Ada hal yang ingin saya minta Anda ajarkan." }
             ]
           },
           { pattern:"〜ふりをする", badge:"V/N の＋ふりをする",
@@ -1111,7 +1118,7 @@ const WEEKS = [
               { ja:"3か月ダイエットを続けた。<strong>その結果</strong>、5キロやせた。", id:"Saya diet selama 3 bulan. Hasilnya, turun 5 kilo." }
             ]
           },
-          { pattern:"なぜなら〜から", badge:"なぜなら〜から",
+          { pattern:"なぜなら〜から", badge:"接続詞",
             meaning:"理由・原因を後で述べる", meaningId:"Alasannya adalah karena... (menjelaskan sebab setelahnya)",
             examples:[
               { ja:"来週、国に帰る予定です。<strong>なぜなら</strong>、親友の結婚式に出席する<strong>からです</strong>。", id:"Minggu depan saya akan pulang ke negara. Alasannya, karena akan hadir di pernikahan sahabat." },
@@ -1445,28 +1452,28 @@ const WEEKS = [
       },
       { day:5, title:"めったに行かない", titleId:"Jarang pergi",
         grammar:[
-          { pattern:"決して〜ない", badge:"決して＋Vない",
+          { pattern:"決して〜ない", badge:"呼応の副詞（否定）",
             meaning:"絶対に〜ない", meaningId:"Sama sekali tidak... / Tidak akan pernah...",
             examples:[
               { ja:"私は<strong>決して</strong>夢をあきらめ<strong>ません</strong>。", id:"Saya tidak akan pernah menyerah pada impian saya." },
               { ja:"「うそは<strong>決して</strong>申し<strong>ません</strong>。」と彼は言った。", id:"'Saya sama sekali tidak akan berbohong,' katanya." }
             ]
           },
-          { pattern:"まったく〜ない", badge:"まったく＋Vない",
+          { pattern:"まったく〜ない", badge:"呼応の副詞（否定）",
             meaning:"全然〜ない", meaningId:"Sama sekali tidak...",
             examples:[
               { ja:"私は<strong>まったく</strong>泳げ<strong>ない</strong>。", id:"Saya sama sekali tidak bisa berenang." },
               { ja:"彼が怒っている理由が、<strong>まったく</strong>わから<strong>ない</strong>。", id:"Saya sama sekali tidak mengerti alasan dia marah." }
             ]
           },
-          { pattern:"めったに〜ない", badge:"めったに＋Vない",
+          { pattern:"めったに〜ない", badge:"呼応の副詞（否定）",
             meaning:"ほとんど〜ない（回数が少ない）", meaningId:"Jarang sekali... (frekuensinya sedikit)",
             examples:[
               { ja:"こんなチャンスは<strong>めったにない</strong>よ。", id:"Kesempatan seperti ini jarang sekali ada lho." },
               { ja:"忙しくて、<strong>めったに</strong>休みが取れ<strong>ない</strong>。", id:"Karena sibuk, jarang sekali bisa ambil libur." }
             ]
           },
-          { pattern:"少しも〜ない / ちっとも〜ない", badge:"少しも＋Vない",
+          { pattern:"少しも〜ない / ちっとも〜ない", badge:"呼応の副詞（否定）",
             meaning:"全然〜ない（否定の強調）", meaningId:"Sedikit pun tidak... (penekanan negatif)",
             examples:[
               { ja:"あの人が話す英語は<strong>少しも</strong>わから<strong>ない</strong>。", id:"Bahasa Inggris yang dia ucapkan sedikit pun tidak kumengerti." },
@@ -1571,7 +1578,7 @@ const ADDITIONAL_GRAMMAR = [
       { ja:"<strong>ようやく</strong>合格できた。", id:"Dengan susah payah akhirnya berhasil lulus." }
     ]
   },
-  { pattern:"なかなか〜ない", badge:"なかなか＋Vない",
+  { pattern:"なかなか〜ない", badge:"副詞",
     meaning:"期待しているのに、なかなか〜しない", meaningId:"Tidak kunjung... (yang diharapkan belum terjadi juga)",
     examples:[
       { ja:"日本語が<strong>なかなか</strong>上手に<strong>なれない</strong>。", id:"Bahasa Jepang tidak kunjung jadi bagus." },
@@ -1644,6 +1651,4484 @@ const ADDITIONAL_GRAMMAR = [
 ];
 
 // ── アクセスコード ──
+const BOOK_PROBLEMS = {
+ "1": {
+  "days": {
+   "1": {
+    "page": 15,
+    "title": "1日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "英語は世界中で（　）います。",
+      "options": [
+       "話されて",
+       "話られて"
+      ],
+      "correct": "話されて",
+      "id": "Bahasa Inggris dipakai (dituturkan) di seluruh dunia."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "この建物は三百年前に（　）ました。",
+      "options": [
+       "建たれ",
+       "建てられ"
+      ],
+      "correct": "建てられ",
+      "id": "Gedung ini dibangun 300 tahun yang lalu."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "急に社員に（　）。",
+      "options": [
+       "辞まれた",
+       "辞められた"
+      ],
+      "correct": "辞められた",
+      "id": "Tiba-tiba karyawan berhenti (dan saya jadi repot)."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "その話はもうちょっと（　）。",
+      "options": [
+       "考えさせて",
+       "考えらせて"
+      ],
+      "correct": "考えさせて",
+      "id": "Soal itu, biarkan aku memikirkannya sedikit lagi."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "今日は熱があるので（　）ください。",
+      "options": [
+       "休ませて",
+       "休まれて"
+      ],
+      "correct": "休ませて",
+      "id": "Hari ini saya demam, jadi tolong izinkan saya istirahat."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "オリンピック ＿＿ ＿＿ ★ ＿＿ 開かれます。",
+      "options": [
+       "一度",
+       "に",
+       "は",
+       "4年"
+      ],
+      "correct": "に",
+      "full": "オリンピックは4年に一度開かれます。",
+      "id": "Olimpiade diadakan sekali dalam empat tahun."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "日本の ＿＿ ＿＿ ★ ＿＿ もらえませんか。",
+      "options": [
+       "について",
+       "させて",
+       "印象",
+       "インタビュー"
+      ],
+      "correct": "インタビュー",
+      "full": "日本の印象についてインタビューさせてもらえませんか。",
+      "id": "Bolehkah saya mewawancarai Anda tentang kesan terhadap Jepang?"
+     }
+    ]
+   },
+   "2": {
+    "page": 17,
+    "title": "2日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "あ、バス、（　）。",
+      "options": [
+       "行かないと",
+       "行っちゃった"
+      ],
+      "correct": "行っちゃった",
+      "id": "Ah, busnya sudah pergi."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "「パソコン消す？」「まだ使うから（　）。」",
+      "options": [
+       "消しちゃって",
+       "つけといて"
+      ],
+      "correct": "つけといて",
+      "id": "\"Komputernya dimatikan?\" \"Masih dipakai, jadi biarkan menyala saja.\""
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "あ、図書館の本（　）。",
+      "options": [
+       "返さないと",
+       "返しないと"
+      ],
+      "correct": "返さないと",
+      "id": "Ah, buku perpustakaan harus dikembalikan."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "これ、来週までに（　）。",
+      "options": [
+       "読んじゃった",
+       "読んどいて"
+      ],
+      "correct": "読んどいて",
+      "id": "Ini, tolong dibaca dulu sebelum minggu depan."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "あーあ、雨に（　）。",
+      "options": [
+       "降っちゃった",
+       "降られちゃった"
+      ],
+      "correct": "降られちゃった",
+      "id": "Yah, kehujanan deh."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "起きないと ＿＿ ＿＿ ★ ＿＿ 寝ちゃった。",
+      "options": [
+       "のに",
+       "と",
+       "思った",
+       "また"
+      ],
+      "correct": "のに",
+      "full": "「起きないと」と思ったのにまた寝ちゃった。",
+      "id": "Padahal sudah berpikir \"harus bangun\", tapi malah tidur lagi."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "朝早く起きて ＿＿ ＿＿ ★ ＿＿ 来ちゃった。",
+      "options": [
+       "お弁当を",
+       "作っといた",
+       "置いて",
+       "家に"
+      ],
+      "correct": "家に",
+      "full": "朝早く起きて作っといたお弁当を家に置いて来ちゃった。",
+      "id": "Bekal yang sudah kubuat dengan bangun pagi-pagi malah tertinggal di rumah."
+     }
+    ]
+   },
+   "3": {
+    "page": 19,
+    "title": "3日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "冬なのに今日は暖かくて（　）です。",
+      "options": [
+       "春らしい",
+       "春みたい"
+      ],
+      "correct": "春みたい",
+      "id": "Padahal musim dingin, hari ini hangat seperti musim semi."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "母はいつも（　）服を着ている。",
+      "options": [
+       "子どもらしい",
+       "子どもっぽい"
+      ],
+      "correct": "子どもっぽい",
+      "id": "Ibu selalu memakai baju yang kekanak-kanakan."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "逃げたのは（　）車でした。",
+      "options": [
+       "黒っぽい",
+       "黒みたいな"
+      ],
+      "correct": "黒っぽい",
+      "id": "Yang melarikan diri adalah mobil berwarna kehitaman."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "試験を受けたけど、合格は（　）です。",
+      "options": [
+       "無理みたい",
+       "無理っぽい"
+      ],
+      "correct": "無理みたい",
+      "id": "Sudah ikut ujian, tapi sepertinya tidak mungkin lulus."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "うちの子には（　）元気に育ってほしい。",
+      "options": [
+       "子どもみたいに",
+       "子どもらしく"
+      ],
+      "correct": "子どもらしく",
+      "id": "Aku ingin anakku tumbuh sehat dan ceria, sebagaimana layaknya anak-anak."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "今からお話しするのは、うそ ＿＿ ＿＿ ★ ＿＿ 話です。",
+      "options": [
+       "みたい",
+       "の",
+       "本当",
+       "な"
+      ],
+      "correct": "本当",
+      "full": "今からお話しするのは、うそみたいな本当の話です。",
+      "id": "Yang akan saya ceritakan sekarang adalah kisah nyata yang seperti bohong."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "明日は ＿＿ ＿＿ ★ ＿＿ 天気になるでしょう。",
+      "options": [
+       "らしい",
+       "秋",
+       "晴れて",
+       "よく"
+      ],
+      "correct": "秋",
+      "full": "明日はよく晴れて秋らしい天気になるでしょう。",
+      "id": "Besok cuacanya akan cerah dan terasa benar-benar seperti musim gugur."
+     }
+    ]
+   },
+   "4": {
+    "page": 21,
+    "title": "4日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "風が入らない（　）窓を閉めておきましょう。",
+      "options": [
+       "ために",
+       "ように"
+      ],
+      "correct": "ように",
+      "id": "Mari tutup jendela supaya angin tidak masuk."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "健康のために野菜を食べるように（　）います。",
+      "options": [
+       "して",
+       "なって"
+      ],
+      "correct": "して",
+      "id": "Demi kesehatan, saya berusaha makan sayur."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "大学に合格できる（　）一生懸命勉強しています。",
+      "options": [
+       "ように",
+       "ために"
+      ],
+      "correct": "ように",
+      "id": "Saya belajar mati-matian agar bisa lulus masuk universitas."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "日本人みたいに日本語が（　）ようになりたい。",
+      "options": [
+       "話す",
+       "話せる"
+      ],
+      "correct": "話せる",
+      "id": "Aku ingin jadi bisa berbicara bahasa Jepang seperti orang Jepang."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "このインターホンは留守にだれが来たか（　）ようになっている。",
+      "options": [
+       "わかる",
+       "わかれる"
+      ],
+      "correct": "わかる",
+      "id": "Interfon ini dibuat agar kita tahu siapa yang datang saat kita tidak di rumah."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "インフルエンザに ＿＿ ＿＿ ★ ＿＿ ようにしています。",
+      "options": [
+       "する",
+       "ように",
+       "うがいや手洗いを",
+       "ならない"
+      ],
+      "correct": "うがいや手洗いを",
+      "full": "インフルエンザにならないようにうがいや手洗いをするようにしています。",
+      "id": "Agar tidak terkena influenza, saya berusaha berkumur dan mencuci tangan."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "たいていの電気製品は1年以内なら ＿＿ ＿＿ ★ ＿＿ なっている。",
+      "options": [
+       "もらえる",
+       "こわれても",
+       "ように",
+       "ただで直して"
+      ],
+      "correct": "もらえる",
+      "full": "たいていの電気製品は1年以内ならこわれてもただで直してもらえるようになっている。",
+      "id": "Sebagian besar produk elektronik, kalau rusak dalam satu tahun, bisa diperbaiki gratis."
+     }
+    ]
+   },
+   "5": {
+    "page": 23,
+    "title": "5日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "遅れる場合は（　）ように。",
+      "options": [
+       "連絡する",
+       "連絡できる"
+      ],
+      "correct": "連絡する",
+      "id": "Kalau terlambat, harap menghubungi."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "いい仕事が（　）ように。",
+      "options": [
+       "見つかる",
+       "見つかります"
+      ],
+      "correct": "見つかります",
+      "id": "Semoga mendapat pekerjaan yang bagus."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "次（　）修正してください。",
+      "options": [
+       "ように",
+       "のように"
+      ],
+      "correct": "のように",
+      "id": "Tolong perbaiki seperti berikut ini."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "今、テレビなどでコマーシャルを（　）ように、この新製品がもうすぐ発売されます。",
+      "options": [
+       "する",
+       "している"
+      ],
+      "correct": "している",
+      "id": "Seperti yang sekarang diiklankan di TV, produk baru ini akan segera dipasarkan."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "雪が降っていますから、（　）ように注意して出かけてください。",
+      "options": [
+       "転ぶ",
+       "転ばない"
+      ],
+      "correct": "転ばない",
+      "id": "Karena sedang turun salju, hati-hatilah agar tidak terpeleset saat keluar."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "私が作った曲を ＿＿ ＿＿ ★ ＿＿ 。",
+      "options": [
+       "喜んで",
+       "皆さんが",
+       "ように",
+       "くれます"
+      ],
+      "correct": "くれます",
+      "full": "私が作った曲を皆さんが喜んでくれますように。",
+      "id": "Semoga lagu yang saya buat disukai semua orang."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "いつも ＿＿ ＿＿ ★ ＿＿ ように。",
+      "options": [
+       "無理を",
+       "ように",
+       "言っている",
+       "しすぎない"
+      ],
+      "correct": "無理を",
+      "full": "いつも言っているように無理をしすぎないように。",
+      "id": "Seperti yang selalu saya katakan, jangan terlalu memaksakan diri."
+     }
+    ]
+   },
+   "6": {
+    "page": 25,
+    "title": "6日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "おふろに（　）としたとき、だれか来ました。",
+      "options": [
+       "入よう",
+       "入ろう"
+      ],
+      "correct": "入ろう",
+      "id": "Saat aku hendak masuk ke bak mandi, ada orang datang."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "父はそれについて何も（　）としない。",
+      "options": [
+       "話そう",
+       "話しよう"
+      ],
+      "correct": "話そう",
+      "id": "Ayah tidak mau bicara apa pun tentang hal itu."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "このジャムのふたは、いくら開け（　）としても（　）。",
+      "options": [
+       "よう ／ 開かない",
+       "よう ／ 開こうとしない",
+       "ろう ／ 開かない",
+       "ろう ／ 開こうとしない"
+      ],
+      "correct": "よう ／ 開かない",
+      "id": "Tutup selai ini, sekeras apa pun dicoba dibuka, tetap tidak mau terbuka."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "A「昨日は授業に来なかったね。」B「うん、（　）と思っていたんだけど、熱が出て休んだんだ。」",
+      "options": [
+       "来るだろう",
+       "来よう"
+      ],
+      "correct": "来よう",
+      "id": "\"Kemarin kamu tidak datang ke kelas ya.\" \"Iya, sebenarnya mau datang, tapi demam jadi absen.\""
+     },
+     {
+      "label": "練習II ⑤",
+      "sentence": "買おう ＿＿ ＿＿ ★ ＿＿ きちゃった。",
+      "options": [
+       "忘れて",
+       "書いといた",
+       "と思って",
+       "メモを"
+      ],
+      "correct": "メモを",
+      "full": "買おうと思って書いといたメモを忘れてきちゃった。",
+      "id": "Catatan yang sudah kutulis karena berniat membeli malah tertinggal."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "弟の好きな ＿＿ ＿＿ ★ ＿＿ 思っています。",
+      "options": [
+       "誕生日に",
+       "買って",
+       "CDを",
+       "やろうと"
+      ],
+      "correct": "買って",
+      "full": "弟の好きなCDを誕生日に買ってやろうと思っています。",
+      "id": "Saya berniat membelikan CD kesukaan adik saya saat ulang tahunnya."
+     }
+    ]
+   }
+  },
+  "matome": {
+   "page": 26,
+   "title": "7日目 実戦問題",
+   "problems": [
+    {
+     "label": "問題1 ①",
+     "sentence": "30分だけここに車を（　）もらえませんか。",
+     "options": [
+      "止められて",
+      "止めさせて",
+      "止まらせて",
+      "止まられて"
+     ],
+     "correct": "止めさせて",
+     "id": "Bolehkah saya memarkir mobil di sini 30 menit saja?"
+    },
+    {
+     "label": "問題1 ②",
+     "sentence": "どうして悪いところを（　）としないんですか。",
+     "options": [
+      "直しよう",
+      "直ろう",
+      "直そう",
+      "直られよう"
+     ],
+     "correct": "直そう",
+     "id": "Kenapa Anda tidak mau memperbaiki bagian yang buruk?"
+    },
+    {
+     "label": "問題1 ③",
+     "sentence": "もっと話そうとしたら、電話が（　）",
+     "options": [
+      "切らせた",
+      "切っといた",
+      "切らないと",
+      "切れちゃった"
+     ],
+     "correct": "切れちゃった",
+     "id": "Saat ingin bicara lebih lama, teleponnya malah terputus."
+    },
+    {
+     "label": "問題1 ④",
+     "sentence": "このグラフからもわかる（　）人口は減っています。",
+     "options": [
+      "ために",
+      "ように",
+      "らしく",
+      "みたい"
+     ],
+     "correct": "ように",
+     "id": "Seperti terlihat dari grafik ini, jumlah penduduk terus berkurang."
+    },
+    {
+     "label": "問題1 ⑤",
+     "sentence": "新しい車が（　）ように貯金しています。",
+     "options": [
+      "買えない",
+      "買う",
+      "買わない",
+      "買える"
+     ],
+     "correct": "買える",
+     "id": "Saya menabung agar bisa membeli mobil baru."
+    },
+    {
+     "label": "問題1 ⑥",
+     "sentence": "この写真（　）ヘアースタイルにしてください。",
+     "options": [
+      "みたいな",
+      "みたいに",
+      "みたいの",
+      "みたく"
+     ],
+     "correct": "みたいな",
+     "id": "Tolong buat gaya rambut seperti di foto ini."
+    },
+    {
+     "label": "問題1 ⑦",
+     "sentence": "ちゃんと世話をしないと、金魚は（　）よ。",
+     "options": [
+      "死んちゃった",
+      "死んちゃう",
+      "死んじゃった",
+      "死んじゃう"
+     ],
+     "correct": "死んじゃう",
+     "id": "Kalau tidak dirawat dengan benar, ikan masnya bisa mati lho."
+    },
+    {
+     "label": "問題1 ⑧",
+     "sentence": "間に合わなくなってしまうよ。早く準備（　）！",
+     "options": [
+      "されると",
+      "しちゃうと",
+      "しないと",
+      "しとくと"
+     ],
+     "correct": "しないと",
+     "id": "Nanti tidak keburu lho. Harus cepat bersiap-siap!"
+    },
+    {
+     "label": "問題1 ⑨",
+     "sentence": "みなさんの国でよく（　）日本人はだれですか。",
+     "options": [
+      "知らされている",
+      "知らせている",
+      "知られている",
+      "知らさせている"
+     ],
+     "correct": "知られている",
+     "id": "Siapa orang Jepang yang terkenal di negara kalian?"
+    },
+    {
+     "label": "問題1 ⑩",
+     "sentence": "シャワーを（　）としたが、水が出なかった。",
+     "options": [
+      "あばよう",
+      "あびよう",
+      "あびろう",
+      "あばろう"
+     ],
+     "correct": "あびよう",
+     "id": "Saya hendak mandi (pakai shower), tapi airnya tidak keluar."
+    },
+    {
+     "label": "問題1 ⑪",
+     "sentence": "折り紙を図（　）折ります。",
+     "options": [
+      "っぽく",
+      "みたいな",
+      "らしく",
+      "のように"
+     ],
+     "correct": "のように",
+     "id": "Lipat origaminya seperti pada gambar."
+    },
+    {
+     "label": "問題1 ⑫",
+     "sentence": "習った日本語はすぐに（　）しましょう。",
+     "options": [
+      "使って",
+      "使おう",
+      "使わない",
+      "使うように"
+     ],
+     "correct": "使うように",
+     "id": "Mari berusaha langsung memakai bahasa Jepang yang sudah dipelajari."
+    },
+    {
+     "label": "問題1 ⑬",
+     "sentence": "この牛乳はちょっとうすくて（　）。",
+     "options": [
+      "水っぽい",
+      "水っぽくない",
+      "水らしい",
+      "水らしくない"
+     ],
+     "correct": "水っぽい",
+     "id": "Susu ini agak encer, rasanya seperti air."
+    },
+    {
+     "label": "問題1 ⑭",
+     "sentence": "テレビ、見ないなら（　）。",
+     "options": [
+      "ついといて",
+      "消しといて",
+      "つけといて",
+      "消えといて"
+     ],
+     "correct": "消しといて",
+     "id": "Kalau tidak ditonton, matikan saja TV-nya."
+    },
+    {
+     "label": "問題1 ⑮",
+     "sentence": "そこに（　）じゃまだから、向こうに行って。",
+     "options": [
+      "いさせると",
+      "いられると",
+      "いさせないと",
+      "いられないと"
+     ],
+     "correct": "いられると",
+     "id": "Kalau kamu di situ jadi menghalangi, pergi sana ke sebelah."
+    },
+    {
+     "label": "問題2 ⑯",
+     "sentence": "ここで ＿＿ ＿＿ ★ ＿＿ されています。",
+     "options": [
+      "多くの国に",
+      "車は",
+      "輸出",
+      "作られた"
+     ],
+     "correct": "多くの国に",
+     "full": "ここで作られた車は多くの国に輸出されています。",
+     "id": "Mobil yang dibuat di sini diekspor ke banyak negara."
+    },
+    {
+     "label": "問題2 ⑰",
+     "sentence": "あの学生は日本語が ＿＿ ＿＿ ★ ＿＿ みたい。",
+     "options": [
+      "明るくなった",
+      "ように",
+      "なってから",
+      "わかる"
+     ],
+     "correct": "なってから",
+     "full": "あの学生は日本語がわかるようになってから明るくなったみたい。",
+     "id": "Sepertinya siswa itu menjadi ceria sejak mengerti bahasa Jepang."
+    },
+    {
+     "label": "問題2 ⑱",
+     "sentence": "忘れちゃうと ＿＿ ＿＿ ★ ＿＿ なくしちゃった。",
+     "options": [
+      "のに",
+      "メモしといた",
+      "いけないから",
+      "そのメモを"
+     ],
+     "correct": "のに",
+     "full": "忘れちゃうといけないからメモしといたのにそのメモをなくしちゃった。",
+     "id": "Sudah dicatat supaya tidak lupa, tapi catatannya malah hilang."
+    },
+    {
+     "label": "問題2 ⑲",
+     "sentence": "この子は ＿＿ ＿＿ ★ ＿＿ らしくない。",
+     "options": [
+      "大人",
+      "子ども",
+      "話し方をして",
+      "みたいな"
+     ],
+     "correct": "話し方をして",
+     "full": "この子は大人みたいな話し方をして子どもらしくない。",
+     "id": "Anak ini bicaranya seperti orang dewasa, tidak seperti anak-anak."
+    },
+    {
+     "label": "問題2 ⑳",
+     "sentence": "安売りセールで、買おうと ＿＿ ＿＿ ★ ＿＿ しまいました。",
+     "options": [
+      "シャツを",
+      "買われて",
+      "思っていた",
+      "ほかの人に"
+     ],
+     "correct": "ほかの人に",
+     "full": "安売りセールで、買おうと思っていたシャツをほかの人に買われてしまいました。",
+     "id": "Kemeja yang ingin saya beli di obral malah dibeli orang lain."
+    }
+   ]
+  }
+ },
+ "2": {
+  "days": {
+   "1": {
+    "page": 31,
+    "title": "1日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "忙しくて、昼ごはんを食べる時間（　）ない。",
+      "options": [
+       "さえ",
+       "こそ"
+      ],
+      "correct": "さえ",
+      "id": "Karena sibuk, waktu untuk makan siang pun tidak ada."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "うちのねこは（　）ばかりいる。",
+      "options": [
+       "寝る",
+       "寝て"
+      ],
+      "correct": "寝て",
+      "id": "Kucing di rumahku kerjanya tidur melulu."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "このクラスでは日本語（　）しか使わないように。",
+      "options": [
+       "さえ",
+       "だけ"
+      ],
+      "correct": "だけ",
+      "id": "Di kelas ini harap hanya menggunakan bahasa Jepang saja."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "リンさんは、日本人で（　）読めない漢字が読める。",
+      "options": [
+       "さえ",
+       "こそ"
+      ],
+      "correct": "さえ",
+      "id": "Lin bisa membaca kanji yang orang Jepang pun tidak bisa membacanya."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "そんなに（　）ばかりいては体をこわしますよ。",
+      "options": [
+       "働く",
+       "働いて"
+      ],
+      "correct": "働いて",
+      "id": "Kalau kerja terus seperti itu, badanmu bisa rusak lho."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "難しい ＿＿ ＿＿ ★ ＿＿ と友人は言った。",
+      "options": [
+       "こそ",
+       "おもしろい",
+       "仕事",
+       "だから"
+      ],
+      "correct": "こそ",
+      "full": "難しい仕事だからこそおもしろいと友人は言った。",
+      "id": "\"Justru karena pekerjaannya sulit, jadi menarik,\" kata temanku."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "家族 ＿＿ ＿＿ ★ ＿＿ もある。",
+      "options": [
+       "言えない",
+       "に",
+       "さえ",
+       "こと"
+      ],
+      "correct": "言えない",
+      "full": "家族にさえ言えないこともある。",
+      "id": "Ada juga hal yang tidak bisa dikatakan bahkan kepada keluarga."
+     }
+    ]
+   },
+   "2": {
+    "page": 33,
+    "title": "2日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "話し合いに（　）問題を解決する。",
+      "options": [
+       "ついて",
+       "よって"
+      ],
+      "correct": "よって",
+      "id": "Menyelesaikan masalah melalui perundingan."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "この雑誌に（　）、あの店がいいらしい。",
+      "options": [
+       "よると",
+       "関して"
+      ],
+      "correct": "よると",
+      "id": "Menurut majalah ini, toko itu katanya bagus."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "この新聞記事に（　）、聞きたいことがあります。",
+      "options": [
+       "よれば",
+       "ついて"
+      ],
+      "correct": "ついて",
+      "id": "Ada hal yang ingin saya tanyakan mengenai artikel koran ini."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "新聞に（　）ニュースの伝え方が違う。",
+      "options": [
+       "よると",
+       "よって"
+      ],
+      "correct": "よって",
+      "id": "Cara menyampaikan berita berbeda-beda tergantung korannya."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "市民の力に（　）、町はきれいになった。",
+      "options": [
+       "より",
+       "よる"
+      ],
+      "correct": "より",
+      "id": "Berkat kekuatan warga, kota menjadi bersih."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "台風 ＿＿ ＿＿ ★ ＿＿ います。",
+      "options": [
+       "被害は",
+       "広がって",
+       "さらに",
+       "による"
+      ],
+      "correct": "さらに",
+      "full": "台風による被害はさらに広がっています。",
+      "id": "Kerusakan akibat topan semakin meluas."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "この町の ＿＿ ＿＿ ★ ＿＿ さがしています。",
+      "options": [
+       "に",
+       "歴史",
+       "関する",
+       "本を"
+      ],
+      "correct": "関する",
+      "full": "この町の歴史に関する本をさがしています。",
+      "id": "Saya sedang mencari buku mengenai sejarah kota ini."
+     }
+    ]
+   },
+   "3": {
+    "page": 35,
+    "title": "3日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "彼が作った映画には（　）があふれている。",
+      "options": [
+       "やさしさ",
+       "やさしいさ"
+      ],
+      "correct": "やさしさ",
+      "id": "Film yang dia buat penuh dengan kelembutan."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "そんな（　）ことを言わないでください。",
+      "options": [
+       "むりの",
+       "むりな"
+      ],
+      "correct": "むりな",
+      "id": "Tolong jangan mengatakan hal yang tidak masuk akal seperti itu."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "どの作品にも（　）があります。",
+      "options": [
+       "よさ",
+       "いいさ"
+      ],
+      "correct": "よさ",
+      "id": "Setiap karya punya kelebihannya masing-masing."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "スポーツは見る（　）は好きなんですが……。",
+      "options": [
+       "の",
+       "のこと"
+      ],
+      "correct": "の",
+      "id": "Kalau menonton olahraga sih saya suka, tapi..."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "この手紙には書いた人のまじめ（　）が表れている。",
+      "options": [
+       "み",
+       "さ"
+      ],
+      "correct": "さ",
+      "id": "Dalam surat ini tampak keseriusan orang yang menulisnya."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "私は少し ＿＿ ＿＿ ★ ＿＿ が好きです。",
+      "options": [
+       "苦み",
+       "ある",
+       "コーヒー",
+       "の"
+      ],
+      "correct": "ある",
+      "full": "私は少し苦みのあるコーヒーが好きです。",
+      "id": "Saya suka kopi yang sedikit ada rasa pahitnya."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "明日 ＿＿ ＿＿ ★ ＿＿ 聞きましたか。",
+      "options": [
+       "テスト",
+       "を",
+       "の",
+       "のこと"
+      ],
+      "correct": "のこと",
+      "full": "明日のテストのことを聞きましたか。",
+      "id": "Apakah kamu sudah dengar soal ujian besok?"
+     }
+    ]
+   },
+   "4": {
+    "page": 37,
+    "title": "4日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "禁煙というのはたばこを吸ってはいけないという（　）です。",
+      "options": [
+       "もの",
+       "こと"
+      ],
+      "correct": "こと",
+      "id": "\"Kinen\" artinya tidak boleh merokok."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "バイトっていう（　）はアルバイト（　）です。",
+      "options": [
+       "と ／ のこと",
+       "と ／ という",
+       "の ／ のこと",
+       "の ／ という"
+      ],
+      "correct": "の ／ のこと",
+      "id": "Yang disebut \"baito\" itu maksudnya \"arubaito\" (kerja paruh waktu)."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "これは日本のヒーターで「こたつ」という（　）です。",
+      "options": [
+       "もの",
+       "こと"
+      ],
+      "correct": "もの",
+      "id": "Ini pemanas Jepang yang namanya \"kotatsu\"."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "たたみとかしょうじ（　）日本的なものに興味があります。",
+      "options": [
+       "といった",
+       "といって"
+      ],
+      "correct": "といった",
+      "id": "Saya tertarik pada benda-benda khas Jepang seperti tatami dan shoji."
+     },
+     {
+      "label": "練習II ⑤",
+      "sentence": "私が ＿＿ ＿＿ ★ ＿＿ は冗談ですよ。",
+      "options": [
+       "辞める",
+       "会社を",
+       "のは",
+       "という"
+      ],
+      "correct": "という",
+      "full": "私が会社を辞めるというのは冗談ですよ。",
+      "id": "Soal saya berhenti dari perusahaan itu cuma bercanda lho."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "この店は年中無休、つまり、 ＿＿ ＿＿ ★ ＿＿ です。",
+      "options": [
+       "という",
+       "ない",
+       "こと",
+       "休みは"
+      ],
+      "correct": "という",
+      "full": "この店は年中無休、つまり、休みはないということです。",
+      "id": "Toko ini buka sepanjang tahun, artinya tidak ada hari libur."
+     }
+    ]
+   },
+   "5": {
+    "page": 39,
+    "title": "5日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "庭がある（　）、とても小さいです。",
+      "options": [
+       "というより",
+       "といっても"
+      ],
+      "correct": "といっても",
+      "id": "Memang ada halaman, tapi kecil sekali."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "息子の部屋は、部屋（　）ゴミ箱だ。",
+      "options": [
+       "というと",
+       "というより"
+      ],
+      "correct": "というより",
+      "id": "Kamar anak laki-lakiku itu, daripada disebut kamar, lebih mirip tong sampah."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "代表的な日本料理（　）、すしや天ぷらでしょうか。",
+      "options": [
+       "といっても",
+       "というと"
+      ],
+      "correct": "というと",
+      "id": "Kalau bicara masakan Jepang yang khas, mungkin sushi dan tempura ya."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "彼の失礼な態度に、怒る（　）あきれてしまった。",
+      "options": [
+       "というより",
+       "といっても"
+      ],
+      "correct": "というより",
+      "id": "Melihat sikapnya yang tidak sopan, bukannya marah, saya justru tercengang."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "日本の山（　）、富士山です。",
+      "options": [
+       "といったら",
+       "といっても"
+      ],
+      "correct": "といったら",
+      "id": "Kalau bicara gunung di Jepang, ya Gunung Fuji."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "子どもの ＿＿ ＿＿ ★ ＿＿ でしょうか。",
+      "options": [
+       "象",
+       "好きな",
+       "というと",
+       "動物"
+      ],
+      "correct": "というと",
+      "full": "子どもの好きな動物というと象でしょうか。",
+      "id": "Kalau bicara binatang kesukaan anak-anak, mungkin gajah ya."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "「頭が痛いの？」「いや、 ＿＿ ＿＿ ★ ＿＿ んだ。」",
+      "options": [
+       "重い",
+       "と",
+       "痛い",
+       "いうか"
+      ],
+      "correct": "いうか",
+      "full": "「頭が痛いの？」「いや、痛いというか重いんだ。」",
+      "id": "\"Kepalamu sakit?\" \"Bukan, lebih tepatnya terasa berat.\""
+     }
+    ]
+   },
+   "6": {
+    "page": 41,
+    "title": "6日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "医者にたばこを吸い（　）と注意されました。",
+      "options": [
+       "すぎるな",
+       "すぎろ"
+      ],
+      "correct": "すぎるな",
+      "id": "Saya ditegur dokter agar tidak merokok berlebihan."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "明日は8時までに会社に（　）と言われました。",
+      "options": [
+       "くろ",
+       "こい"
+      ],
+      "correct": "こい",
+      "id": "Saya disuruh datang ke kantor sebelum jam 8 besok."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "田中さんに、あまり無理を（　）言ってください。",
+      "options": [
+       "しないように",
+       "するな"
+      ],
+      "correct": "しないように",
+      "id": "Tolong sampaikan kepada Tanaka-san agar jangan terlalu memaksakan diri."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "この資料を50部コピーする（　）頼まれました。",
+      "options": [
+       "ように",
+       "くれと"
+      ],
+      "correct": "ように",
+      "id": "Saya diminta memfotokopi dokumen ini sebanyak 50 lembar."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "できるかできないか、とにかくやって（　）なさい。",
+      "options": [
+       "くれ",
+       "ごらん"
+      ],
+      "correct": "ごらん",
+      "id": "Bisa atau tidak, yang penting coba dulu."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "このことはだれにも ＿＿ ＿＿ ★ ＿＿ んです。",
+      "options": [
+       "くれ",
+       "言われた",
+       "と",
+       "言わないで"
+      ],
+      "correct": "と",
+      "full": "このことはだれにも言わないでくれと言われたんです。",
+      "id": "Saya diminta untuk tidak memberitahukan hal ini kepada siapa pun."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "「あれはどういう意味ですか。」「お酒を ＿＿ ＿＿ ★ ＿＿ という意味です。」",
+      "options": [
+       "お酒を飲むな",
+       "運転するなら",
+       "飲んだら",
+       "運転するな"
+      ],
+      "correct": "運転するなら",
+      "full": "「お酒を飲んだら運転するな、運転するならお酒を飲むな」という意味です。",
+      "id": "\"Itu artinya apa?\" \"Artinya: kalau minum jangan menyetir, kalau menyetir jangan minum.\""
+     }
+    ]
+   }
+  },
+  "matome": {
+   "page": 42,
+   "title": "7日目 実戦問題",
+   "problems": [
+    {
+     "label": "問題1 ①",
+     "sentence": "このクラブには大人（　）入れません。",
+     "options": [
+      "というか",
+      "によって",
+      "ばかり",
+      "だけしか"
+     ],
+     "correct": "だけしか",
+     "id": "Klub ini hanya boleh dimasuki orang dewasa saja."
+    },
+    {
+     "label": "問題1 ②",
+     "sentence": "祖父は私の名前を間違えて（　）います。",
+     "options": [
+      "ばかり",
+      "さえ",
+      "こそ",
+      "だけ"
+     ],
+     "correct": "ばかり",
+     "id": "Kakek selalu saja salah menyebut nama saya."
+    },
+    {
+     "label": "問題1 ③",
+     "sentence": "商品に（　）お問い合わせはこちらにどうぞ。",
+     "options": [
+      "よれば",
+      "ついて",
+      "関する",
+      "さえ"
+     ],
+     "correct": "関する",
+     "id": "Pertanyaan mengenai produk silakan ke sini."
+    },
+    {
+     "label": "問題1 ④",
+     "sentence": "（　）ことは知っていたが、−40℃とは驚いた。",
+     "options": [
+      "寒さ",
+      "寒み",
+      "寒く",
+      "寒い"
+     ],
+     "correct": "寒い",
+     "id": "Saya tahu di sana dingin, tapi kaget juga ternyata −40℃."
+    },
+    {
+     "label": "問題1 ⑤",
+     "sentence": "彼女はお茶（　）入れたことがないのだから、料理なんてできないでしょう。",
+     "options": [
+      "だけ",
+      "ばかり",
+      "さえ",
+      "こそ"
+     ],
+     "correct": "さえ",
+     "id": "Membuat teh saja dia belum pernah, apalagi memasak."
+    },
+    {
+     "label": "問題1 ⑥",
+     "sentence": "野球やサッカーを見る（　）好きです。",
+     "options": [
+      "のを",
+      "のが",
+      "のに",
+      "ので"
+     ],
+     "correct": "のが",
+     "id": "Saya suka menonton baseball dan sepak bola."
+    },
+    {
+     "label": "問題1 ⑦",
+     "sentence": "よくかんでゆっくり（　）ように医者に言われた。",
+     "options": [
+      "食べる",
+      "食べ",
+      "食べて",
+      "食べろ"
+     ],
+     "correct": "食べる",
+     "id": "Dokter menyuruh saya makan pelan-pelan sambil mengunyah dengan baik."
+    },
+    {
+     "label": "問題1 ⑧",
+     "sentence": "だまっていないで、言いたいことを言って（　）。",
+     "options": [
+      "ないと",
+      "させて",
+      "ごらん",
+      "ちゃって"
+     ],
+     "correct": "ごらん",
+     "id": "Jangan diam saja, coba katakan apa yang ingin kamu katakan."
+    },
+    {
+     "label": "問題1 ⑨",
+     "sentence": "この洗濯機のいい点は音の（　）。",
+     "options": [
+      "静かさだ",
+      "静かみだ",
+      "静からしい",
+      "静かっぽい"
+     ],
+     "correct": "静かさだ",
+     "id": "Kelebihan mesin cuci ini adalah suaranya yang tenang."
+    },
+    {
+     "label": "問題1 ⑩",
+     "sentence": "管理人さん、上の階の人に夜遅く騒がない（　）ください。",
+     "options": [
+      "ようにして",
+      "ようになって",
+      "ように言って",
+      "ようとしないで"
+     ],
+     "correct": "ように言って",
+     "id": "Pak pengurus, tolong sampaikan ke penghuni lantai atas agar tidak ribut larut malam."
+    },
+    {
+     "label": "問題1 ⑪",
+     "sentence": "色は青が好きです。青（　）深みのある青です。",
+     "options": [
+      "といっても",
+      "というより",
+      "といえば",
+      "というと"
+     ],
+     "correct": "といっても",
+     "id": "Saya suka warna biru. Biru pun, yang biru pekat berkarakter."
+    },
+    {
+     "label": "問題1 ⑫",
+     "sentence": "注意書き（　）、この薬を飲むと眠くなるらしい。",
+     "options": [
+      "によって",
+      "によれば",
+      "による",
+      "について"
+     ],
+     "correct": "によれば",
+     "id": "Menurut keterangan peringatannya, obat ini katanya membuat mengantuk."
+    },
+    {
+     "label": "問題1 ⑬",
+     "sentence": "この事故（　）影響で、各線に遅れが出ています。",
+     "options": [
+      "によって",
+      "によれば",
+      "により",
+      "による"
+     ],
+     "correct": "による",
+     "id": "Akibat pengaruh kecelakaan ini, setiap jalur mengalami keterlambatan."
+    },
+    {
+     "label": "問題1 ⑭",
+     "sentence": "明日のことは、明日にならないとわからない。（　）、生きている意味があるのかもしれない。",
+     "options": [
+      "わかるものの",
+      "わかるものだから",
+      "わからないからこそ",
+      "わからないものなら"
+     ],
+     "correct": "わからないからこそ",
+     "id": "Hal esok baru diketahui setelah esok tiba. Justru karena tidak tahu itulah mungkin hidup jadi berarti."
+    },
+    {
+     "label": "問題1 ⑮",
+     "sentence": "この小学校は地域の人々に開放されている。（　）、地域全体で子どもたちを守り育てようとしているのである。",
+     "options": [
+      "それによれば",
+      "それについて",
+      "それによって",
+      "それにしては"
+     ],
+     "correct": "それによって",
+     "id": "SD ini dibuka untuk warga sekitar. Dengan begitu, seluruh warga berusaha menjaga dan membesarkan anak-anak."
+    },
+    {
+     "label": "問題2 ⑯",
+     "sentence": "先生たちのなかで、フランス語が ＿＿ ＿＿ ★ ＿＿ いません。",
+     "options": [
+      "ひとり",
+      "しか",
+      "人は",
+      "話せる"
+     ],
+     "correct": "ひとり",
+     "full": "先生たちのなかで、フランス語が話せる人はひとりしかいません。",
+     "id": "Di antara para guru, hanya ada satu orang yang bisa berbahasa Prancis."
+    },
+    {
+     "label": "問題2 ⑰",
+     "sentence": "彼がUFOを ＿＿ ＿＿ ★ ＿＿ うそだった。",
+     "options": [
+      "という",
+      "見た",
+      "は",
+      "の"
+     ],
+     "correct": "の",
+     "full": "彼がUFOを見たというのはうそだった。",
+     "id": "Cerita bahwa dia melihat UFO ternyata bohong."
+    },
+    {
+     "label": "問題2 ⑱",
+     "sentence": "学生たちに辞書を ＿＿ ＿＿ ★ ＿＿ 忘れました。",
+     "options": [
+      "のを",
+      "ように",
+      "持ってくる",
+      "言う"
+     ],
+     "correct": "言う",
+     "full": "学生たちに辞書を持ってくるように言うのを忘れました。",
+     "id": "Saya lupa menyuruh para siswa membawa kamus."
+    },
+    {
+     "label": "問題2 ⑲",
+     "sentence": "夜遅く大きい ＿＿ ＿＿ ★ ＿＿ と注意された。",
+     "options": [
+      "テレビを",
+      "見ないで",
+      "くれ",
+      "音で"
+     ],
+     "correct": "見ないで",
+     "full": "夜遅く大きい音でテレビを見ないでくれと注意された。",
+     "id": "Saya ditegur agar tidak menonton TV dengan suara keras larut malam."
+    },
+    {
+     "label": "問題2 ⑳",
+     "sentence": "この地震 ＿＿ ＿＿ ★ ＿＿ はありません。",
+     "options": [
+      "心配",
+      "つなみの",
+      "よる",
+      "に"
+     ],
+     "correct": "つなみの",
+     "full": "この地震によるつなみの心配はありません。",
+     "id": "Tidak ada kekhawatiran tsunami akibat gempa ini."
+    }
+   ]
+  }
+ },
+ "3": {
+  "days": {
+   "1": {
+    "page": 47,
+    "title": "1日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "田中さんの部屋は（　）行っても片づいている。",
+      "options": [
+       "いつ",
+       "いくら"
+      ],
+      "correct": "いつ",
+      "id": "Kamar Tanaka-san selalu rapi kapan pun kita ke sana."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "家族に相談（　）留学を決めた。",
+      "options": [
+       "しずに",
+       "せずに"
+      ],
+      "correct": "せずに",
+      "id": "Saya memutuskan kuliah ke luar negeri tanpa berunding dengan keluarga."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "（　）でも、携帯電話は使いません。",
+      "options": [
+       "便利",
+       "便利な"
+      ],
+      "correct": "便利",
+      "id": "Meskipun praktis, saya tidak memakai ponsel."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "ランナーは（　）苦しくてもあきらめませんでした。",
+      "options": [
+       "どうに",
+       "どんなに"
+      ],
+      "correct": "どんなに",
+      "id": "Sang pelari tidak menyerah, sesakit apa pun rasanya."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "約束の時間に来なければ（　）出発します。",
+      "options": [
+       "待たずに",
+       "待ちずに"
+      ],
+      "correct": "待たずに",
+      "id": "Kalau tidak datang pada waktu yang dijanjikan, kami berangkat tanpa menunggu."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "彼女の ＿＿ ＿＿ ★ ＿＿ おかしい。",
+      "options": [
+       "ことは",
+       "言っている",
+       "考えても",
+       "どう"
+      ],
+      "correct": "どう",
+      "full": "彼女の言っていることはどう考えてもおかしい。",
+      "id": "Apa yang dia katakan itu, bagaimanapun dipikirkan, tetap aneh."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "健康のため、 ＿＿ ＿＿ ★ ＿＿ しています。",
+      "options": [
+       "ように",
+       "歩く",
+       "乗らずに",
+       "車に"
+      ],
+      "correct": "歩く",
+      "full": "健康のため、車に乗らずに歩くようにしています。",
+      "id": "Demi kesehatan, saya berusaha berjalan kaki tanpa naik mobil."
+     }
+    ]
+   },
+   "2": {
+    "page": 49,
+    "title": "2日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "日本に来たことがない（　）、日本をよく知っている。",
+      "options": [
+       "にしては",
+       "にしても"
+      ],
+      "correct": "にしては",
+      "id": "Untuk orang yang belum pernah ke Jepang, dia tahu banyak tentang Jepang."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "友人（　）、アドバイスしたいことがあります。",
+      "options": [
+       "としたら",
+       "として"
+      ],
+      "correct": "として",
+      "id": "Sebagai teman, ada hal yang ingin saya nasihatkan."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "この時間の電車はいつも混んでいるが、（　）混みすぎている。何かあったのだろうか。",
+      "options": [
+       "それにしても",
+       "それにしては"
+      ],
+      "correct": "それにしても",
+      "id": "Kereta jam segini memang selalu penuh, tapi meski begitu ini terlalu penuh. Apa terjadi sesuatu ya?"
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "日本に来なかった（　）、アメリカに行っていたと思う。",
+      "options": [
+       "としたら",
+       "とする"
+      ],
+      "correct": "としたら",
+      "id": "Seandainya saya tidak datang ke Jepang, mungkin saya akan pergi ke Amerika."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "お菓子は会社などへのお土産（　）最適です。",
+      "options": [
+       "にして",
+       "として"
+      ],
+      "correct": "として",
+      "id": "Kue sangat cocok sebagai oleh-oleh untuk kantor dan sejenisnya."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "本当にそんな ＿＿ ＿＿ ★ ＿＿ 理由は何だろう。",
+      "options": [
+       "彼が",
+       "としたら",
+       "した",
+       "ことを"
+      ],
+      "correct": "した",
+      "full": "本当にそんなことを彼がしたとしたら理由は何だろう。",
+      "id": "Kalau memang dia benar-benar melakukan hal seperti itu, apa ya alasannya?"
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "ペットを飼うなら、 ＿＿ ＿＿ ★ ＿＿ 持ってほしい。",
+      "options": [
+       "責任を",
+       "として",
+       "飼い主",
+       "の"
+      ],
+      "correct": "の",
+      "full": "ペットを飼うなら、飼い主としての責任を持ってほしい。",
+      "id": "Kalau memelihara hewan, saya ingin kamu punya tanggung jawab sebagai pemilik."
+     }
+    ]
+   },
+   "3": {
+    "page": 51,
+    "title": "3日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "前はよくコンサートに（　）。",
+      "options": [
+       "行くものだった",
+       "行ったものだ"
+      ],
+      "correct": "行ったものだ",
+      "id": "Dulu saya sering pergi ke konser."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "人の迷惑になることを（　）。",
+      "options": [
+       "すべきではない",
+       "しないべきだ"
+      ],
+      "correct": "すべきではない",
+      "id": "Kita tidak seharusnya melakukan hal yang merepotkan orang lain."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "手紙をポストに入れるつもり（　）忘れました。",
+      "options": [
+       "ましたが",
+       "でしたが"
+      ],
+      "correct": "でしたが",
+      "id": "Tadinya saya berniat memasukkan surat ke kotak pos, tapi lupa."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "田中さんはいつもチョコレートを食べていますから、（　）はずがありません。",
+      "options": [
+       "きらいの",
+       "きらいな"
+      ],
+      "correct": "きらいな",
+      "id": "Tanaka-san selalu makan cokelat, jadi tidak mungkin dia tidak suka."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "小学校の先生は、まず子どもが（　）べきだと私は思います。",
+      "options": [
+       "好きな",
+       "好きである"
+      ],
+      "correct": "好きである",
+      "id": "Menurut saya, guru SD pertama-tama harus menyukai anak-anak."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "昔は私が ＿＿ ＿＿ ★ ＿＿ 、今は反対です。",
+      "options": [
+       "しかられた",
+       "もの",
+       "父に",
+       "ですが"
+      ],
+      "correct": "もの",
+      "full": "昔は私が父にしかられたものですが、今は反対です。",
+      "id": "Dulu sayalah yang dimarahi ayah, tapi sekarang terbalik."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "用事があったので、パーティーには ＿＿ ＿＿ ★ ＿＿ ようになりました。",
+      "options": [
+       "つもり",
+       "行ける",
+       "行かない",
+       "でしたが"
+      ],
+      "correct": "でしたが",
+      "full": "用事があったので、パーティーには行かないつもりでしたが行けるようになりました。",
+      "id": "Karena ada urusan, tadinya saya berniat tidak ikut pesta, tapi akhirnya jadi bisa pergi."
+     }
+    ]
+   },
+   "4": {
+    "page": 53,
+    "title": "4日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "電話で（　）最中に、ほかの電話が鳴った。",
+      "options": [
+       "話す",
+       "話している"
+      ],
+      "correct": "話している",
+      "id": "Saat sedang bicara di telepon, telepon lain berdering."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "「お子さん、会う（　）大きくなられますね。」",
+      "options": [
+       "ついでに",
+       "たびに"
+      ],
+      "correct": "たびに",
+      "id": "\"Anak Anda, setiap kali bertemu selalu tambah besar ya.\""
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "（　）とたんに、目まいがした。",
+      "options": [
+       "立ち上がった",
+       "立ち上がる"
+      ],
+      "correct": "立ち上がった",
+      "id": "Begitu berdiri, kepala saya langsung pusing."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "お隣の人は旅行の（　）お土産を買ってきてくれます。",
+      "options": [
+       "たびに",
+       "ついでに"
+      ],
+      "correct": "たびに",
+      "id": "Tetangga saya selalu membelikan oleh-oleh setiap kali bepergian."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "「明日、近くへ行く（　）忘れ物を届けますよ。」",
+      "options": [
+       "ついでに",
+       "たびに"
+      ],
+      "correct": "ついでに",
+      "id": "\"Besok saya ada urusan di dekat sana, sekalian saya antarkan barang yang tertinggal.\""
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "彼女の声が出なくなってしまったのは ＿＿ ＿＿ ★ ＿＿ でした。",
+      "options": [
+       "いる",
+       "歌って",
+       "テレビ番組で",
+       "最中"
+      ],
+      "correct": "いる",
+      "full": "彼女の声が出なくなってしまったのはテレビ番組で歌っている最中でした。",
+      "id": "Suaranya hilang justru saat sedang menyanyi di acara TV."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "「時刻表ない？」「ないけど、駅へ ＿＿ ＿＿ ★ ＿＿ あげるよ。」",
+      "options": [
+       "きて",
+       "ついでに",
+       "もらって",
+       "行く"
+      ],
+      "correct": "もらって",
+      "full": "「時刻表ない？」「ないけど、駅へ行くついでにもらってきてあげるよ。」",
+      "id": "\"Ada jadwal kereta?\" \"Tidak ada, tapi nanti sekalian aku ke stasiun, aku ambilkan.\""
+     }
+    ]
+   },
+   "5": {
+    "page": 55,
+    "title": "5日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "私が今から（　）とおりに書いてください。",
+      "options": [
+       "言う",
+       "言った"
+      ],
+      "correct": "言う",
+      "id": "Tolong tulis persis seperti yang akan saya katakan sekarang."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "どうぞ靴の（　）、お入りください。",
+      "options": [
+       "きり",
+       "まま"
+      ],
+      "correct": "まま",
+      "id": "Silakan masuk dengan sepatu tetap dipakai."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "テレビがつけっ（　）ですよ。見ないときは消してください。",
+      "options": [
+       "ぱなし",
+       "まま"
+      ],
+      "correct": "ぱなし",
+      "id": "TV-nya dibiarkan menyala terus lho. Kalau tidak ditonton, tolong dimatikan."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "一度（　）の人生を大切に生きる。",
+      "options": [
+       "きり",
+       "とおり"
+      ],
+      "correct": "きり",
+      "id": "Menjalani hidup yang hanya sekali ini dengan sungguh-sungguh."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "妹は電気を（　）まま寝ます。",
+      "options": [
+       "つける",
+       "つけた"
+      ],
+      "correct": "つけた",
+      "id": "Adik perempuan saya tidur dengan lampu dibiarkan menyala."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "服を ＿＿ ＿＿ ★ ＿＿ なさい。",
+      "options": [
+       "しないで",
+       "脱ぎ",
+       "片付け",
+       "っぱなしに"
+      ],
+      "correct": "しないで",
+      "full": "服を脱ぎっぱなしにしないで片付けなさい。",
+      "id": "Jangan biarkan baju berserakan setelah dilepas, rapikanlah."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "日本は ＿＿ ＿＿ ★ ＿＿ 国でしたか。",
+      "options": [
+       "とおりの",
+       "書いて",
+       "ガイドブックに",
+       "あった"
+      ],
+      "correct": "あった",
+      "full": "日本はガイドブックに書いてあったとおりの国でしたか。",
+      "id": "Apakah Jepang sesuai dengan yang tertulis di buku panduan?"
+     }
+    ]
+   },
+   "6": {
+    "page": 57,
+    "title": "6日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "兄は来られなくて、とても（　）がっていました。",
+      "options": [
+       "残念",
+       "残念な"
+      ],
+      "correct": "残念",
+      "id": "Kakak laki-laki saya kelihatan sangat kecewa karena tidak bisa datang."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "セールスの電話がかかってきたので、（　）ふりをして切りました。",
+      "options": [
+       "病気",
+       "病気の"
+      ],
+      "correct": "病気の",
+      "id": "Karena ada telepon penjualan, saya pura-pura sakit lalu menutupnya."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "多くの人にこの本を（　）もらいたい。",
+      "options": [
+       "使い",
+       "使って"
+      ],
+      "correct": "使って",
+      "id": "Saya ingin buku ini dipakai oleh banyak orang."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "国へ帰っても日本語を（　）ほしい。",
+      "options": [
+       "忘れないで",
+       "忘れなくて"
+      ],
+      "correct": "忘れないで",
+      "id": "Meski pulang ke negara asal, saya ingin kamu tidak melupakan bahasa Jepang."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "両親が（　）がっているので、春休みに国へ帰ります。",
+      "options": [
+       "さびし",
+       "さびしい"
+      ],
+      "correct": "さびし",
+      "id": "Karena orang tua saya kelihatan kesepian, saya pulang kampung saat libur musim semi."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "できるかどうか ＿＿ ＿＿ ★ ＿＿ もらいたい。",
+      "options": [
+       "期待",
+       "ないので",
+       "自信が",
+       "しないで"
+      ],
+      "correct": "期待",
+      "full": "できるかどうか自信がないので期待しないでもらいたい。",
+      "id": "Saya tidak yakin bisa atau tidak, jadi saya ingin kamu tidak berharap terlalu banyak."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "あなたが ＿＿ ＿＿ ★ ＿＿ 来ましたよ。",
+      "options": [
+       "いる",
+       "会いたがって",
+       "手紙が",
+       "人から"
+      ],
+      "correct": "人から",
+      "full": "あなたが会いたがっている人から手紙が来ましたよ。",
+      "id": "Datang surat dari orang yang ingin sekali bertemu denganmu."
+     }
+    ]
+   }
+  },
+  "matome": {
+   "page": 58,
+   "title": "7日目 実戦問題",
+   "problems": [
+    {
+     "label": "問題1 ①",
+     "sentence": "あの子の靴、歩く（　）音がしてかわいいですね。",
+     "options": [
+      "たびに",
+      "ついでに",
+      "とおりに",
+      "まま"
+     ],
+     "correct": "たびに",
+     "id": "Sepatu anak itu berbunyi setiap kali melangkah, lucu ya."
+    },
+    {
+     "label": "問題1 ②",
+     "sentence": "今、ちょっと手がはなせないので、後にして（　）んですが。",
+     "options": [
+      "もらえたい",
+      "くれたい",
+      "もらいたい",
+      "くれない"
+     ],
+     "correct": "もらいたい",
+     "id": "Sekarang saya sedang tidak bisa lepas tangan, jadi saya ingin ditunda dulu."
+    },
+    {
+     "label": "問題1 ③",
+     "sentence": "一度もやったことがない（　）、上手に踊れますね。",
+     "options": [
+      "にしては",
+      "はずで",
+      "とおり",
+      "というより"
+     ],
+     "correct": "にしては",
+     "id": "Untuk orang yang belum pernah mencobanya, kamu menari dengan bagus ya."
+    },
+    {
+     "label": "問題1 ④",
+     "sentence": "旅行なんて今は無理です。（　）、お金を貯めてからです。",
+     "options": [
+      "行くと",
+      "行けば",
+      "行ったら",
+      "行くとしたら"
+     ],
+     "correct": "行くとしたら",
+     "id": "Bepergian sekarang tidak mungkin. Kalau pun pergi, setelah mengumpulkan uang."
+    },
+    {
+     "label": "問題1 ⑤",
+     "sentence": "箱を開けた（　）、中からネズミが出てきた。",
+     "options": [
+      "あまり",
+      "ことに",
+      "とたん",
+      "あげく"
+     ],
+     "correct": "とたん",
+     "id": "Begitu kotak dibuka, seekor tikus keluar dari dalamnya."
+    },
+    {
+     "label": "問題1 ⑥",
+     "sentence": "先生が黒板に書く字はていねい（　）。",
+     "options": [
+      "であるべきだ",
+      "にすぎない",
+      "でたまらない",
+      "次第である"
+     ],
+     "correct": "であるべきだ",
+     "id": "Tulisan guru di papan tulis seharusnya rapi."
+    },
+    {
+     "label": "問題1 ⑦",
+     "sentence": "あの人の名前は何度（　）覚えられない。",
+     "options": [
+      "聞いたら",
+      "聞いても",
+      "聞いては",
+      "聞けば"
+     ],
+     "correct": "聞いても",
+     "id": "Nama orang itu, berapa kali pun didengar tetap tidak bisa saya hafal."
+    },
+    {
+     "label": "問題1 ⑧",
+     "sentence": "昔は海岸の近くに住んでいた。それで、よく貝を拾ったり（　）。",
+     "options": [
+      "したいものだ",
+      "したほどだ",
+      "しないわけだ",
+      "したものだ"
+     ],
+     "correct": "したものだ",
+     "id": "Dulu saya tinggal dekat pantai. Karena itu dulu sering memungut kerang."
+    },
+    {
+     "label": "問題1 ⑨",
+     "sentence": "雨の中を、彼は傘を（　）歩いている。",
+     "options": [
+      "せずに",
+      "さしずに",
+      "しずに",
+      "ささずに"
+     ],
+     "correct": "ささずに",
+     "id": "Di tengah hujan, dia berjalan tanpa memakai payung."
+    },
+    {
+     "label": "問題1 ⑩",
+     "sentence": "彼はシャワーを浴びた（　）シャツも洗った。",
+     "options": [
+      "ついでに",
+      "たびに",
+      "きり",
+      "とおりに"
+     ],
+     "correct": "ついでに",
+     "id": "Sekalian mandi, dia juga mencuci kemejanya."
+    },
+    {
+     "label": "問題1 ⑪",
+     "sentence": "友人（　）、あなたに注意したい。",
+     "options": [
+      "にとって",
+      "として",
+      "としたら",
+      "にしたら"
+     ],
+     "correct": "として",
+     "id": "Sebagai teman, saya ingin menegurmu."
+    },
+    {
+     "label": "問題1 ⑫",
+     "sentence": "あみだなに荷物を（　）まま電車を降りてしまった。",
+     "options": [
+      "置き",
+      "置いて",
+      "置く",
+      "置いた"
+     ],
+     "correct": "置いた",
+     "id": "Saya turun dari kereta dengan barang tetap tertinggal di rak bagasi."
+    },
+    {
+     "label": "問題1 ⑬",
+     "sentence": "大変だ。台所のガスの火が（　）っぱなしだ。",
+     "options": [
+      "つけ",
+      "つけた",
+      "ついた",
+      "つけて"
+     ],
+     "correct": "つけ",
+     "id": "Gawat. Api kompor di dapur dibiarkan menyala terus."
+    },
+    {
+     "label": "問題1 ⑭",
+     "sentence": "日本語が上手なのは10年もいるからなんですね。（　）日本人と変わりませんね。",
+     "options": [
+      "そのたびに",
+      "それにしては",
+      "だとしたら",
+      "それにしても"
+     ],
+     "correct": "だとしたら",
+     "id": "Bahasa Jepangmu bagus karena sudah 10 tahun di sini ya. Kalau begitu, tidak beda dengan orang Jepang."
+    },
+    {
+     "label": "問題1 ⑮",
+     "sentence": "彼なら、昨日国へ帰ったから、いま日本には（　）。",
+     "options": [
+      "いるはずだ",
+      "いるはずじゃない",
+      "いないはずがない",
+      "いないはずだ"
+     ],
+     "correct": "いないはずだ",
+     "id": "Kalau dia, kemarin sudah pulang ke negaranya, jadi sekarang seharusnya tidak ada di Jepang."
+    },
+    {
+     "label": "問題2 ⑯",
+     "sentence": "知らないはずがない。彼は ＿＿ ＿＿ ★ ＿＿ 。",
+     "options": [
+      "知らない",
+      "だけだ",
+      "している",
+      "ふりを"
+     ],
+     "correct": "している",
+     "full": "知らないはずがない。彼は知らないふりをしているだけだ。",
+     "id": "Tidak mungkin dia tidak tahu. Dia hanya berpura-pura tidak tahu saja."
+    },
+    {
+     "label": "問題2 ⑰",
+     "sentence": "朝まで ＿＿ ＿＿ ★ ＿＿ 寝てしまった。",
+     "options": [
+      "勉強する",
+      "つもり",
+      "寝ずに",
+      "だったのに"
+     ],
+     "correct": "つもり",
+     "full": "朝まで寝ずに勉強するつもりだったのに寝てしまった。",
+     "id": "Padahal tadinya berniat belajar sampai pagi tanpa tidur, tapi malah ketiduran."
+    },
+    {
+     "label": "問題2 ⑱",
+     "sentence": "数を ＿＿ ＿＿ ★ ＿＿ ください。",
+     "options": [
+      "いる",
+      "数えて",
+      "話しかけないで",
+      "最中に"
+     ],
+     "correct": "最中に",
+     "full": "数を数えている最中に話しかけないでください。",
+     "id": "Tolong jangan mengajak bicara saat saya sedang menghitung."
+    },
+    {
+     "label": "問題2 ⑲",
+     "sentence": "教えて ＿＿ ＿＿ ★ ＿＿ なのに、うまくできなかった。",
+     "options": [
+      "はず",
+      "とおりに",
+      "作った",
+      "もらった"
+     ],
+     "correct": "作った",
+     "full": "教えてもらったとおりに作ったはずなのに、うまくできなかった。",
+     "id": "Padahal seharusnya sudah dibuat sesuai yang diajarkan, tapi hasilnya tidak bagus."
+    },
+    {
+     "label": "問題2 ⑳",
+     "sentence": "子どもたちが大きくなって家を出て、今は ＿＿ ＿＿ ★ ＿＿ 暮らしている。",
+     "options": [
+      "夫婦",
+      "きりで",
+      "私たち",
+      "二人"
+     ],
+     "correct": "二人",
+     "full": "子どもたちが大きくなって家を出て、今は私たち夫婦二人きりで暮らしている。",
+     "id": "Anak-anak sudah besar dan pergi dari rumah, sekarang kami hidup berdua saja sebagai suami istri."
+    }
+   ]
+  }
+ },
+ "4": {
+  "days": {
+   "1": {
+    "page": 63,
+    "title": "1日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "安い（　）にはおいしい。",
+      "options": [
+       "くせ",
+       "わり"
+      ],
+      "correct": "わり",
+      "id": "Untuk harga semurah itu, rasanya enak."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "カラオケ（　）行きたくない。",
+      "options": [
+       "なんか",
+       "にとって"
+      ],
+      "correct": "なんか",
+      "id": "Karaoke sih aku tidak mau pergi."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "男の（　）に、女みたいだ。",
+      "options": [
+       "くせ",
+       "わり"
+      ],
+      "correct": "くせ",
+      "id": "Padahal laki-laki, tapi seperti perempuan."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "タバコの煙やにおいは、吸わない人（　）苦痛だ。",
+      "options": [
+       "にとっても",
+       "にとっては"
+      ],
+      "correct": "にとっては",
+      "id": "Asap dan bau rokok, bagi orang yang tidak merokok, menyiksa."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "テストの勉強をしなかった（　）には、よくできた。",
+      "options": [
+       "わり",
+       "など"
+      ],
+      "correct": "わり",
+      "id": "Untuk orang yang tidak belajar tes, hasilnya bagus."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "あの学生は試験の成績が ＿＿ ＿＿ ★ ＿＿ 。",
+      "options": [
+       "日本語が",
+       "いい",
+       "通じない",
+       "わりには"
+      ],
+      "correct": "日本語が",
+      "full": "あの学生は試験の成績がいいわりには日本語が通じない。",
+      "id": "Siswa itu, untuk nilai ujiannya bagus, bahasa Jepangnya tidak nyambung."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "本当は ＿＿ ＿＿ ★ ＿＿ 。",
+      "options": [
+       "好きな",
+       "と言う",
+       "きらいだ",
+       "くせに"
+      ],
+      "correct": "好きな",
+      "full": "本当はきらいなくせに好きだと言う。",
+      "id": "Padahal sebenarnya suka, tapi bilangnya benci."
+     }
+    ]
+   },
+   "2": {
+    "page": 65,
+    "title": "2日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "「やっと降りましたね。」「ええ、この雨の（　）作物も元気になるでしょう。」",
+      "options": [
+       "せいで",
+       "おかげで"
+      ],
+      "correct": "おかげで",
+      "id": "'Akhirnya turun hujan ya.' 'Ya, berkat hujan ini tanaman pun akan segar kembali.'"
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "「父に（　）一言お礼申し上げます。」",
+      "options": [
+       "かわりに",
+       "かわって"
+      ],
+      "correct": "かわって",
+      "id": "Mewakili ayah saya, izinkan saya mengucapkan sepatah kata terima kasih."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "事故（　）約束の時間に遅れてしまった。",
+      "options": [
+       "のせいで",
+       "にかわり"
+      ],
+      "correct": "のせいで",
+      "id": "Gara-gara kecelakaan, saya terlambat dari waktu janjian."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "あなたの国では水の（　）ビールを飲むって本当ですか。",
+      "options": [
+       "せいで",
+       "かわりに"
+      ],
+      "correct": "かわりに",
+      "id": "Apa benar di negaramu orang minum bir sebagai ganti air?"
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "ビデオ（　）DVDが使われるようになった。",
+      "options": [
+       "にかわり",
+       "のおかげで"
+      ],
+      "correct": "にかわり",
+      "id": "Menggantikan video, DVD mulai digunakan."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "いい医者に ＿＿ ＿＿ ★ ＿＿ 治った。",
+      "options": [
+       "もらった",
+       "みて",
+       "病気が",
+       "おかげで"
+      ],
+      "correct": "おかげで",
+      "full": "いい医者にみてもらったおかげで病気が治った。",
+      "id": "Berkat diperiksa oleh dokter yang bagus, penyakitnya sembuh."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "友達に引っ越しの ＿＿ ＿＿ ★ ＿＿ 夕食をごちそうした。",
+      "options": [
+       "かわりに",
+       "もらう",
+       "して",
+       "手伝いを"
+      ],
+      "correct": "もらう",
+      "full": "友達に引っ越しの手伝いをしてもらうかわりに夕食をごちそうした。",
+      "id": "Sebagai ganti dibantu pindahan oleh teman, saya mentraktir makan malam."
+     }
+    ]
+   },
+   "3": {
+    "page": 67,
+    "title": "3日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "この本は、読めば読む（　）おもしろい。",
+      "options": [
+       "ほど",
+       "くらい"
+      ],
+      "correct": "ほど",
+      "id": "Buku ini, semakin dibaca semakin menarik."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "びっくりする（　）大きい赤ちゃん。",
+      "options": [
+       "ほど",
+       "くらい"
+      ],
+      "correct": "ほど,くらい",
+      "id": "Bayi yang besarnya sampai bikin kaget."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "野菜は新しい（　）おいしい。",
+      "options": [
+       "ほど",
+       "くらい"
+      ],
+      "correct": "ほど",
+      "id": "Sayuran, semakin segar semakin enak."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "「どの（　）練習したんですか。」「手が痛くなる（　）です。」",
+      "options": [
+       "ほど ／ ほど",
+       "くらい ／ くらい",
+       "くらい ／ ほど",
+       "ほど ／ くらい"
+      ],
+      "correct": "くらい ／ ほど",
+      "id": "'Seberapa banyak kamu berlatih?' 'Sampai tangan sakit.'"
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "あの人（　）まじめな人はいない。",
+      "options": [
+       "くらい",
+       "ほど"
+      ],
+      "correct": "くらい,ほど",
+      "id": "Tidak ada orang yang serajin dia."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "家やアパートは、 ＿＿ ＿＿ ★ ＿＿ 高い。",
+      "options": [
+       "ほど",
+       "駅に",
+       "便利な",
+       "近くて"
+      ],
+      "correct": "便利な",
+      "full": "家やアパートは、駅に近くて便利なほど高い。",
+      "id": "Rumah atau apartemen, semakin praktis dekat stasiun, semakin mahal."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "フランス語 ＿＿ ＿＿ ★ ＿＿ と私は思う。",
+      "options": [
+       "美しい",
+       "言語は",
+       "ほど",
+       "ない"
+      ],
+      "correct": "美しい",
+      "full": "フランス語ほど美しい言語はないと私は思う。",
+      "id": "Menurutku tidak ada bahasa yang seindah bahasa Prancis."
+     }
+    ]
+   },
+   "4": {
+    "page": 69,
+    "title": "4日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "急ぐ（　）。ゆっくりでいい。",
+      "options": [
+       "ことだ",
+       "ことはない"
+      ],
+      "correct": "ことはない",
+      "id": "Tidak perlu buru-buru. Santai saja."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "一度に全部は無理だ。毎日少しずつ勉強する（　）。",
+      "options": [
+       "ことだ",
+       "ことはない"
+      ],
+      "correct": "ことだ",
+      "id": "Tidak mungkin sekaligus semua. Sebaiknya belajar sedikit demi sedikit setiap hari."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "遅かったね。どれだけ心配した（　）。",
+      "options": [
+       "ことか",
+       "ことはない"
+      ],
+      "correct": "ことか",
+      "id": "Kamu lama sekali. Betapa khawatirnya aku!"
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "昨日、東京で地震があった（　）。",
+      "options": [
+       "ことだ",
+       "ということだ"
+      ],
+      "correct": "ということだ",
+      "id": "Katanya kemarin ada gempa di Tokyo."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "（　）ことはないよ。貸してあげるから。",
+      "options": [
+       "買う",
+       "買わない"
+      ],
+      "correct": "買う",
+      "id": "Tidak perlu beli kok. Nanti aku pinjamkan."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "禁煙というのは、 ＿＿ ＿＿ ★ ＿＿ ことだ。",
+      "options": [
+       "吸っては",
+       "いけない",
+       "タバコを",
+       "という"
+      ],
+      "correct": "いけない",
+      "full": "禁煙というのは、タバコを吸ってはいけないということだ。",
+      "id": "Yang disebut dilarang merokok itu artinya tidak boleh mengisap rokok."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "お酒は少しなら ＿＿ ＿＿ ★ ＿＿ ことだ。",
+      "options": [
+       "悪くない",
+       "すぎない",
+       "体に",
+       "飲み"
+      ],
+      "correct": "体に",
+      "full": "お酒は少しなら飲みすぎない、体に悪くないことだ。",
+      "id": "Kalau sedikit, alkohol tidak buruk bagi tubuh; sebaiknya jangan minum berlebihan."
+     }
+    ]
+   },
+   "5": {
+    "page": 71,
+    "title": "5日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "「あの店員さん、苦手だな。（　）、怖いんだもん。」",
+      "options": [
+       "さて",
+       "だって"
+      ],
+      "correct": "だって",
+      "id": "'Pramuniaga itu, aku kurang suka. Habis, menakutkan sih.'"
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "A「彼女、前からあんなに（　）っけ。」B「婚約した（　）。」",
+      "options": [
+       "きれい ／ んだって",
+       "きれいだった ／ っぽいよ",
+       "きれい ／ っぽいよ",
+       "きれいだった ／ んだって"
+      ],
+      "correct": "きれいだった ／ んだって",
+      "id": "A: 'Dia dari dulu secantik itu ya?' B: 'Katanya dia sudah bertunangan.'"
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "バスも電車も止まってしまったから、（　）。",
+      "options": [
+       "歩くしかない",
+       "歩こうとしない"
+      ],
+      "correct": "歩くしかない",
+      "id": "Karena bus dan kereta sama-sama berhenti, terpaksa harus jalan kaki."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "A「ここはずいぶんにぎやかだね。」B「でも、夜は（　）んですって。」",
+      "options": [
+       "静か",
+       "静かな"
+      ],
+      "correct": "静かな",
+      "id": "A: 'Di sini ramai sekali ya.' B: 'Tapi katanya malam hari sepi lho.'"
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "「1月って、こんなに（　）っけ。」",
+      "options": [
+       "あったかかった",
+       "あったかいだ"
+      ],
+      "correct": "あったかかった",
+      "id": "'Bulan Januari itu memang sehangat ini ya?'"
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "父は ＿＿ ＿＿ ★ ＿＿ 食べない。",
+      "options": [
+       "料理",
+       "しか",
+       "作った",
+       "母が"
+      ],
+      "correct": "料理",
+      "full": "父は母が作った料理しか食べない。",
+      "id": "Ayah hanya mau makan masakan yang dibuat ibu."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "「めずらしいね、君が怒るなんて。」「だって ＿＿ ＿＿ ★ ＿＿ んだもの。」",
+      "options": [
+       "ことを",
+       "あまりにも",
+       "言われた",
+       "失礼な"
+      ],
+      "correct": "ことを",
+      "full": "だってあまりにも失礼なことを言われたんだもの。",
+      "id": "'Tumben kamu marah.' 'Habis, dikatai hal yang keterlaluan sih.'"
+     }
+    ]
+   },
+   "6": {
+    "page": 73,
+    "title": "6日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "ほとんど勉強をしなかった。（　）、入学試験に落ちてしまった。",
+      "options": [
+       "その結果",
+       "なぜかというと"
+      ],
+      "correct": "その結果",
+      "id": "Hampir tidak belajar. Akibatnya, gagal di ujian masuk."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "来週は出張で、今週はその準備で、今日は一日中会議で、（　）しばらく忙しいです。",
+      "options": [
+       "つまり",
+       "なぜなら"
+      ],
+      "correct": "つまり",
+      "id": "Minggu depan dinas luar, minggu ini persiapannya, hari ini rapat seharian; singkatnya, sibuk untuk sementara."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "彼はもともと心臓が悪かった。（　）あのニュースを聞いたショックで急死したらしい。",
+      "options": [
+       "つまり",
+       "そのため"
+      ],
+      "correct": "そのため",
+      "id": "Jantungnya memang sudah bermasalah. Karena itu, katanya dia meninggal mendadak karena syok mendengar berita itu."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "仕事を辞めたくても辞められません。（　）家のローンがあるからです。",
+      "options": [
+       "なぜなら",
+       "そのために"
+      ],
+      "correct": "なぜなら",
+      "id": "Mau berhenti kerja pun tidak bisa. Alasannya, karena ada cicilan rumah."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "彼は獣医、（　）動物のお医者さんです。",
+      "options": [
+       "つまり",
+       "その結果"
+      ],
+      "correct": "つまり",
+      "id": "Dia dokter hewan, dengan kata lain dokter untuk binatang."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "どんなに苦しくても彼はあきらめなかった。 ＿＿ ＿＿ ★ ＿＿ 発明が生まれたのだ。",
+      "options": [
+       "結果",
+       "偉大な",
+       "このような",
+       "その"
+      ],
+      "correct": "このような",
+      "full": "どんなに苦しくても彼はあきらめなかった。その結果このような偉大な発明が生まれたのだ。",
+      "id": "Sesulit apa pun dia tidak menyerah. Sebagai hasilnya, lahirlah penemuan hebat seperti ini."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "彼女は ＿＿ ＿＿ ★ ＿＿ とってはめいです。",
+      "options": [
+       "姉の",
+       "私に",
+       "つまり",
+       "娘"
+      ],
+      "correct": "つまり",
+      "full": "彼女は姉の娘、つまり私にとってはめいです。",
+      "id": "Dia anak perempuan kakak saya, dengan kata lain, bagi saya keponakan."
+     }
+    ]
+   }
+  },
+  "matome": {
+   "page": 74,
+   "title": "7日目 実戦問題",
+   "problems": [
+    {
+     "label": "問題1 ①",
+     "sentence": "友達がうちに泊まりに来たとき、ベッド（　）ソファーに寝てもらった。",
+     "options": [
+      "のかわりに",
+      "にかわって",
+      "のわりに",
+      "のせいで"
+     ],
+     "correct": "のかわりに",
+     "id": "Saat teman menginap di rumah, saya minta dia tidur di sofa sebagai ganti tempat tidur."
+    },
+    {
+     "label": "問題1 ②",
+     "sentence": "車に乗せていただいた（　）、電車に間に合いました。",
+     "options": [
+      "おかげで",
+      "わりに",
+      "ついでに",
+      "かわりに"
+     ],
+     "correct": "おかげで",
+     "id": "Berkat diberi tumpangan mobil, saya sempat mengejar kereta."
+    },
+    {
+     "label": "問題1 ③",
+     "sentence": "冗談でも、言われた人は傷つくことがある。だから、自分が言われていやだと思うことは他人にも（　）。",
+     "options": [
+      "言うことだ",
+      "言わないことだ",
+      "言うことか",
+      "言わないことはない"
+     ],
+     "correct": "言わないことだ",
+     "id": "Meski bercanda, yang dikatai bisa terluka. Jadi, hal yang kalau dikatakan ke kita menyakitkan, sebaiknya jangan dikatakan ke orang lain."
+    },
+    {
+     "label": "問題1 ④",
+     "sentence": "このケーキ、100円（　）おいしいね。",
+     "options": [
+      "くせに",
+      "のわりに",
+      "なんか",
+      "だもん"
+     ],
+     "correct": "のわりに",
+     "id": "Kue ini, untuk harga 100 yen, enak ya."
+    },
+    {
+     "label": "問題1 ⑤",
+     "sentence": "川があふれて家が流される（　）雨が降った。",
+     "options": [
+      "につれて",
+      "かぎり",
+      "くらい",
+      "うちに"
+     ],
+     "correct": "くらい",
+     "id": "Hujan turun sampai-sampai sungai meluap dan rumah hanyut."
+    },
+    {
+     "label": "問題1 ⑥",
+     "sentence": "「弱い犬（　）よくほえる」と言います。",
+     "options": [
+      "ほど",
+      "くらい",
+      "さえ",
+      "かぎり"
+     ],
+     "correct": "ほど",
+     "id": "Ada pepatah 'anjing yang lemah justru semakin sering menggonggong'."
+    },
+    {
+     "label": "問題1 ⑦",
+     "sentence": "洗濯機が壊れてしまったから、手で洗う（　）。",
+     "options": [
+      "ことか",
+      "ものか",
+      "しかない",
+      "ことはない"
+     ],
+     "correct": "しかない",
+     "id": "Karena mesin cuci rusak, terpaksa mencuci dengan tangan."
+    },
+    {
+     "label": "問題1 ⑧",
+     "sentence": "コーヒーと紅茶、お好きなのはどちらでした（　）。",
+     "options": [
+      "もの",
+      "こそ",
+      "っけ",
+      "ことか"
+     ],
+     "correct": "っけ",
+     "id": "Kopi atau teh, tadi kamu suka yang mana ya?"
+    },
+    {
+     "label": "問題1 ⑨",
+     "sentence": "先生の話では、来年から試験の形式が変わる（　）。",
+     "options": [
+      "ものか",
+      "しかない",
+      "ことだ",
+      "ということだ"
+     ],
+     "correct": "ということだ",
+     "id": "Menurut cerita guru, mulai tahun depan katanya format ujian akan berubah."
+    },
+    {
+     "label": "問題1 ⑩",
+     "sentence": "あの建物が完成するのに、いったい何年かかる（　）。",
+     "options": [
+      "ことか",
+      "ことだ",
+      "ものか",
+      "しかない"
+     ],
+     "correct": "ことか",
+     "id": "Gedung itu, entah butuh berapa tahun lagi untuk selesai!"
+    },
+    {
+     "label": "問題1 ⑪",
+     "sentence": "教えたことを生徒がどんどん覚えていくのを見ることほど、うれしい（　）。",
+     "options": [
+      "ことだ",
+      "ことじゃない",
+      "ことか",
+      "ことはない"
+     ],
+     "correct": "ことはない",
+     "id": "Tidak ada yang lebih menyenangkan daripada melihat murid cepat menyerap apa yang diajarkan."
+    },
+    {
+     "label": "問題1 ⑫",
+     "sentence": "できない（　）できるなんて言わないほうがいいよ。",
+     "options": [
+      "くせに",
+      "なんて",
+      "なんか",
+      "わりに"
+     ],
+     "correct": "くせに",
+     "id": "Padahal tidak bisa, lebih baik jangan bilang bisa."
+    },
+    {
+     "label": "問題1 ⑬",
+     "sentence": "体はともかく、頭は使えば使う（　）よくなるらしい。",
+     "options": [
+      "くらい",
+      "ほど",
+      "かぎり",
+      "さえ"
+     ],
+     "correct": "ほど",
+     "id": "Soal badan tak tahu, tapi otak katanya semakin dipakai semakin bagus."
+    },
+    {
+     "label": "問題1 ⑭",
+     "sentence": "また次回がんばればいいじゃない。がっかりする（　）よ。",
+     "options": [
+      "ことだ",
+      "ものか",
+      "ものの",
+      "ことはない"
+     ],
+     "correct": "ことはない",
+     "id": "Lain kali kan tinggal berusaha lagi. Tidak perlu kecewa."
+    },
+    {
+     "label": "問題1 ⑮",
+     "sentence": "こんな天気のいい日に、家の中で仕事（　）したくない。",
+     "options": [
+      "だもん",
+      "もんか",
+      "なんか",
+      "ことか"
+     ],
+     "correct": "なんか",
+     "id": "Di hari secerah ini, kerja di dalam rumah sih tidak mau."
+    },
+    {
+     "label": "問題2 ⑯",
+     "sentence": "教師に ＿＿ ＿＿ ★ ＿＿ 成長です。",
+     "options": [
+      "喜びは",
+      "学生の",
+      "とっての",
+      "最大の"
+     ],
+     "correct": "喜びは",
+     "full": "教師にとっての最大の喜びは学生の成長です。",
+     "id": "Bagi seorang guru, kebahagiaan terbesar adalah pertumbuhan siswa."
+    },
+    {
+     "label": "問題2 ⑰",
+     "sentence": "ひとりで日本へ来てから、今までどんなに ＿＿ ＿＿ ★ ＿＿ か。",
+     "options": [
+      "気持ちを",
+      "がまんした",
+      "さびしい",
+      "こと"
+     ],
+     "correct": "がまんした",
+     "full": "ひとりで日本へ来てから、今までどんなにさびしい気持ちをがまんしたことか。",
+     "id": "Sejak datang ke Jepang sendirian, betapa banyaknya perasaan kesepian yang aku tahan sampai sekarang!"
+    },
+    {
+     "label": "問題2 ⑱",
+     "sentence": "世界のいろいろなところで今もまだ ＿＿ ＿＿ ★ ＿＿ って。",
+     "options": [
+      "戦争が",
+      "いる",
+      "んだ",
+      "続いて"
+     ],
+     "correct": "いる",
+     "full": "世界のいろいろなところで今もまだ戦争が続いているんだって。",
+     "id": "Katanya di berbagai tempat di dunia sampai sekarang pun perang masih berlangsung."
+    },
+    {
+     "label": "問題2 ⑲",
+     "sentence": "携帯電話やパソコンで ＿＿ ＿＿ ★ ＿＿ 仕事から離れられなくなった。",
+     "options": [
+      "連絡できる",
+      "いつでも",
+      "せいで",
+      "ようになった"
+     ],
+     "correct": "ようになった",
+     "full": "携帯電話やパソコンでいつでも連絡できるようになったせいで仕事から離れられなくなった。",
+     "id": "Gara-gara jadi bisa dihubungi kapan saja lewat ponsel dan komputer, jadi tak bisa lepas dari pekerjaan."
+    },
+    {
+     "label": "問題2 ⑳",
+     "sentence": "「いつまでゲームをしているの。」「 ＿＿ ＿＿ ★ ＿＿ もん。」",
+     "options": [
+      "おもしろくて",
+      "んだ",
+      "やめられない",
+      "だって"
+     ],
+     "correct": "やめられない",
+     "full": "「いつまでゲームをしているの。」「だっておもしろくてやめられないんだもん。」",
+     "id": "'Sampai kapan main game terus?' 'Habis, seru sih jadi tidak bisa berhenti.'"
+    }
+   ]
+  }
+ },
+ "5": {
+  "days": {
+   "1": {
+    "page": 79,
+    "title": "1日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "動物のオスはメス（　）派手できれいな場合が多い。",
+      "options": [
+       "に比べて",
+       "ばかりか"
+      ],
+      "correct": "に比べて",
+      "id": "Hewan jantan sering lebih mencolok dan indah dibanding betina."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "私のふるさとは（　）ばかりでなく、寒さがきびしい。",
+      "options": [
+       "不便",
+       "不便な"
+      ],
+      "correct": "不便",
+      "id": "Kampung halaman saya bukan hanya tidak praktis, tapi dinginnya juga parah."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "あの店は休みの日（　）ふだんの日も混んでいます。",
+      "options": [
+       "ばかりでなく",
+       "に対して"
+      ],
+      "correct": "ばかりでなく",
+      "id": "Toko itu ramai bukan hanya di hari libur, tapi juga di hari biasa."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "彼のアニメ作品は子ども（　）大人も楽しめる。",
+      "options": [
+       "に比べて",
+       "はもちろん"
+      ],
+      "correct": "はもちろん",
+      "id": "Karya anime dia, jangankan anak-anak, orang dewasa pun bisa menikmatinya."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "この店を利用する人は、昼間は主婦が多い。それ（　）夕方は会社員が多い。",
+      "options": [
+       "に対して",
+       "ばかりか"
+      ],
+      "correct": "に対して",
+      "id": "Pengunjung toko ini, siang hari banyak ibu rumah tangga. Sebaliknya, sore hari banyak karyawan."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "駅員は乗客に ＿＿ ＿＿ ★ ＿＿ 説明した。",
+      "options": [
+       "遅れている",
+       "電車が",
+       "対して",
+       "理由を"
+      ],
+      "correct": "電車が",
+      "full": "駅員は乗客に対して電車が遅れている理由を説明した。",
+      "id": "Petugas stasiun menjelaskan kepada penumpang alasan mengapa kereta terlambat."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "新しく買った携帯電話はおしゃれできれいだが、 ＿＿ ＿＿ ★ ＿＿ 使いにくい。",
+      "options": [
+       "のに",
+       "前のが",
+       "比べて",
+       "使いやすかった"
+      ],
+      "correct": "使いやすかった",
+      "full": "新しく買った携帯電話はおしゃれできれいだが、前のが使いやすかったのに比べて使いにくい。",
+      "id": "Ponsel baru yang kubeli modis dan cantik, tapi dibanding yang lama yang mudah dipakai, ini susah dipakai."
+     }
+    ]
+   },
+   "2": {
+    "page": 81,
+    "title": "2日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "彼は何か（　）やめた。",
+      "options": [
+       "言いかけて",
+       "言い上げて"
+      ],
+      "correct": "言いかけて",
+      "id": "Dia mengatakan sesuatu setengah jalan lalu berhenti."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "（　）のご飯はおいしい。",
+      "options": [
+       "炊きかけ",
+       "炊きたて"
+      ],
+      "correct": "炊きたて",
+      "id": "Nasi yang baru matang itu enak."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "長い間かかって作っていた作品が、やっと（　）ました。",
+      "options": [
+       "できあげ",
+       "できあがり"
+      ],
+      "correct": "できあがり",
+      "id": "Karya yang lama kubuat akhirnya selesai."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "そこに（　）場合は、裏も使ってください。",
+      "options": [
+       "書き切れない",
+       "書き上げない"
+      ],
+      "correct": "書き切れない",
+      "id": "Kalau tidak cukup ditulis di situ, gunakan juga bagian belakangnya."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "姉はプレゼントにするマフラーを一晩で（　）。",
+      "options": [
+       "編みたてた",
+       "編み上げた"
+      ],
+      "correct": "編み上げた",
+      "id": "Kakak perempuanku merajut selesai syal untuk hadiah dalam semalam."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "新しいのを ＿＿ ＿＿ ★ ＿＿ 母に言われた。",
+      "options": [
+       "ですよと",
+       "使いかけのを",
+       "買うのは",
+       "使い切ってから"
+      ],
+      "correct": "使いかけのを",
+      "full": "新しいのを買うのは使いかけのを使い切ってからですよと母に言われた。",
+      "id": "Ibu bilang, beli yang baru itu setelah yang setengah terpakai dihabiskan dulu."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "課長は ＿＿ ＿＿ ★ ＿＿ いる。",
+      "options": [
+       "指導で",
+       "社員の",
+       "疲れきって",
+       "入社したての"
+      ],
+      "correct": "指導で",
+      "full": "課長は入社したての社員の指導で疲れきっている。",
+      "id": "Kepala bagian kelelahan karena membimbing karyawan yang baru masuk."
+     }
+    ]
+   },
+   "3": {
+    "page": 83,
+    "title": "3日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "妹の靴、私にはきつくて入らない。もう少し大きかったら（　）のに。",
+      "options": [
+       "はける",
+       "はけない"
+      ],
+      "correct": "はける",
+      "id": "Sepatu adik perempuanku terlalu sempit untukku. Andai sedikit lebih besar, pasti muat."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "昨日の試合、どっちのチームが（　）かなあ。",
+      "options": [
+       "勝つ",
+       "勝った"
+      ],
+      "correct": "勝った",
+      "id": "Pertandingan kemarin, tim mana ya yang menang?"
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "明日は花火大会だから、雨が（　）といいなあ。",
+      "options": [
+       "降らない",
+       "降らなかった"
+      ],
+      "correct": "降らない",
+      "id": "Besok ada festival kembang api, semoga tidak hujan."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "ゆうべの番組、おもしろかったよ。君も見れば（　）のに。",
+      "options": [
+       "いい",
+       "よかった"
+      ],
+      "correct": "よかった",
+      "id": "Acara semalam seru lho. Sayang kamu tidak menonton."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "いつも家を出た後で、ガスの火を消した（　）と心配になる。",
+      "options": [
+       "のに",
+       "かなあ"
+      ],
+      "correct": "かなあ",
+      "id": "Setiap keluar rumah, aku jadi khawatir, apa aku sudah mematikan kompor gas ya."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "してしまったことを ＿＿ ＿＿ ★ ＿＿ しかたがない。",
+      "options": [
+       "などと",
+       "よかった",
+       "しなければ",
+       "思っても"
+      ],
+      "correct": "などと",
+      "full": "してしまったことをしなければよかったなどと思ってもしかたがない。",
+      "id": "Memikirkan 'andai saja tidak kulakukan' pun percuma atas hal yang sudah terjadi."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "あなた ＿＿ ＿＿ ★ ＿＿ と友達に言われました。",
+      "options": [
+       "いいなあ",
+       "スポーツが",
+       "みたいに",
+       "できると"
+      ],
+      "correct": "できると",
+      "full": "あなたみたいにスポーツができるといいなあと友達に言われました。",
+      "id": "Temanku bilang, andai aku bisa berolahraga seperti kamu."
+     }
+    ]
+   },
+   "4": {
+    "page": 85,
+    "title": "4日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "合格する（　）絶対にあきらめないと決めた。",
+      "options": [
+       "まで",
+       "までに"
+      ],
+      "correct": "まで",
+      "id": "Aku bertekad tidak akan menyerah sampai lulus."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "母にマッサージをしてあげた。首から肩（　）かなり、こっていた。",
+      "options": [
+       "にかけて",
+       "において"
+      ],
+      "correct": "にかけて",
+      "id": "Aku memijat ibu. Dari leher sampai bahu cukup kaku."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "帰国する（　）なんとか日本語を習得したい。",
+      "options": [
+       "まで",
+       "までに"
+      ],
+      "correct": "までに",
+      "id": "Aku ingin sebisa mungkin menguasai bahasa Jepang sebelum pulang ke negara asal."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "忙しいのはわかりますが、お正月（　）働くんですか。",
+      "options": [
+       "まで",
+       "までに"
+      ],
+      "correct": "まで",
+      "id": "Aku tahu kamu sibuk, tapi apa kamu kerja sampai Tahun Baru pun?"
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "小学校（　）防災訓練を行います。ご参加ください。",
+      "options": [
+       "において",
+       "にかけて"
+      ],
+      "correct": "において",
+      "id": "Latihan penanggulangan bencana diadakan di SD. Silakan ikut serta."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "大雨 ＿＿ ＿＿ ★ ＿＿ しまった。",
+      "options": [
+       "中まで",
+       "のせいで",
+       "かばんの",
+       "ぬれて"
+      ],
+      "correct": "中まで",
+      "full": "大雨のせいでかばんの中までぬれてしまった。",
+      "id": "Gara-gara hujan deras, isi dalam tas pun basah."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "2月から ＿＿ ＿＿ ★ ＿＿ そうです。",
+      "options": [
+       "にかけて",
+       "飛ぶ",
+       "花粉が",
+       "4月"
+      ],
+      "correct": "花粉が",
+      "full": "2月から4月にかけて花粉が飛ぶそうです。",
+      "id": "Katanya serbuk sari beterbangan dari bulan Februari sampai April."
+     }
+    ]
+   },
+   "5": {
+    "page": 87,
+    "title": "5日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "（　）あそこに座っている人は有名な人かもしれない。",
+      "options": [
+       "まるで",
+       "もしかすると"
+      ],
+      "correct": "もしかすると",
+      "id": "Mungkin saja orang yang duduk di sana itu orang terkenal."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "（　）給料が高くてもあんな仕事はしたくない。",
+      "options": [
+       "たとえ",
+       "かならずしも"
+      ],
+      "correct": "たとえ",
+      "id": "Sekalipun gajinya tinggi, aku tidak mau pekerjaan seperti itu."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "私が聞いたのは（　）うそのような本当の話なんです。",
+      "options": [
+       "まるで",
+       "もしかしたら"
+      ],
+      "correct": "まるで",
+      "id": "Yang aku dengar adalah kisah nyata yang seolah-olah seperti bohong."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "日本人の日本語が（　）すべて正しいとは限らない。",
+      "options": [
+       "たとえ",
+       "必ずしも"
+      ],
+      "correct": "必ずしも",
+      "id": "Bahasa Jepang orang Jepang pun belum tentu semuanya benar."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "あの二人は（　）兄弟のようによく似ている。",
+      "options": [
+       "まるで",
+       "たとえ"
+      ],
+      "correct": "まるで",
+      "id": "Kedua orang itu mirip sekali, seolah-olah seperti saudara."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "たとえ ＿＿ ＿＿ ★ ＿＿ 結婚します。",
+      "options": [
+       "されても",
+       "両親に",
+       "彼女と",
+       "反対"
+      ],
+      "correct": "されても",
+      "full": "たとえ両親に反対されても彼女と結婚します。",
+      "id": "Sekalipun ditentang orang tua, aku akan menikah dengannya."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "親や ＿＿ ＿＿ ★ ＿＿ 限らない。",
+      "options": [
+       "言うことが",
+       "先生の",
+       "とは",
+       "正しい"
+      ],
+      "correct": "正しい",
+      "full": "親や先生の言うことが正しいとは限らない。",
+      "id": "Apa yang dikatakan orang tua dan guru pun belum tentu benar."
+     }
+    ]
+   },
+   "6": {
+    "page": 89,
+    "title": "6日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "彼は非常に頭がいい。（　）、大学に入れなかった。",
+      "options": [
+       "ところが",
+       "ところで"
+      ],
+      "correct": "ところが",
+      "id": "Dia sangat pintar. Namun ternyata, tidak bisa masuk universitas."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "もうすぐ卒業ですね。（　）、就職はどうするのですか。",
+      "options": [
+       "ところで",
+       "ですから"
+      ],
+      "correct": "ところで",
+      "id": "Sebentar lagi wisuda ya. Ngomong-ngomong, bagaimana soal pekerjaanmu nanti?"
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "みんな彼が勝つと思っていた。（　）、簡単に負けてしまった。",
+      "options": [
+       "だから",
+       "ところが"
+      ],
+      "correct": "ところが",
+      "id": "Semua mengira dia menang. Namun ternyata, kalah dengan mudah."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "「今学期は明日で終わりです。（　）、来学期の授業料、払いましたか。」",
+      "options": [
+       "ところで",
+       "だけど"
+      ],
+      "correct": "ところで",
+      "id": "'Semester ini selesai besok. Ngomong-ngomong, uang kuliah semester depan sudah dibayar?'"
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "野菜は好きじゃない。（　）体にいいから食べる。",
+      "options": [
+       "だけど",
+       "だから"
+      ],
+      "correct": "だけど",
+      "id": "Aku tidak suka sayur. Tapi karena bagus untuk tubuh, aku memakannya."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "途中からは入れません。 ＿＿ ＿＿ ★ ＿＿ 。",
+      "options": [
+       "絶対に",
+       "来てください",
+       "ですから",
+       "遅れないように"
+      ],
+      "correct": "絶対に",
+      "full": "途中からは入れません。ですから遅れないように絶対に来てください。",
+      "id": "Tidak bisa masuk dari tengah. Karena itu, tolong datang jangan sampai terlambat."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "確かに郵便で送った。 ＿＿ ＿＿ ★ ＿＿ 。",
+      "options": [
+       "届いて",
+       "と言われた",
+       "いない",
+       "ところが"
+      ],
+      "correct": "いない",
+      "full": "確かに郵便で送った。ところが届いていないと言われた。",
+      "id": "Aku memang sudah mengirimnya lewat pos. Namun ternyata dikatakan belum sampai."
+     }
+    ]
+   }
+  },
+  "matome": {
+   "page": 90,
+   "title": "7日目 実戦問題",
+   "problems": [
+    {
+     "label": "問題1 ①",
+     "sentence": "今年の桜は、いつもの年に（　）1週間早く咲いたそうだ。",
+     "options": [
+      "対して",
+      "関して",
+      "かわって",
+      "比べて"
+     ],
+     "correct": "比べて",
+     "id": "Katanya sakura tahun ini mekar seminggu lebih awal dibanding tahun-tahun biasa."
+    },
+    {
+     "label": "問題1 ②",
+     "sentence": "たとえお金をくれると（　）、悪いことはしたくない。",
+     "options": [
+      "言われても",
+      "言われたとたん",
+      "言われたまま",
+      "言われるとしたら"
+     ],
+     "correct": "言われても",
+     "id": "Sekalipun dibilang akan diberi uang, aku tidak mau berbuat jahat."
+    },
+    {
+     "label": "問題1 ③",
+     "sentence": "夜空には数え（　）ほどの星がある。",
+     "options": [
+      "たてない",
+      "かけない",
+      "上げない",
+      "切れない"
+     ],
+     "correct": "切れない",
+     "id": "Di langit malam ada bintang yang tak terhitung banyaknya."
+    },
+    {
+     "label": "問題1 ④",
+     "sentence": "雑誌に紹介されている店が（　）いいとは限らない。",
+     "options": [
+      "まるで",
+      "必ずしも",
+      "たとえ",
+      "もしかすると"
+     ],
+     "correct": "必ずしも",
+     "id": "Toko yang diperkenalkan di majalah belum tentu bagus."
+    },
+    {
+     "label": "問題1 ⑤",
+     "sentence": "最近は女性（　）男性も化粧をするようになった。",
+     "options": [
+      "ばかり",
+      "もちろん",
+      "ばかりか",
+      "だけしか"
+     ],
+     "correct": "ばかりか",
+     "id": "Belakangan, jangankan perempuan, laki-laki pun mulai berdandan."
+    },
+    {
+     "label": "問題1 ⑥",
+     "sentence": "思い出せない。やはりメモを（　）。",
+     "options": [
+      "しておけばよかった",
+      "しておくはずだ",
+      "しておこうとしない",
+      "しっぱなしだ"
+     ],
+     "correct": "しておけばよかった",
+     "id": "Tidak bisa ingat. Seharusnya tadi kucatat."
+    },
+    {
+     "label": "問題1 ⑦",
+     "sentence": "体育館（　）入学式を行います。",
+     "options": [
+      "において",
+      "について",
+      "によって",
+      "にとって"
+     ],
+     "correct": "において",
+     "id": "Upacara penerimaan siswa baru diadakan di aula olahraga."
+    },
+    {
+     "label": "問題1 ⑧",
+     "sentence": "手が痛くなる（　）漢字を書いて練習した。",
+     "options": [
+      "とおり",
+      "せいで",
+      "まで",
+      "かけて"
+     ],
+     "correct": "まで",
+     "id": "Aku berlatih menulis kanji sampai tanganku sakit."
+    },
+    {
+     "label": "問題1 ⑨",
+     "sentence": "知らない人が（　）友達のように話しかけてきた。",
+     "options": [
+      "ついでに",
+      "わりに",
+      "どんなに",
+      "まるで"
+     ],
+     "correct": "まるで",
+     "id": "Orang yang tidak kukenal menyapaku seolah-olah seperti teman."
+    },
+    {
+     "label": "問題1 ⑩",
+     "sentence": "「ペンキぬり（　）注意」と書いてある。",
+     "options": [
+      "きり",
+      "たて",
+      "きれ",
+      "まま"
+     ],
+     "correct": "たて",
+     "id": "Tertulis 'Awas, cat baru'."
+    },
+    {
+     "label": "問題1 ⑪",
+     "sentence": "早く雪が解けて春に（　）なあ。",
+     "options": [
+      "なるか",
+      "なりたい",
+      "ならない",
+      "なればいい"
+     ],
+     "correct": "なればいい",
+     "id": "Semoga saljunya cepat mencair dan tiba musim semi."
+    },
+    {
+     "label": "問題1 ⑫",
+     "sentence": "ほめられると（　）うそでもうれしいものです。",
+     "options": [
+      "たとえ",
+      "必ずしも",
+      "つまり",
+      "もしかすると"
+     ],
+     "correct": "たとえ",
+     "id": "Kalau dipuji, sekalipun itu bohong, tetap saja senang."
+    },
+    {
+     "label": "問題1 ⑬",
+     "sentence": "彼女は話し方がていねいなの（　）動作がていねいでない。",
+     "options": [
+      "にかわって",
+      "にとって",
+      "に対して",
+      "はもちろん"
+     ],
+     "correct": "に対して",
+     "id": "Cara bicaranya sopan, tapi sebaliknya gerak-geriknya tidak sopan."
+    },
+    {
+     "label": "問題1 ⑭",
+     "sentence": "もう帰るんですか。もっとゆっくりしていけば（　）。",
+     "options": [
+      "よかったこと",
+      "いいかも",
+      "よかったもの",
+      "いいのに"
+     ],
+     "correct": "いいのに",
+     "id": "Sudah mau pulang? Padahal seharusnya bisa santai lebih lama."
+    },
+    {
+     "label": "問題1 ⑮",
+     "sentence": "この商品は品質が（　）はもちろん値段も手ごろだ。",
+     "options": [
+      "いいの",
+      "いい",
+      "よく",
+      "よさ"
+     ],
+     "correct": "いい",
+     "id": "Produk ini, kualitasnya bagus tentu saja, harganya pun terjangkau."
+    },
+    {
+     "label": "問題2 ⑯",
+     "sentence": "日本海側は ＿＿ ＿＿ ★ ＿＿ 雪が降るでしょう。",
+     "options": [
+      "九州",
+      "から",
+      "北海道",
+      "にかけて"
+     ],
+     "correct": "北海道",
+     "full": "日本海側は九州から北海道にかけて雪が降るでしょう。",
+     "id": "Di sisi Laut Jepang kemungkinan turun salju dari Kyushu sampai Hokkaido."
+    },
+    {
+     "label": "問題2 ⑰",
+     "sentence": "あの女優さんは ＿＿ ＿＿ ★ ＿＿ 黄色だと話していました。",
+     "options": [
+      "好きで",
+      "黄色が",
+      "まで",
+      "下着"
+     ],
+     "correct": "下着",
+     "full": "あの女優さんは黄色が好きで下着まで黄色だと話していました。",
+     "id": "Aktris itu bilang dia suka kuning sampai-sampai pakaian dalamnya pun kuning."
+    },
+    {
+     "label": "問題2 ⑱",
+     "sentence": "家族に手紙を ＿＿ ＿＿ ★ ＿＿ しまいました。",
+     "options": [
+      "書き",
+      "やめて",
+      "途中で",
+      "かけて"
+     ],
+     "correct": "途中で",
+     "full": "家族に手紙を書きかけて途中でやめてしまいました。",
+     "id": "Aku menulis surat untuk keluarga tapi berhenti di tengah jalan."
+    },
+    {
+     "label": "問題2 ⑲",
+     "sentence": "この資料はすばらしい。よくここ ＿＿ ＿＿ ★ ＿＿ ましたね。",
+     "options": [
+      "まで",
+      "くわしく",
+      "あげ",
+      "調べ"
+     ],
+     "correct": "調べ",
+     "full": "この資料はすばらしい。よくここまでくわしく調べあげましたね。",
+     "id": "Data ini luar biasa. Kamu sampai meneliti sedetail ini ya."
+    },
+    {
+     "label": "問題2 ⑳",
+     "sentence": "田中さんから電話がありました。道が混んでいるので ＿＿ ＿＿ ★ ＿＿ そうです。",
+     "options": [
+      "少し",
+      "かもしれない",
+      "遅れる",
+      "もしかしたら"
+     ],
+     "correct": "遅れる",
+     "full": "田中さんから電話がありました。道が混んでいるのでもしかしたら少し遅れるかもしれないそうです。",
+     "id": "Ada telepon dari Tanaka-san. Katanya karena jalan macet, mungkin akan sedikit terlambat."
+    }
+   ]
+  }
+ },
+ "6": {
+  "days": {
+   "1": {
+    "page": 95,
+    "title": "1日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "（　）あの飛行機に乗っていたら、死んでいたでしょう。",
+      "options": [
+       "もし",
+       "たとえ"
+      ],
+      "correct": "もし",
+      "id": "Seandainya naik pesawat itu, mungkin sudah tewas."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "もし、あの会社から採用通知が来た（　）入らないつもりです。",
+      "options": [
+       "としたら",
+       "としても"
+      ],
+      "correct": "としても",
+      "id": "Seandainya pun surat penerimaan dari perusahaan itu datang, saya tidak berniat masuk."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "なぜそんなことをするのですか。もしも私があなた（　）、絶対にしないでしょう。",
+      "options": [
+       "でも",
+       "なら"
+      ],
+      "correct": "なら",
+      "id": "Kenapa melakukan hal seperti itu? Seandainya aku jadi kamu, pasti tidak akan kulakukan."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "勉強しなければ、何度受けた（　）受からないでしょう。",
+      "options": [
+       "なら",
+       "としたって"
+      ],
+      "correct": "としたって",
+      "id": "Kalau tidak belajar, sekalipun ikut berkali-kali tetap tidak akan lulus."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "（　）の場合には、この引き出しを開けて私の手紙を読んでください。",
+      "options": [
+       "もしも",
+       "もしかして"
+      ],
+      "correct": "もしも",
+      "id": "Kalau terjadi sesuatu, bukalah laci ini dan baca suratku."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "もしも明日 ＿＿ ＿＿ ★ ＿＿ しますか。",
+      "options": [
+       "どう",
+       "地球が",
+       "としたら",
+       "なくなる"
+      ],
+      "correct": "としたら",
+      "full": "もしも明日地球がなくなるとしたらどうしますか。",
+      "id": "Seandainya besok bumi lenyap, apa yang akan kamu lakukan?"
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "保険というのは ＿＿ ＿＿ ★ ＿＿ 入るものです。",
+      "options": [
+       "ことを",
+       "もしもの",
+       "考えて",
+       "ときの"
+      ],
+      "correct": "ことを",
+      "full": "保険というのはもしものときのことを考えて入るものです。",
+      "id": "Asuransi itu adalah sesuatu yang kita ikuti dengan memikirkan saat-saat darurat."
+     }
+    ]
+   },
+   "2": {
+    "page": 97,
+    "title": "2日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "明日は家に（　）ことはいますが、家で仕事をしないといけないんです。",
+      "options": [
+       "いる",
+       "いない"
+      ],
+      "correct": "いる",
+      "id": "Besok memang ada sih di rumah, tapi harus kerja di rumah."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "急に国へ帰ることに（　）。",
+      "options": [
+       "なりました",
+       "なっています"
+      ],
+      "correct": "なりました",
+      "id": "Tiba-tiba jadi harus pulang ke negara asal."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "太らないように夜9時を過ぎたら、私は食べないことに（　）います。",
+      "options": [
+       "して",
+       "なって"
+      ],
+      "correct": "して",
+      "id": "Agar tidak gemuk, aku membiasakan diri tidak makan lewat jam 9 malam."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "車を運転（　）ことはないんですが、ほとんどしません。",
+      "options": [
+       "できる",
+       "できない"
+      ],
+      "correct": "できる",
+      "id": "Menyetir mobil bukannya tidak bisa, tapi hampir tidak pernah."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "携帯電話は便利な（　）は便利ですが、なくてもいいと思っています。",
+      "options": [
+       "こと",
+       "もの"
+      ],
+      "correct": "こと",
+      "id": "Ponsel, praktis sih praktis, tapi menurutku tanpa itu pun tidak apa-apa."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "日本では車は ＿＿ ＿＿ ★ ＿＿ なっています。",
+      "options": [
+       "ことに",
+       "左側を",
+       "道路の",
+       "運転する"
+      ],
+      "correct": "運転する",
+      "full": "日本では車は道路の左側を運転することになっています。",
+      "id": "Di Jepang, mobil diatur untuk menyetir di sisi kiri jalan."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "生活 ＿＿ ＿＿ ★ ＿＿ 経済的に苦しいです。",
+      "options": [
+       "んですが",
+       "ない",
+       "ことは",
+       "できない"
+      ],
+      "correct": "ない",
+      "full": "生活できないことはないんですが経済的に苦しいです。",
+      "id": "Hidup, bukannya tidak bisa dijalani, tapi secara ekonomi berat."
+     }
+    ]
+   },
+   "3": {
+    "page": 99,
+    "title": "3日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "祖母が（　）うちに、一度田舎へ帰りたい。",
+      "options": [
+       "元気な",
+       "元気だ"
+      ],
+      "correct": "元気な",
+      "id": "Selagi nenek masih sehat, aku ingin sekali pulang ke kampung."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "駅員に（　）ところ、落とし物は届いていた。",
+      "options": [
+       "聞く",
+       "聞いた"
+      ],
+      "correct": "聞いた",
+      "id": "Ketika menanyakan ke petugas stasiun, ternyata barang yang hilang sudah diserahkan."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "お茶を入れましたから、冷めない（　）どうぞ。",
+      "options": [
+       "うちに",
+       "ところに"
+      ],
+      "correct": "うちに",
+      "id": "Sudah kubuatkan teh, silakan selagi belum dingin."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "もう少しで階段から（　）ところだった。",
+      "options": [
+       "落ちる",
+       "落ちた"
+      ],
+      "correct": "落ちる",
+      "id": "Hampir saja jatuh dari tangga."
+     },
+     {
+      "label": "練習II ⑤",
+      "sentence": " ＿＿ ＿＿ ★ ＿＿ 日本語の勉強がおもしろくなった。",
+      "options": [
+       "はじめて",
+       "あの先生に",
+       "なって",
+       "習うように"
+      ],
+      "correct": "なって",
+      "full": "あの先生に習うようになってはじめて日本語の勉強がおもしろくなった。",
+      "id": "Baru setelah jadi diajar oleh guru itu, belajar bahasa Jepang jadi menyenangkan."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "あとちょっとで試験問題が全部 ＿＿ ＿＿ ★ ＿＿ なってしまった。",
+      "options": [
+       "時間切れに",
+       "だったのに",
+       "ところ",
+       "解ける"
+      ],
+      "correct": "だったのに",
+      "full": "あとちょっとで試験問題が全部解けるところだったのに時間切れになってしまった。",
+      "id": "Padahal sedikit lagi semua soal ujian hampir terpecahkan, malah kehabisan waktu."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "教えてくれたり、注意してくれる人が ＿＿ ＿＿ ★ ＿＿ ほうがいいですよ。",
+      "options": [
+       "うち",
+       "いる",
+       "勉強した",
+       "に"
+      ],
+      "correct": "に",
+      "full": "教えてくれたり、注意してくれる人がいるうちに勉強したほうがいいですよ。",
+      "id": "Selagi masih ada orang yang mengajari dan mengingatkan, lebih baik belajar."
+     }
+    ]
+   },
+   "4": {
+    "page": 101,
+    "title": "4日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "こんなところで工事をしていたのか。渋滞する（　）。",
+      "options": [
+       "わけだ",
+       "わけがない"
+      ],
+      "correct": "わけだ",
+      "id": "Oh, ternyata sedang ada perbaikan di sini. Pantas saja macet."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "眠っていた（　）が、ほかのことを考えていた。",
+      "options": [
+       "わけだ",
+       "わけではない"
+      ],
+      "correct": "わけではない",
+      "id": "Bukan berarti aku tertidur, aku sedang memikirkan hal lain."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "規則ですから、30分以上遅刻した場合は、試験を受けさせる（　）んです。",
+      "options": [
+       "わけではない",
+       "わけにはいかない"
+      ],
+      "correct": "わけにはいかない",
+      "id": "Karena aturannya begitu, kalau terlambat lebih dari 30 menit, tidak bisa mengizinkan ikut ujian."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "うそばかりついている彼が、みんなに信用される（　）ないでしょう。",
+      "options": [
+       "わけが",
+       "わけでは"
+      ],
+      "correct": "わけが",
+      "id": "Dia yang selalu berbohong, mustahil dipercaya semua orang."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "あ、顔にご飯粒がついていたんだ。みんなにクスクス（　）いたわけだ。",
+      "options": [
+       "笑われて",
+       "笑って"
+      ],
+      "correct": "笑われて",
+      "id": "Ah, ternyata ada butir nasi di wajahku. Pantas saja semua terkikik menertawakanku."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": " ＿＿ ＿＿ ★ ＿＿ 試験に落ちてしまった。",
+      "options": [
+       "わけの",
+       "落ちる",
+       "学生が",
+       "ない"
+      ],
+      "correct": "ない",
+      "full": "落ちるわけのない学生が試験に落ちてしまった。",
+      "id": "Siswa yang mustahil gagal itu ternyata gagal ujian."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "窓を少し開けてもいいですか。 ＿＿ ＿＿ ★ ＿＿ 空気を入れ替えたいんです。",
+      "options": [
+       "わけ",
+       "なくて",
+       "暑い",
+       "では"
+      ],
+      "correct": "では",
+      "full": "窓を少し開けてもいいですか。暑いわけではなくて空気を入れ替えたいんです。",
+      "id": "Boleh buka jendela sedikit? Bukan berarti panas, aku ingin mengganti udaranya."
+     }
+    ]
+   },
+   "5": {
+    "page": 103,
+    "title": "5日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "今が大変で、将来のことは（　）考えられない。",
+      "options": [
+       "まったく",
+       "めったに"
+      ],
+      "correct": "まったく",
+      "id": "Sekarang lagi sulit, sama sekali tidak bisa memikirkan soal masa depan."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "食事の量を減らしてダイエットをしているのに、（　）やせないんです。",
+      "options": [
+       "めったに",
+       "ちっとも"
+      ],
+      "correct": "ちっとも",
+      "id": "Padahal sudah mengurangi porsi makan dan berdiet, sedikit pun tidak kurus."
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "いろいろお世話になりました。親切にしていただいたことは（　）忘れません。",
+      "options": [
+       "全く",
+       "決して"
+      ],
+      "correct": "決して",
+      "id": "Terima kasih atas segala bantuannya. Kebaikan yang Anda berikan tidak akan pernah kulupakan."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "昨日、何時間も歩いたが、（　）疲れていない。",
+      "options": [
+       "少しも",
+       "めったに"
+      ],
+      "correct": "少しも",
+      "id": "Kemarin jalan berjam-jam, tapi sedikit pun tidak lelah."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "彼女はじょうぶで（　）病気をしないのに、インフルエンザにかかったらしい。",
+      "options": [
+       "決して",
+       "めったに"
+      ],
+      "correct": "めったに",
+      "id": "Dia kuat dan jarang sekali sakit, tapi katanya kena influenza."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "私には彼の ＿＿ ＿＿ ★ ＿＿ 理解できない。",
+      "options": [
+       "こと",
+       "が",
+       "まったく",
+       "言う"
+      ],
+      "correct": "が",
+      "full": "私には彼の言うことがまったく理解できない。",
+      "id": "Apa yang dia katakan sama sekali tidak bisa kupahami."
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": " ＿＿ ＿＿ ★ ＿＿ うれしい。",
+      "options": [
+       "先生に",
+       "めったに",
+       "ほめられて",
+       "ほめない"
+      ],
+      "correct": "めったに",
+      "full": "ほめない先生にめったにほめられてうれしい。",
+      "id": "Dipuji oleh guru yang jarang sekali memuji, aku senang."
+     }
+    ]
+   },
+   "6": {
+    "page": 105,
+    "title": "6日目 確認テスト",
+    "problems": [
+     {
+      "label": "練習I ①",
+      "sentence": "名前を書きましたか。（　）ID番号も忘れずに書いてください。",
+      "options": [
+       "それと",
+       "その上"
+      ],
+      "correct": "それと",
+      "id": "Sudah menulis nama? Dan juga, jangan lupa tulis nomor ID."
+     },
+     {
+      "label": "練習I ②",
+      "sentence": "地下鉄で行きますか。（　）JRで行きますか。",
+      "options": [
+       "それとも",
+       "あと"
+      ],
+      "correct": "それとも",
+      "id": "Mau pergi naik kereta bawah tanah? Atau naik JR?"
+     },
+     {
+      "label": "練習I ③",
+      "sentence": "掃除をして、洗濯をして、買い物をして、（　）料理をしてください。",
+      "options": [
+       "もう",
+       "あと"
+      ],
+      "correct": "あと",
+      "id": "Bersih-bersih, mencuci, belanja, lalu tolong masak juga."
+     },
+     {
+      "label": "練習I ④",
+      "sentence": "ハンサムで歌も上手で（　）頭もいいんだって。",
+      "options": [
+       "その上",
+       "それとも"
+      ],
+      "correct": "その上",
+      "id": "Katanya dia tampan, pandai menyanyi, lagi pula pintar juga."
+     },
+     {
+      "label": "練習I ⑤",
+      "sentence": "第6週の6日目ですから、（　）1日勉強すれば、この本は終わりです。",
+      "options": [
+       "あと",
+       "それと"
+      ],
+      "correct": "あと",
+      "id": "Karena ini hari ke-6 minggu ke-6, tinggal belajar 1 hari lagi, buku ini selesai."
+     },
+     {
+      "label": "練習II ⑥",
+      "sentence": "田中さん遅いですね。電車が遅れているのか、 ＿＿ ＿＿ ★ ＿＿ どうしたんでしょう。",
+      "options": [
+       "悪いの",
+       "体調が",
+       "それとも",
+       "か"
+      ],
+      "correct": "悪いの",
+      "full": "田中さん遅いですね。電車が遅れているのか、それとも体調が悪いのかどうしたんでしょう。",
+      "id": "Tanaka-san lama ya. Apa keretanya telat, atau kondisi tubuhnya buruk, ada apa ya?"
+     },
+     {
+      "label": "練習II ⑦",
+      "sentence": "新しいバイトを探しているんです。 ＿＿ ＿＿ ★ ＿＿ もらえないし。",
+      "options": [
+       "交通費も",
+       "今のは",
+       "それに",
+       "遠いし"
+      ],
+      "correct": "それに",
+      "full": "新しいバイトを探しているんです。今のは遠いし、それに交通費ももらえないし。",
+      "id": "Aku sedang cari kerja paruh waktu baru. Yang sekarang jauh, lagi pula ongkos transport pun tidak diganti."
+     }
+    ]
+   }
+  },
+  "matome": {
+   "page": 106,
+   "title": "7日目 実戦問題",
+   "problems": [
+    {
+     "label": "問題1 ①",
+     "sentence": "娘の学校では、規則で携帯電話を学校に持っていってはいけない（　）。",
+     "options": [
+      "ことにしている",
+      "ことになっている",
+      "わけがない",
+      "わけにはいかない"
+     ],
+     "correct": "ことになっている",
+     "id": "Di sekolah anak perempuanku, ada aturan yang menetapkan bahwa ponsel tidak boleh dibawa."
+    },
+    {
+     "label": "問題1 ②",
+     "sentence": "もう少しでお弁当を忘れて行く（　）だった。",
+     "options": [
+      "もの",
+      "こと",
+      "ところ",
+      "わけ"
+     ],
+     "correct": "ところ",
+     "id": "Hampir saja aku pergi dengan meninggalkan bekal."
+    },
+    {
+     "label": "問題1 ③",
+     "sentence": "手伝って（　）けれど、それでは君のためにならない。",
+     "options": [
+      "あげないことはない",
+      "あげることはない",
+      "あげないことじゃない",
+      "あげないことにする"
+     ],
+     "correct": "あげないことはない",
+     "id": "Bukannya tidak mau membantu, tapi itu justru tidak baik untukmu."
+    },
+    {
+     "label": "問題1 ④",
+     "sentence": "試験を受けた（　）、合格した。",
+     "options": [
+      "それと",
+      "うちに",
+      "ところ",
+      "としても"
+     ],
+     "correct": "ところ",
+     "id": "Ketika mengikuti ujian, ternyata lulus."
+    },
+    {
+     "label": "問題1 ⑤",
+     "sentence": "今夜は早く寝て、あした早く起きて（　）。",
+     "options": [
+      "勉強することにしよう",
+      "勉強するところだった",
+      "勉強するわけだ",
+      "勉強すればよかった"
+     ],
+     "correct": "勉強することにしよう",
+     "id": "Malam ini tidur lebih awal, besok bangun pagi, dan mari kuputuskan untuk belajar."
+    },
+    {
+     "label": "問題1 ⑥",
+     "sentence": "朝早く目が（　）が、またすぐに寝てしまいました。",
+     "options": [
+      "覚めたことはあるのです",
+      "覚めないことはないのです",
+      "覚めたことは覚めたのです",
+      "覚めたことはないのです"
+     ],
+     "correct": "覚めたことは覚めたのです",
+     "id": "Pagi-pagi memang sempat terbangun sih, tapi langsung tidur lagi."
+    },
+    {
+     "label": "問題1 ⑦",
+     "sentence": "彼の職場は（　）女性とは縁がない。",
+     "options": [
+      "まったく",
+      "めったに",
+      "決して",
+      "はじめて"
+     ],
+     "correct": "まったく",
+     "id": "Tempat kerjanya sama sekali tidak ada hubungannya dengan perempuan."
+    },
+    {
+     "label": "問題1 ⑧",
+     "sentence": "あなたがいくら許してやれといっても、彼を（　）。",
+     "options": [
+      "許すわけだ",
+      "許すわけにはいかない",
+      "許さないわけにはいかない",
+      "許さないわけがない"
+     ],
+     "correct": "許すわけにはいかない",
+     "id": "Sebanyak apa pun kamu menyuruhku memaafkan, aku tidak bisa memaafkan dia."
+    },
+    {
+     "label": "問題1 ⑨",
+     "sentence": "両親が（　）うちに、旅行に連れていきたい。",
+     "options": [
+      "元気",
+      "元気だ",
+      "元気に",
+      "元気な"
+     ],
+     "correct": "元気な",
+     "id": "Selagi orang tua masih sehat, aku ingin mengajak mereka bepergian."
+    },
+    {
+     "label": "問題1 ⑩",
+     "sentence": "これは古いから、もし（　）またすぐ壊れると思いますよ。",
+     "options": [
+      "修理したら",
+      "修理すれば",
+      "修理したとしても",
+      "修理するなら"
+     ],
+     "correct": "修理したとしても",
+     "id": "Ini sudah tua, jadi seandainya pun diperbaiki, kurasa akan cepat rusak lagi."
+    },
+    {
+     "label": "問題1 ⑪",
+     "sentence": "目の悪い彼女にあんな遠くの小さい文字が（　）。",
+     "options": [
+      "見えないわけがない",
+      "見えるわけにはいかない",
+      "見えることは見える",
+      "見えるわけがない"
+     ],
+     "correct": "見えるわけがない",
+     "id": "Mustahil dia yang matanya buruk bisa melihat huruf sekecil itu dari sejauh itu."
+    },
+    {
+     "label": "問題1 ⑫",
+     "sentence": "旅行会社に聞いて（　）ところ、安い切符が買えた。",
+     "options": [
+      "みる",
+      "みた",
+      "みない",
+      "みなかった"
+     ],
+     "correct": "みた",
+     "id": "Ketika mencoba bertanya ke agen perjalanan, ternyata bisa beli tiket murah."
+    },
+    {
+     "label": "問題1 ⑬",
+     "sentence": "寒い（　）。窓が少し開いているよ。",
+     "options": [
+      "わけではない",
+      "わけがない",
+      "わけだ",
+      "わけにはいかない"
+     ],
+     "correct": "わけだ",
+     "id": "Pantas saja dingin. Jendelanya terbuka sedikit."
+    },
+    {
+     "label": "問題1 ⑭",
+     "sentence": "眠い。（　）10分寝かせて。",
+     "options": [
+      "あと",
+      "それと",
+      "もっと",
+      "その上"
+     ],
+     "correct": "あと",
+     "id": "Ngantuk. Biarkan aku tidur 10 menit lagi."
+    },
+    {
+     "label": "問題1 ⑮",
+     "sentence": "どんなことがあっても、（　）この箱を開けてはいけません。",
+     "options": [
+      "まったく",
+      "決して",
+      "めったに",
+      "少しも"
+     ],
+     "correct": "決して",
+     "id": "Apa pun yang terjadi, jangan sekali-kali membuka kotak ini."
+    },
+    {
+     "label": "問題2 ⑯",
+     "sentence": "コーヒーは先に ＿＿ ＿＿ ★ ＿＿ なさいますか。",
+     "options": [
+      "しましょうか",
+      "お持ち",
+      "あとに",
+      "それとも"
+     ],
+     "correct": "それとも",
+     "full": "コーヒーは先にお持ちしましょうかそれともあとになさいますか。",
+     "id": "Kopinya mau dibawakan dulu, atau nanti saja?"
+    },
+    {
+     "label": "問題2 ⑰",
+     "sentence": "私は入社試験に全部落ちて ＿＿ ＿＿ ★ ＿＿ なった。",
+     "options": [
+      "つぐ",
+      "父の",
+      "ことに",
+      "店を"
+     ],
+     "correct": "つぐ",
+     "full": "私は入社試験に全部落ちて父の店をつぐことになった。",
+     "id": "Aku gagal di semua ujian masuk kerja, jadinya harus meneruskan toko ayah."
+    },
+    {
+     "label": "問題2 ⑱",
+     "sentence": " ＿＿ ＿＿ ★ ＿＿ はじめて発音が悪いことを知った。",
+     "options": [
+      "聞いて",
+      "自分の",
+      "日本語を",
+      "録音した"
+     ],
+     "correct": "録音した",
+     "full": "自分の日本語を録音したのを聞いてはじめて発音が悪いことを知った。",
+     "id": "Baru setelah mendengar rekaman bahasa Jepangku sendiri, aku tahu pelafalanku buruk."
+    },
+    {
+     "label": "問題2 ⑲",
+     "sentence": " ＿＿ ＿＿ ★ ＿＿ ぜひ遊びに来てください。",
+     "options": [
+      "いる",
+      "日本に",
+      "僕が",
+      "うちに"
+     ],
+     "correct": "いる",
+     "full": "僕が日本にいるうちにぜひ遊びに来てください。",
+     "id": "Selagi aku masih di Jepang, tolong mampir main."
+    },
+    {
+     "label": "問題2 ⑳",
+     "sentence": " ＿＿ ＿＿ ★ ＿＿ まだよく理解していません。",
+     "options": [
+      "復習した",
+      "ことは",
+      "が",
+      "しました"
+     ],
+     "correct": "しました",
+     "full": "復習したことはしましたがまだよく理解していません。",
+     "id": "Mengulang pelajaran sih sudah, tapi belum benar-benar paham."
+    }
+   ]
+  }
+ }
+};
+
+function getBookSet(w,d){ const wk=BOOK_PROBLEMS[w]; if(!wk) return null; if(d==='matome') return wk.matome||null; return (wk.days&&wk.days[d])||null; }
+
 const ACCESS_CODE = "arigatou2025"; // ← ここを変えるだけでコード変更できます
 
 function checkAccess() {
@@ -1802,6 +6287,20 @@ function renderWeek(wNum) {
     <div class="day-badge">${done ? '✓' : d.day}</div>`;
     list.appendChild(c);
   });
+  // ── 7日目 実戦問題カード（本の問題がある週のみ） ──
+  if (BOOK_PROBLEMS[wNum] && BOOK_PROBLEMS[wNum].matome) {
+    const mset = BOOK_PROBLEMS[wNum].matome;
+    const mc = document.createElement('div');
+    mc.className = 'day-card day-card-matome';
+    mc.onclick = () => startBookQuiz(wNum, 'matome');
+    mc.innerHTML = `<div>
+      <div class="day-num">7日目</div>
+      <div class="day-title">📝 実戦問題 / Ujian rangkuman</div>
+      <div class="day-grammar">${mset.problems.length}問（問題1・問題2）</div>
+    </div>
+    <div class="day-badge">7</div>`;
+    list.appendChild(mc);
+  }
 }
 
 // ── LESSON ──
@@ -1869,6 +6368,14 @@ function renderLesson(wNum, dNum) {
   html += `<button class="btn-rearrange" onclick="startDayRearrangeQuiz(${wNum},${dNum})">🔀 並べ替え</button>`;
   html += `<button class="btn-synonym" onclick="startDaySynonymQuiz(${wNum},${dNum})">🔄 言い換え</button>`;
   html += `</div>`;
+  // ── 本の練習問題ボタン（データがある日のみ） ──
+  if (getBookSet(wNum, dNum)) {
+    html += `<div class="lesson-nav-row"><button class="btn-book" onclick="startBookQuiz(${wNum},${dNum})">✅ れんしゅう / Latihan hari ini</button></div>`;
+  }
+  // ── 7日目 実戦問題（最終日に表示） ──
+  if (dNum === wk.days.length && BOOK_PROBLEMS[wNum] && BOOK_PROBLEMS[wNum].matome) {
+    html += `<div class="lesson-nav-row"><button class="btn-matome" onclick="startBookQuiz(${wNum},'matome')">📝 7日目 実戦問題 / Ujian rangkuman</button></div>`;
+  }
   // ── ナビゲーション（前・完了・次） ──
   html += `<div class="lesson-nav">`;
   html += `<button class="btn-secondary" ${prev ? `onclick="showLesson(${wNum},${prev})"` : 'disabled style="visibility:hidden"'}>← ${prev || ''}日目</button>`;
@@ -1923,6 +6430,27 @@ function buildQuizItems(dayObjs) {
 }
 
 let isBlankQuiz = false;
+let isBookQuiz = false;
+
+function startBookQuiz(wNum, dNum) {
+  const set = getBookSet(wNum, dNum);
+  if (!set || !set.problems || set.problems.length === 0) { alert('この問題はまだ準備中です。'); return; }
+  isBlankQuiz = false; isRearrange = false; isSynonymQuiz = false; isVerbDrill = false; isBookQuiz = true;
+  quizItems = set.problems.map(p => ({
+    bookLabel: p.label,
+    sentence: p.sentence,
+    options: p.options.slice(),
+    correct: p.correct,
+    full: p.full || null,
+    id: p.id || null
+  }));
+  quizTitle = `✅ ${set.title}`;
+  qIdx = 0; qScore = 0; qAnswered = false;
+  document.getElementById('quiz-back').onclick = () => { isBookQuiz = false; (dNum === 'matome') ? showWeek(wNum) : showLesson(wNum, dNum); };
+  renderQuizQ();
+  showScreen('screen-quiz');
+}
+
 
 function buildBlankQuizItems(dayObjs) {
   // 全例文の <strong> テキストをバッジ付きで収集
@@ -2014,6 +6542,7 @@ function buildBlankQuizItems(dayObjs) {
 
 function showAllQuiz() {
   isBlankQuiz = false;
+  isBookQuiz = false;
   isRearrange = false;
   isSynonymQuiz = false;
   isVerbDrill = false;
@@ -2174,6 +6703,7 @@ function buildRearrangeItems() {
 function showRearrangeQuiz() {
   isRearrange = true;
   isBlankQuiz = false;
+  isBookQuiz = false;
   isSynonymQuiz = false;
   isVerbDrill = false;
   quizItems = buildRearrangeItems();
@@ -2486,6 +7016,7 @@ function buildSynonymItems() {
 function showSynonymQuiz() {
   isSynonymQuiz = true;
   isBlankQuiz = false;
+  isBookQuiz = false;
   isRearrange = false;
   isVerbDrill = false;
   quizItems = buildSynonymItems();
@@ -2648,6 +7179,7 @@ function showVerbDrill() {
   isVerbDrill = true;
   isSynonymQuiz = false;
   isBlankQuiz = false;
+  isBookQuiz = false;
   isRearrange = false;
   quizItems = buildVerbDrillItems();
   quizTitle = '活用ドリル / Drill Konjugasi';
@@ -2659,6 +7191,7 @@ function showVerbDrill() {
 
 function startDayQuiz(wNum, dNum) {
   isBlankQuiz = false;
+  isBookQuiz = false;
   isRearrange = false;
   isSynonymQuiz = false;
   isVerbDrill = false;
@@ -2729,6 +7262,7 @@ function extractSynonymFromMeaning(meaning) {
 
 function startDaySynonymQuiz(wNum, dNum) {
   isBlankQuiz = false;
+  isBookQuiz = false;
   isRearrange = false;
   isSynonymQuiz = true;
   isVerbDrill = false;
@@ -2917,6 +7451,7 @@ function autoSplitExample(jaWithStrong, pattern) {
 
 function startDayRearrangeQuiz(wNum, dNum) {
   isBlankQuiz = false;
+  isBookQuiz = false;
   isRearrange = true;
   isSynonymQuiz = false;
   isVerbDrill = false;
@@ -2975,7 +7510,7 @@ function startDayRearrangeQuiz(wNum, dNum) {
 //   追加文法のクイズ / Kuis Tata Bahasa Tambahan
 // ═══════════════════════════════════════
 function startExtraQuiz() {
-  isBlankQuiz = false; isRearrange = false; isSynonymQuiz = false; isVerbDrill = false;
+  isBlankQuiz = false; isRearrange = false; isSynonymQuiz = false; isVerbDrill = false; isBookQuiz = false;
   const allPat = ADDITIONAL_GRAMMAR.map(g => g.pattern);
   const items = [];
   ADDITIONAL_GRAMMAR.forEach(g => {
@@ -3041,7 +7576,7 @@ function startExtraBlankQuiz() {
 }
 
 function startExtraRearrangeQuiz() {
-  isBlankQuiz = false; isRearrange = true; isSynonymQuiz = false; isVerbDrill = false;
+  isBlankQuiz = false; isRearrange = true; isSynonymQuiz = false; isVerbDrill = false; isBookQuiz = false;
   const autoGen = [];
   ADDITIONAL_GRAMMAR.forEach(g => g.examples.forEach(ex => {
     const auto = autoSplitExample(ex.ja, g.pattern);
@@ -3058,7 +7593,7 @@ function startExtraRearrangeQuiz() {
 }
 
 function startExtraSynonymQuiz() {
-  isBlankQuiz = false; isRearrange = false; isSynonymQuiz = true; isVerbDrill = false;
+  isBlankQuiz = false; isRearrange = false; isSynonymQuiz = true; isVerbDrill = false; isBookQuiz = false;
   const allForms = [];
   SYNONYM_GROUPS.forEach((g, gIdx) => g.forms.forEach(f => allForms.push({ form: f, group: gIdx })));
   const allPat = [];
@@ -3114,6 +7649,10 @@ function renderQuizQ() {
       <div class="synonym-prompt">${q.promptForm}</div>
       <button class="id-toggle-btn" id="id-toggle-btn" onclick="toggleIdBox()">🇮🇩 インドネシア語訳を見る / Lihat terjemahan</button>
       <div class="q-id-box" id="blank-id-box" style="display:none"><span class="q-id-flag">🇮🇩</span>${q.meaningId}</div>`;
+  } else if (isBookQuiz) {
+    questionBlock = `
+      <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — ${q.bookLabel}</div>
+      <div class="q-text">${addFurigana(q.sentence)}</div>`;
   } else if (isBlankQuiz) {
     questionBlock = `
       <div class="q-label">問題 ${qIdx+1} / ${quizItems.length} — 空欄に入る言葉はどれですか？ / Pilih kata yang tepat untuk mengisi titik-titik!</div>
@@ -3149,11 +7688,13 @@ function pickOpt(i) {
   qAnswered = true;
   const q = quizItems[qIdx];
   const sel = q.options[i];
-  const ok = sel === q.correct;
+  const corrects = (isBookQuiz && typeof q.correct === 'string' && q.correct.indexOf(',') >= 0)
+    ? q.correct.split(',') : [q.correct];
+  const ok = corrects.includes(sel);
   if (ok) qScore++;
   document.querySelectorAll('.quiz-opt').forEach((el, idx) => {
     el.classList.add('disabled');
-    if (q.options[idx] === q.correct) el.classList.add('correct');
+    if (corrects.includes(q.options[idx])) el.classList.add('correct');
     else if (idx === i && !ok) el.classList.add('wrong');
   });
   const fb = document.getElementById('qfb');
@@ -3171,6 +7712,14 @@ function pickOpt(i) {
     const idBtn = document.getElementById('id-toggle-btn');
     if (idBox) { idBox.style.display = 'block'; }
     if (idBtn) { idBtn.textContent = '🇮🇩 インドネシア語訳を隠す / Sembunyikan terjemahan'; }
+  } else if (isBookQuiz) {
+    const both = corrects.length > 1;
+    const answerText = both ? `${corrects.join('・')}（どちらも正解 / dua-duanya benar）` : q.correct;
+    const fullLine = q.full ? `<br>正しい文: ${addFurigana(q.full)}` : '';
+    const idLine = q.id ? `<div class="book-id-line"><span class="q-id-flag">🇮🇩</span>${q.id}</div>` : '';
+    fb.innerHTML = ok
+      ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail">${both ? `正解: <strong>${answerText}</strong><br>` : ''}${q.full ? `正しい文: ${addFurigana(q.full)}` : ''}${idLine}</div>`
+      : `<strong>不正解 Salah. ✗</strong><div class="fb-detail">正解: <strong>${answerText}</strong>${fullLine}${idLine}</div>`;
   } else if (isBlankQuiz) {
     fb.innerHTML = ok
       ? `<strong>正解！ Benar! ✓</strong><div class="fb-detail"><span class="blank-badge">${q.badge}</span> ${q.pattern}<br>${q.meaningId}</div>`
@@ -3643,7 +8192,7 @@ const VERBFORMS = {
     ]
   },
   // ── 第3週の接続 ──
-  "Vて/Aくて＋も": {
+  "Vても/Aくても/na・Nでも": {
     title: "〜ても の接続",
     rows: [
       { label: "動詞", body: "V て形＋も（て→ても、で→でも）", id: "Bentuk て kata kerja + も", ex: "調べても　飲んでも" },
@@ -3775,7 +8324,7 @@ const VERBFORMS = {
   "文 というより": {
     title: "〜というより の接続",
     rows: [
-      { label: "形", body: "N／A／な／V の普通形＋というより（も）", id: "N/A/な/V bentuk biasa + というより(も)", ex: "走るというより　涼しいというより" },
+      { label: "形", body: "N／A／な／V の普通形＋というより（も）／というか", id: "N/A/な/V bentuk biasa + というより(も) / というか", ex: "走るというより　できないというか" },
       { label: "意味", body: "前より後のほうが正確だ（言い直し）", id: "Lebih tepat yang belakang daripada yang depan", ex: "" },
     ]
   },
@@ -3809,13 +8358,13 @@ const VERBFORMS = {
       { label: "意味", body: "その行為によって迷惑・被害を受けた", id: "Menerima kerugian/dampak dari tindakan orang tersebut", ex: "" },
     ]
   },
-  "V使役形＋ください": {
+  "V使役形＋ください／もらえませんか": {
     title: "使役形の作り方 / Cara Membuat Bentuk Kausatif",
     rows: [
       { label: "グループ1", body: "語尾をあ段に変えて＋せる", id: "Ubah akhiran ke baris -a lalu tambah せる", ex: "行く → 行かせる　飲む → 飲ませる" },
       { label: "グループ2", body: "語尾のる を取って＋させる", id: "Hapus る lalu tambah させる", ex: "食べる → 食べさせる　見る → 見させる" },
       { label: "不規則", body: "する → させる　くる → こさせる", id: "Tidak beraturan", ex: "する → させる" },
-      { label: "使い方", body: "使役形（〜せ／させ）＋てください", id: "Bentuk kausatif + てください = minta izin dengan sopan", ex: "帰らせてください　休ませてください" },
+      { label: "使い方", body: "使役形（〜せ／させ）＋てください／てもらえますか／てもらえませんか", id: "Bentuk kausatif + てください / てもらえますか / てもらえませんか = minta izin dengan sopan", ex: "帰らせてください　止めさせてもらえませんか" },
     ]
   },
   "Vない形＋と": {
@@ -3846,7 +8395,7 @@ const VERBFORMS = {
       { label: "口語", body: "〜ておく → 〜とく　〜ておこう → 〜とこう", id: "Dalam percakapan, ておく dipersingkat menjadi とく", ex: "書いとく　買っとく　調べとこう" },
     ]
   },
-  "N/V/A みたいだ": {
+  "N/V/A/na みたいだ": {
     title: "みたいだ の接続 / Cara Menyambungkan みたいだ",
     rows: [
       { label: "動詞", body: "V 普通形＋みたいだ", id: "Bentuk biasa kata kerja + みたいだ", ex: "行くみたいだ　食べたみたいだ" },
@@ -3862,7 +8411,7 @@ const VERBFORMS = {
       { label: "い形容詞", body: "A い＋らしい", id: "Kata sifat -i + らしい", ex: "寒いらしい" },
       { label: "な形容詞", body: "A な だ＋らしい", id: "Kata sifat -na + だ + らしい", ex: "元気だらしい" },
       { label: "名詞", body: "N だ＋らしい", id: "Kata benda + だ + らしい", ex: "休みだらしい" },
-      { label: "①②の違い", body: "①〜らしい（いかにも）= 本当に〜の特徴がある\n②〜らしい（伝聞）= 誰かから聞いた情報", id: "① Benar-benar khas ② Informasi dari orang lain", ex: "" },
+      { label: "①②の違い", body: "①〜らしい（いかにも）= 本当に〜の特徴がある【N にだけ付く】\n②〜らしい（伝聞）= 誰かから聞いた情報【V/A/na/N に付く】", id: "① Benar-benar khas (hanya setelah kata benda) ② Informasi dari orang lain (setelah V/A/na/N)", ex: "①春らしい日　②来ないらしい" },
     ]
   },
   "N/V っぽい": {
@@ -3872,7 +8421,7 @@ const VERBFORMS = {
       { label: "ニュアンス", body: "やや否定的・非公式な表現", id: "Nuansa agak negatif atau informal", ex: "大人っぽい（ほめ言葉にもなる）" },
     ]
   },
-  "Vない＋ようにする": {
+  "V る/ない＋ようにする": {
     title: "〜ようにする / 〜ようになる の接続",
     rows: [
       { label: "ようにする", body: "V る形／V ない形＋ようにする", id: "Bentuk kamus / bentuk ない + ようにする (usaha/niat)", ex: "早く起きるようにする　食べすぎないようにする" },
@@ -3897,14 +8446,14 @@ const VERBFORMS = {
   "V る/ない＋ように": {
     title: "〜ように〔目的・指示〕の接続",
     rows: [
-      { label: "目的", body: "V る形／V ない形＋ように＋（行為）", id: "Bentuk kamus / bentuk ない + ように + (tindakan) = agar...", ex: "聞こえるように大きな声で話す" },
+      { label: "目的", body: "V る形／V ない形／V れる形（可能形）＋ように＋（行為）", id: "Bentuk kamus / ない / bentuk potensial + ように + (tindakan) = agar...", ex: "聞こえるように大きな声で話す　わかるように説明する" },
       { label: "指示", body: "V る形／V ない形＋ように（文末）", id: "Di akhir kalimat = perintah/instruksi tidak langsung", ex: "静かにするように　遅刻しないように" },
     ]
   },
-  "V＋ように。": {
+  "Vます＋ように。": {
     title: "〜ように〔願望〕の接続",
     rows: [
-      { label: "形", body: "V る形＋ように。（文末）", id: "Bentuk kamus + ように di akhir kalimat = doa/harapan", ex: "合格しますように　元気になりますように" },
+      { label: "形", body: "V ます形＋ように。（V ません／V れます も可・文末）", id: "Bentuk ます (juga ません / bentuk potensial + ます) + ように di akhir kalimat = doa/harapan", ex: "合格しますように　かかりませんように" },
       { label: "場面", body: "神社や願い事をするときに使う", id: "Digunakan saat berdoa atau mengungkapkan harapan", ex: "" },
     ]
   },
@@ -3938,14 +8487,14 @@ const VERBFORMS = {
       { label: "〜てばかりいる", body: "V て形＋ばかりいる＝ずっと〜している", id: "Bentuk て + ばかりいる = terus-terusan melakukan...", ex: "食べてばかりいる　寝てばかりいる" },
     ]
   },
-  "N さえ": {
+  "N/Nに/Nで＋さえ": {
     title: "〜さえ / 〜さえ〜ば の接続",
     rows: [
       { label: "さえ（強調）", body: "N＋さえ＝〜でさえも（意外性）", id: "N + さえ = bahkan... pun (hal yang tidak terduga)", ex: "ひらがなさえ読めない" },
       { label: "さえ〜ば", body: "N さえ＋V ば形＝〜だけで十分", id: "N さえ + bentuk -ば = asal... saja sudah cukup", ex: "お金さえあれば　健康さえあれば" },
     ]
   },
-  "N こそ": {
+  "N こそ／〜からこそ": {
     title: "〜こそ の使い方",
     rows: [
       { label: "形", body: "N・文節＋こそ＝まさに〜（強調）", id: "N atau frasa + こそ = justru / pasti (penekanan kuat)", ex: "明日こそ！　あなたこそ　今年こそ" },
@@ -4021,14 +8570,14 @@ const VERBFORMS = {
       { label: "敬語レベル", body: "目上→目下 または 親しい相手への優しい勧め", id: "Digunakan dari yang lebih tua ke yang lebih muda, atau saran lembut kepada orang yang akrab", ex: "" },
     ]
   },
-  "V＋ように言う": {
+  "V る/ない＋ように言う": {
     title: "〜ように言う / 頼む の接続",
     rows: [
       { label: "形", body: "V る形／V ない形＋ように＋言う／頼む／命令する", id: "Bentuk kamus/ない + ように + 言う/頼む = menyuruh/meminta agar...", ex: "早く来るように言った　静かにするように頼んだ" },
       { label: "間接話法", body: "「〜してください」という内容を他の人に伝える", id: "Bentuk tidak langsung untuk meneruskan perintah atau permintaan", ex: "先生は「静かに」と言った → 先生は静かにするように言った" },
     ]
   },
-  "Vて＋くれと": {
+  "Vて/ないで＋くれと": {
     title: "〜てくれと頼まれた の接続",
     rows: [
       { label: "形", body: "V て形＋くれと頼まれた／V ないで＋くれと言われた", id: "Bentuk て + くれと頼まれた / ないで + くれと言われた", ex: "教えてくれと頼まれた　来ないでくれと言われた" },
@@ -4087,7 +8636,7 @@ const VERBFORMS = {
       { label: "つもりだった", body: "V る形／V ない形＋つもりだった＝（実際はしなかった）計画", id: "+ つもりだった = tadinya berniat... (tapi kenyataannya tidak terlaksana)", ex: "勉強するつもりだったが、寝てしまった" },
     ]
   },
-  "V/A/N はずだ": {
+  "V/A/na/N はずだ": {
     title: "〜はずだ の接続",
     rows: [
       { label: "動詞", body: "V 普通形＋はずだ", id: "Bentuk biasa kata kerja + はずだ", ex: "来るはずだ　行ったはずだ" },
@@ -4241,7 +8790,7 @@ const VERBFORMS = {
       { label: "ば形の作り方", body: "V る形の語尾を え段に変えて＋ば", id: "Ubah akhiran kata kerja ke baris -e lalu tambah ば", ex: "ある→あれば　いる→いれば　できる→できれば" },
     ]
   },
-  "どうせ＋S": {
+  "どうせ＋文": {
     title: "どうせ の使い方",
     rows: [
       { label: "形", body: "どうせ＋（否定的な結論）", id: "どうせ + (kesimpulan negatif)", ex: "どうせ無理だ　どうせ失敗する" },
@@ -4263,11 +8812,20 @@ const VERBFORMS = {
       { label: "ば形の作り方", body: "グループ1：語尾を え段＋ば　グループ2：る→れば", id: "Grup 1: ubah akhiran ke え段 + ば / Grup 2: る → れば", ex: "行く→行けば　食べる→食べれば　する→すれば" },
     ]
   },
-  "どうりで＋S": {
+  "どうりで＋文": {
     title: "どうりで の使い方",
     rows: [
       { label: "形", body: "どうりで＋（驚き・納得の内容）＋はずだ／わけだ", id: "どうりで + isi yang mengejutkan/menyadarkan + はずだ/わけだ", ex: "どうりで上手なわけだ　どうりで静かだと思ったら" },
       { label: "意味", body: "原因・理由を知って納得する（「なるほど！」）", id: "Menyadari alasan sesuatu dan merasa 'oh pantas saja!'", ex: "" },
+    ]
+  },
+  "呼応の副詞（否定）": {
+    title: "呼応の副詞（かならず「〜ない」とペア）/ Adverbia yang Berpasangan dengan Bentuk Negatif",
+    rows: [
+      { label: "決して〜ない", body: "絶対に〜ない（強い意志・断定）", id: "Sama sekali tidak / tidak akan pernah (tekad kuat)", ex: "決してあきらめない　決して許さない" },
+      { label: "まったく〜ない", body: "完全に〜ない（100%否定）", id: "Sama sekali tidak (penyangkalan 100%)", ex: "まったく泳げない　まったくわからない" },
+      { label: "めったに〜ない", body: "ほとんど〜ない（回数・頻度が少ない）", id: "Jarang sekali (frekuensinya sedikit)", ex: "めったに行かない　めったに休めない" },
+      { label: "少しも／ちっとも〜ない", body: "ぜんぜん〜ない（否定の強調・話し言葉）", id: "Sedikit pun tidak (penekanan negatif, ちっとも lebih santai)", ex: "少しもわからない　ちっともうれしくない" },
     ]
   },
   "副詞": {
@@ -4418,7 +8976,7 @@ function toggleExtra(id, btn) {
 
 // ── EXTRA EXAMPLES DATA ──
 const EXTRA_EXAMPLES = {
-  "〜られている / 〜れている": [
+  "〜れる / 〜られる（受身）": [
     { ja:"この歌は世界中で<strong>歌われています</strong>。", id:"Lagu ini dinyanyikan di seluruh dunia." },
     { ja:"その橋は100年前に<strong>建てられました</strong>。", id:"Jembatan itu dibangun 100 tahun yang lalu." },
     { ja:"この映画は若者に<strong>愛されている</strong>。", id:"Film ini dicintai oleh anak-anak muda." }
@@ -4428,7 +8986,7 @@ const EXTRA_EXAMPLES = {
     { ja:"財布を<strong>盗まれて</strong>、警察に届けた。", id:"Dompetku dicuri, lalu aku melapor ke polisi." },
     { ja:"夜中に子どもに<strong>起こされた</strong>ので、眠れなかった。", id:"Karena dibangunkan anakku tengah malam, aku tidak bisa tidur." }
   ],
-  "〜させてください": [
+  "〜させてください / 〜させてもらえませんか": [
     { ja:"少し<strong>考えさせてください</strong>。お返事は明日します。", id:"Tolong izinkan saya berpikir sebentar. Saya akan menjawab besok." },
     { ja:"一緒に写真を<strong>撮らせてください</strong>。", id:"Tolong izinkan saya berfoto bersama." },
     { ja:"この仕事、私に<strong>やらせてください</strong>。", id:"Pekerjaan ini, tolong biarkan saya yang mengerjakan." }
@@ -4438,7 +8996,7 @@ const EXTRA_EXAMPLES = {
     { ja:"明日テストがあるから、今夜は勉強し<strong>なくちゃ</strong>。", id:"Karena besok ada ujian, malam ini harus belajar." },
     { ja:"部屋を<strong>片付けなくちゃ</strong>。散らかりすぎてる。", id:"Harus membereskan kamar. Berantakan sekali." }
   ],
-  "〜ちゃった / 〜じゃった": [
+  "〜ちゃう / 〜じゃう": [
     { ja:"大切なメールを間違えて<strong>消しちゃった</strong>。", id:"Email penting tanpa sengaja terhapus." },
     { ja:"眠くて、授業中に<strong>寝ちゃった</strong>。先生に怒られた。", id:"Mengantuk, tanpa sadar tertidur di kelas. Dimarahi guru." },
     { ja:"ケーキ、全部<strong>食べちゃおう</strong>か。もったいないし。", id:"Ayo sekalian habiskan saja kuenya. Sayang kalau tersisa." }
@@ -4463,7 +9021,7 @@ const EXTRA_EXAMPLES = {
     { ja:"彼女は感情<strong>的っぽい</strong>から、すぐ泣く。", id:"Dia terkesan emosional, mudah menangis." },
     { ja:"この肉、<strong>古っぽい</strong>味がする。", id:"Daging ini terasa seperti sudah tidak segar." }
   ],
-  "〜ないようにする": [
+  "〜ようにする": [
     { ja:"夜遅くまで起きない<strong>ようにしています</strong>。", id:"Saya berusaha untuk tidak begadang sampai larut malam." },
     { ja:"お菓子を食べすぎない<strong>ようにしている</strong>。", id:"Saya berusaha agar tidak makan kue terlalu banyak." },
     { ja:"人を傷つける言葉を使わない<strong>ようにしよう</strong>。", id:"Mari berusaha untuk tidak menggunakan kata-kata yang menyakiti orang lain." }
@@ -4523,7 +9081,7 @@ const EXTRA_EXAMPLES = {
     { ja:"忙しくて、食事をする時間<strong>さえ</strong>ない。", id:"Begitu sibuk sampai waktu makan pun tidak ada." },
     { ja:"その本は、専門家で<strong>さえ</strong>読むのが難しい。", id:"Buku itu, bahkan para ahli pun sulit membacanya." }
   ],
-  "〜こそ": [
+  "〜こそ / 〜からこそ": [
     { ja:"今年<strong>こそ</strong>、N3に合格してみせる！", id:"Tahun ini pasti aku akan lulus N3!" },
     { ja:"あなた<strong>こそ</strong>、私の一番の友達です。", id:"Justru kamu adalah teman terbaikku." },
     { ja:"失敗した<strong>からこそ</strong>、成長できる。", id:"Justru karena gagal, kita bisa berkembang." }
@@ -4583,7 +9141,7 @@ const EXTRA_EXAMPLES = {
     { ja:"彼が辞める<strong>というのは</strong>、本当に残念だ。", id:"Sungguh disayangkan bahwa dia akan berhenti." },
     { ja:"時間を守る<strong>ということ</strong>は、とても大切だ。", id:"Menepati waktu itu sangat penting." }
   ],
-  "〜というより": [
+  "〜というより / 〜というか": [
     { ja:"これは教室<strong>というより</strong>、図書館みたいだ。", id:"Ini lebih seperti perpustakaan daripada ruang kelas." },
     { ja:"彼女は怒っている<strong>というより</strong>、悲しんでいるようだ。", id:"Dia lebih terlihat sedih daripada marah." },
     { ja:"この仕事は難しい<strong>というより</strong>、面倒くさい。", id:"Pekerjaan ini bukan sulit, lebih tepatnya merepotkan." }
@@ -5725,6 +10283,18 @@ const READINGS = {
   "何を":"なにを","何か":"なにか","何も":"なにも",
   "来ました":"きました","来た":"きた","来て":"きて",
   "入ったとたん":"はいったとたん","入った":"はいった","入らない":"はいらない",
+  // ── 第1週 教科書練習問題ぶん ──
+  "三百":"さんびゃく","社員":"しゃいん","4年":"よねん","1年":"いちねん","以内":"いない","開かれ":"ひらかれ","来ちゃ":"きちゃ","一生懸命":"いっしょうけんめい","製品":"せいひん","新製品":"しんせいひん","次":"つぎ","修正":"しゅうせい","発売":"はつばい","人口":"じんこう","貯金":"ちょきん","世話":"せわ","金魚":"きんぎょ","図":"ず","習っ":"ならっ","向こう":"むこう","輸出":"ゆしゅつ","安売り":"やすうり",
+  // ── 第2週 教科書練習問題ぶん ──
+  "友人":"ゆうじん","雑誌":"ざっし","記事":"きじ","市民":"しみん","表れ":"あらわれ","苦み":"にがみ","禁煙":"きんえん","日本的":"にほんてき","代表的":"だいひょうてき","年中無休":"ねんじゅうむきゅう","庭":"にわ","ゴミ箱":"ごみばこ","天ぷら":"てんぷら","動物":"どうぶつ","象":"ぞう","重い":"おもい","吸い":"すい","50部":"ごじゅうぶ","商品":"しょうひん","問い合わせ":"といあわせ","洗濯機":"せんたくき","音":"おと","管理人":"かんりにん","階":"かい","騒が":"さわが","色":"いろ","各線":"かくせん","小学校":"しょうがっこう","開放":"かいほう","フランス語":"ふらんすご","注意書き":"ちゅういがき","8時":"はちじ","生きて":"いきて","生きる":"いきる",
+  // ── 第3週 教科書練習問題ぶん ──
+  "片づ":"かたづ","混み":"こみ","土産":"みやげ","最適":"さいてき","飼い主":"かいぬし","飼う":"かう","責任":"せきにん","用事":"ようじ","時刻表":"じこくひょう","靴":"くつ","脱ぎ":"ぬぎ","来られ":"こられ","踊れ":"おどれ","貯め":"ため","箱":"はこ","黒板":"こくばん","海岸":"かいがん","貝":"かい","浴び":"あび","火":"ひ","数":"かず","暮らし":"くらし","夫婦":"ふうふ","人生":"じんせい","降りて":"おりて","省エネ":"しょうエネ","止め":"とめ","虫歯":"むしば","3時間":"さんじかん","困難":"こんなん",
+  // ── 第4週 教科書練習問題ぶん ──
+  "煙":"けむり","苦痛":"くつう","通じ":"つうじ","一言":"ひとこと","治っ":"なおっ","言語":"げんご","婚約":"こんやく","急死":"きゅうし","獣医":"じゅうい","発明":"はつめい","偉大":"いだい","泊まり":"とまり","他人":"たにん","流さ":"ながさ","形式":"けいしき","教師":"きょうし","作物":"さくもつ","次回":"じかい","何年":"なんねん","最大":"さいだい",
+  // ── 第5週 教科書練習問題ぶん ──
+  "派手":"はで","利用":"りよう","主婦":"しゅふ","会社員":"かいしゃいん","裏":"うら","指導":"しどう","首":"くび","肩":"かた","習得":"しゅうとく","防災訓練":"ぼうさいくんれん","花粉":"かふん","座って":"すわって","似て":"にて","非常":"ひじょう","就職":"しゅうしょく","今学期":"こんがっき","来学期":"らいがっき","郵便":"ゆうびん","桜":"さくら","1週間":"いっしゅうかん","咲いた":"さいた","紹介":"しょうかい","動作":"どうさ","日本海側":"にほんかいがわ","下着":"したぎ","昼間":"ひるま","花火大会":"はなびたいかい","兄弟":"きょうだい","夜空":"よぞら","課長":"かちょう","駅員":"えきいん","途中":"とちゅう","大きかっ":"おおきかっ",
+  // ── 第6週 教科書練習問題ぶん ──
+  "採用通知":"さいようつうち","地球":"ちきゅう","過ぎ":"すぎ","経済的":"けいざいてき","冷め":"さめ","階段":"かいだん","工事":"こうじ","信用":"しんよう","入れ替え":"いれかえ","地下鉄":"ちかてつ","第6週":"だいろくしゅう","6日目":"むいかめ","交通費":"こうつうひ","職場":"しょくば","縁":"えん","連れて":"つれて","発音":"はつおん","録音":"ろくおん","僕":"ぼく","6日":"むいか","1日":"いちにち","30分以上":"さんじゅっぷんいじょう","ご飯粒":"ごはんつぶ","左側":"ひだりがわ"
 };
 
 // ── ROMAJI ──
@@ -5851,7 +10421,7 @@ function toggleFurigana() {
   document.body.classList.toggle('no-furigana', !furiganaOn);
   document.getElementById('furi-btn').textContent = furiganaOn ? 'ふりがなあり' : 'ふりがななし';
 }
-<!---update--->
+
 // ── INIT ──
 renderHome();
 </script>
