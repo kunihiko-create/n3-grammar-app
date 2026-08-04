@@ -6129,12 +6129,18 @@ const BOOK_PROBLEMS = {
 
 function getBookSet(w,d){ const wk=BOOK_PROBLEMS[w]; if(!wk) return null; if(d==='matome') return wk.matome||null; return (wk.days&&wk.days[d])||null; }
 
-const ACCESS_CODE = "arigatou2025"; // ← ここを変えるだけでコード変更できます
+const ACCESS_CODE = "oishii2026"; // ← パスワード。変えると全員が再入力になります
+
+// ── 強制ログアウト用 ──
+// パスワードはそのままで全員をログアウトさせたいときは、この数字を1つ増やす（1 → 2 → 3 …）
+const AUTH_VERSION = 1;
+
+const AUTH_KEY = 'n3-auth'; // 保存キー（旧 'n3-access' は使わない）
 
 function checkAccess() {
   const input = document.getElementById('access-input').value.trim();
   if (input === ACCESS_CODE) {
-    localStorage.setItem('n3-access', ACCESS_CODE);
+    localStorage.setItem(AUTH_KEY, ACCESS_CODE + '|' + AUTH_VERSION);
     document.getElementById('access-screen').classList.add('hidden');
   } else {
     document.getElementById('access-error').textContent = 'コードが違います。/ Kode salah.';
@@ -6144,9 +6150,14 @@ function checkAccess() {
 }
 
 (function() {
-  const saved = localStorage.getItem('n3-access');
-  if (saved === ACCESS_CODE) {
+  // 旧方式（パスワードのみ保存）の残骸を掃除しておく
+  localStorage.removeItem('n3-access');
+  const saved = localStorage.getItem(AUTH_KEY);
+  if (saved === ACCESS_CODE + '|' + AUTH_VERSION) {
     document.getElementById('access-screen').classList.add('hidden');
+  } else if (saved) {
+    // パスワード変更 or 強制ログアウトで無効になった保存を消す
+    localStorage.removeItem(AUTH_KEY);
   }
 })();
 
